@@ -1,5 +1,7 @@
 # friends-mvp
 
+App name tentative.
+
 ### Usage
 
 ```
