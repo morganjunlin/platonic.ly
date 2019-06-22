@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS posts (
 
 CREATE TABLE IF NOT EXISTS attendees (
   id            SERIAL PRIMARY KEY,
-  users_id      INTEGER REFERENCES users(id)
+  users_id      INTEGER REFERENCES users(id),
+  is_accepted   BOOLEAN DEFAULT 'false'
 );
 
 CREATE TABLE IF NOT EXISTS posts_attendees (
