@@ -1,0 +1,49 @@
+{
+  "name": "friends-mvp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db:generate": "npm run db:create && npm run db:seed",
+    "db:create": "createdb justfriends && psql -d justfriends -f ./data/schema.sql",
+    "db:seed": "node ./data/seed.js",
+    "start": "nodemon ./server/index.js",
+    "build": "webpack -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrla29-just-friends-mvp/friends-mvp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hrla29-just-friends-mvp/friends-mvp/issues"
+  },
+  "homepage": "https://github.com/hrla29-just-friends-mvp/friends-mvp#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-combine-loaders": "^2.0.4"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "css-loader": "^3.0.0",
+    "express": "^4.17.1",
+    "faker": "^4.1.0",
+    "file-loader": "^4.0.0",
+    "morgan": "^1.9.1",
+    "node": "^12.4.0",
+    "nodemon": "^1.19.1",
+    "path": "^0.12.7",
+    "pg": "^7.11.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "style-loader": "^0.23.1"
+  }
+}
