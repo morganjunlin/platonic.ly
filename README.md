@@ -13,9 +13,4 @@ npm install
 npm run db:generate
 ```
 
-### Pushing to develop
-```
-git push origin develop
-```
-
 Please message us when you're about to make a git push so we ensure everything works ok.
