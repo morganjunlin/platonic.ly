@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db:generate": "npm run db:create && npm run db:seed",
+    "db:generate": "yarn run db:create && yarn run db:seed",
     "db:create": "createdb justfriends && psql -d justfriends -f ./data/schema.sql",
     "db:seed": "node ./data/seed.js",
     "start": "nodemon ./server/index.js",
