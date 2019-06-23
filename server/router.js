@@ -14,12 +14,25 @@ router
   // .delete(controller.deleteOne)
   // .get(controller.getOne)
   // .patch(controller.patch)
+  .get(controller.getAll)
+  .post(controller.makePost)
+
+//POSTS: create post GET/edit post PATCH/see all posts GET/ see one post GET
+router
+  .route('/post/:id')
+  .get(controller.getOnePost)
+  .delete(controller.deleteOnePost)
+  .patch(controller.patchPost)
 
 //ATTENDEES: post to attendees/ get attendees/ (confirm/deny) patch boolean
 router
   .route('/attendees')
-  .post()
-  .get()
-  .patch()
+  .post(controller.makeAttendeesPost)
+  .get(controller.getAllAttendees)
+
+//ATTENDEES: confirm/deny (boolean)
+router
+  .route('/attendees/:id')
+  .patch(controller.confirmAttendees)
 
 module.exports = router;
