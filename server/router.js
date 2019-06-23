@@ -2,7 +2,7 @@ const router = require('express').Router()
 const controller = require('./controller.js')
 
 router
-  .route('/')
+  .route('/all')
   .get(controller.getAll)
   .post(controller.post)
 
