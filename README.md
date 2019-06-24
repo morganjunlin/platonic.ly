@@ -13,7 +13,7 @@ yarn install
 yarn run db:generate
 ```
 
-To run the app in Expo:
+#### To run the app in Expo:
 ```
 yarn start
 ```
@@ -23,4 +23,4 @@ yarn start
 yarn run db:regenerate
 ```
 
-Please message in Slack if pull request is made. tyty
+Please message in Slack if pull request is made. tyty.
