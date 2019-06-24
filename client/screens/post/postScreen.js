@@ -1,7 +1,9 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Button, View, TextInput, Picker} from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import RNPickerSelect from 'react-native-picker-select'; 
+import { Dropdown } from 'react-native-material-dropdown';
+
+
 
 
 export default class PostScreen extends React.Component {
@@ -14,39 +16,30 @@ export default class PostScreen extends React.Component {
             catagory: '', 
             catgoriesPool: [
                 {
-                    label: 'Art',
-                    value: 'Art',
+                    value: 'Art'
                 },
                 {
-                    label: 'Book',
                     value: 'Book',
                 },
                 {
-                    label: 'Education',
                     value: 'Education',
                 },
                 {
-                    label: 'Food',
                     value: 'Food',
                 },
                 {
-                    label: 'Game',
                     value: 'Game',
                 },
                 {
-                    label: 'Language',
                     value: 'Language',
                 },
                 {
-                    label: 'Sport',
                     value: 'Sport',
                 },
                 {
-                    label: 'Tour',
                     value: 'Tour',
                 },
                 {
-                    label: 'Workout',
                     value: 'Workout',
                 }
             ]
@@ -79,22 +72,21 @@ export default class PostScreen extends React.Component {
                         onChangeText = {(text) => this.setState({address: text})}
                     />
                 </View>
-                <View>
-                    <RNPickerSelect
-                        placeholder={{
-                            label: 'Catagory',
-                            value: null,
-                        }}
-                        items={this.state.catgoriesPool}
-                        onValueChange={(value) => {
-                            this.setState({
-                                catagory: value,
-                            });
-                        }}
-                        value={this.state.catagory}
-                    />
+                <View style={styles.pickerSelectStyles}>
+                <Dropdown
+                    label='Select a catagory'
+                    data={this.state.catgoriesPool}
+                    onChangeText = {(target) => this.setState({
+                        catagory: target
+                    }, () => {
+                        console.log(this.state.catagory)
+                    })}
+                />
                 </View>
-                <Button>Submit</Button>
+                <Button title='submit'
+                        accessibilityLabe='submit button'
+                        onPress={() => this.props.navigation.navigate('Home')}
+                />
             </ScrollView>
         )
     }
@@ -107,12 +99,27 @@ PostScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
+        fontSize: 16,
+        paddingVertical: 40,
+        paddingHorizontal: 10,
         flex: 1,
-        paddingTop: 15,
-        backgroundColor: '#fff',
     },
     inputField: {
         borderBottomWidth: 1,
-        marginBottom: '10%'
+        marginBottom: '20%'
+    },
+    pickerSelectStyles: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        // borderColor: 'grey',
+        borderRadius: 5,
+        color: 'black',
+        paddingRight: 30,
+        fontWeight: 'bold'
+    },
+    test: {
+        color: 'black'
     }
 });
