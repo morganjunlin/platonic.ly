@@ -9,8 +9,18 @@ git clone https://github.com/hrla29-just-friends-mvp/friends-mvp.git
 cd friends-mvp
 
 git checkout -b your_github_handle
-npm install
-npm run db:generate
+yarn install
+yarn run db:generate
 ```
 
-Please message us when you're about to make a git push so we ensure everything works ok.
+#### To run the app in Expo:
+```
+yarn start
+```
+
+#### In case you need to reset database
+```
+yarn run db:regenerate
+```
+
+Please message in Slack if pull request is made. tyty.
