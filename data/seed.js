@@ -68,6 +68,7 @@ for (let i = 0; i < 2; i++) {
   //generate reviews
   let newReviews = {
     id: i,
+    author: newUser.id,
     rating: getRandomInt(80, 100),
     review: faker.lorem.sentences()
   };
@@ -89,7 +90,7 @@ for (let i = 0; i < 2; i++) {
                   .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO users_posts VALUES($1, $2)', [newUsers_posts.users_id, newUsers_posts.posts_id])
                   .catch (err => console.log(err)))
-    .then(() => db.query('INSERT INTO reviews VALUES($1, $2, $3)', [newReviews.id, newReviews.rating, newReviews.review])
+    .then(() => db.query('INSERT INTO reviews VALUES($1, $2, $3, $4)', [newReviews.id, newReviews.author, newReviews.rating, newReviews.review])
                   .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO users_reviews VALUES($1, $2)', [newUsers_reviews.users_id, newUsers_reviews.reviews_id])
                   .catch (err => console.log(err)))
