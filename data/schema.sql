@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   last_name     TEXT,
   gender        TEXT,
   age           INTEGER,
+  profile_img   TEXT,
   description   TEXT,
   avg_rating    INTEGER
 );
