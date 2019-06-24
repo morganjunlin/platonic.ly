@@ -1,7 +1,11 @@
 const db = require('../db/index.js');
 
 module.exports = {
-
+  /*
+  ========================================================
+  USER ROUTE BEGINS HERE
+  ========================================================
+  */
   getUser: (req, res) => { // logging into an account
     const { email, password } = req.body;
     const passphrase = password; // ready for salting. apply hashing function to password.
@@ -36,45 +40,64 @@ module.exports = {
       .then(data =>  res.status(200).send(`Updated info for ${email}!`))
       .catch(e => res.status(404).send(e.stack))
   },
-  getOne: (req, res) => {
-  },
-  getAll: (req, res) => {
+  /*
+  ========================================================
+  USER ROUTE ENDS HERE
+  ========================================================
+  */
+  /*
+  ========================================================
+  POST ROUTE BEGINS HERE
+  ========================================================
+  */
+  getAllPosts: (req, res) => { // allows user to get all posts with search filters
     db.query('SELECT * FROM posts')
       .then((data) => res.status(200).send(data.rows))
       .catch((err) => res.status(404).send("error get: ", err))
   },
-
-  makePost: (req, res) => {
-
-  },
-
-  getOnePost: (req, res) => {
+  getOnePost: (req, res) => { // allows user to view one post
     const { id } = req.params;
     db.query(`SELECT * FROM posts WHERE id = ${id}`)
       .then((data) => res.status(200).send(data.rows))
       .catch((err) => res.status(404).send("error get: ", err))
   },
 
-  deleteOnePost: (req, res) => {
+  makeNewPost: (req, res) => { // allows user to create a new post
 
   },
 
-  patchPost: (req, res) => {
+  editOnePost: (req, res) => { // allows user to edit their post
 
   },
 
-  makeAttendeesPost: (req, res) => {
+  deleteOnePost: (req, res) => { // allows user to delete their post
 
   },
-
-  getAllAttendees: (req, res) => {
+  /*
+  ========================================================
+  POST ROUTE ENDS HERE
+  ========================================================
+  */
+  /*
+  ========================================================
+  ATTENDEE ROUTE BEGINS HERE
+  ========================================================
+  */
+  getAllAttendees: (req, res) => { // allows user to view attendees of a single post
     db.query('SELECT * FROM attendees')
       .then((data) => res.status(200).send(data.rows))
       .catch((err) => res.status(404).send("error get: ", err))
   },
 
-  confirmAttendees: (req, res) => {
+  requestToBeAttendee: (req, res) => { // allows user to request to join a single post
+
+  },
+  confirmAttendee: (req, res) => { // allows user (host) to accept or reject a potential attendee of a single post
 
   }
-
+  /*
+  ========================================================
+  ATTENDEE ROUTE ENDS HERE
+  ========================================================
+  */
 }
