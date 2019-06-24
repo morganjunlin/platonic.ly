@@ -24,6 +24,7 @@ for (let i = 0; i < 2; i++) {
     last_name: faker.name.lastName(),
     gender: gender[getRandomInt(0, 1)],
     age: getRandomInt(13, 40),
+    profile_img: faker.image.fashion(),
     description: faker.lorem.sentences(),
     avg_rating: getRandomInt(0, 100)
   }; 
@@ -79,7 +80,7 @@ for (let i = 0; i < 2; i++) {
     reviews_id: newReviews.id
   };
   
-  db.query('INSERT INTO users VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)', [newUser.id, newUser.email, newUser.passphrase, newUser.first_name, newUser.last_name, newUser.gender, newUser.age, newUser.description, newUser.avg_rating])
+  db.query('INSERT INTO users VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [newUser.id, newUser.email, newUser.passphrase, newUser.first_name, newUser.last_name, newUser.gender, newUser.age, newUser.profile_img, newUser.description, newUser.avg_rating])
     .then(() => db.query('INSERT INTO categories VALUES($1, $2)', [newCategories.id, newCategories.cat_name])
                   .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO posts VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)', [newPost.id, newPost.title, newPost.post_address, newPost.post_city, newPost.post_state, newPost.post_zip, newPost.post_desc, newPost.images, newPost.category_id])
