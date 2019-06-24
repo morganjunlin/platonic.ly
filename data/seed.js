@@ -71,7 +71,7 @@ for (let i = 0; i < 2; i++) {
     id: i,
     author: newUser.id,
     rating: getRandomInt(80, 100),
-    review: faker.lorem.sentences()
+    review: faker.lorem.sentences(1)
   };
 
   //generate users_reviews
