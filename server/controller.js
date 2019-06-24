@@ -3,10 +3,13 @@ const db = require('../db/index.js');
 module.exports = {
 
   getUser: (req, res) => {
-    console.log('ar you tryna login')
     const { email, password } = req.body;
     const passphrase = password; // ready for salting. apply hashing function to password.
-    db.query(``)
+    // a user inputs email and password to log in to their account. If the credentials are correct, it will send back a success message. If incorrect credentials, it will send a defense message.
+    // this is a general function for user login. Currently our team is trying to figure out how to auth and save cookies and sessions, so that's why the queries send back sucess or defense messages rather than sending session info.
+    db.query(`SELECT * FROM users WHERE email = '${email}' AND passphrase = '${passphrase}'`)
+      .then(data => data.rows.length ? res.status(200).send(`correct credentials! data.rows[0] has your login info`) : res.status(200).send(`are you a hacker`) )
+      .catch(e => res.status(404).send(e.stack))
   },
   createUser: (req, res) => {
     const { email, password, gender, age } = req.body;
