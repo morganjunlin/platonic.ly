@@ -5,8 +5,10 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "db:generate": "yarn run db:create && yarn run db:seed",
+    "db:regenerate": "yarn run db:drop && yarn run db:generate",
     "db:create": "createdb justfriends && psql -d justfriends -f ./data/schema.sql",
     "db:seed": "node ./data/seed.js",
+    "db:drop": "dropdb justfriends",
     "server:start": "nodemon ./server/index.js",
     "start": "expo start",
     "android": "expo start --android",

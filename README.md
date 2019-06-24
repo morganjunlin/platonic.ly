@@ -13,4 +13,14 @@ yarn install
 yarn run db:generate
 ```
 
-Please message us when you're about to make a git push so we ensure everything works ok.
+To run the app in Expo:
+```
+yarn start
+```
+
+#### In case you need to reset database
+```
+yarn run db:regenerate
+```
+
+Please message in Slack if pull request is made. tyty
