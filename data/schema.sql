@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS users_posts (
 
 CREATE TABLE IF NOT EXISTS reviews (
   id            SERIAL PRIMARY KEY,
+  author        INTEGER REFERENCES users(id),
   rating        INTEGER,
   review        TEXT
 );
