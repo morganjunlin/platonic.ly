@@ -11,28 +11,25 @@ router
 //POSTS: create post GET/edit post PATCH/see all posts GET/ see one post GET
 router
   .route('/post')
-  // .delete(controller.deleteOne)
-  // .get(controller.getOne)
-  // .patch(controller.patch)
-  .get(controller.getAll)
-  .post(controller.makePost)
+    .get(controller.getAllPosts) // allows user to get all posts with search filters
+    .post(controller.makeNewPost) // allows user to create a new post
 
 //POSTS: create post GET/edit post PATCH/see all posts GET/ see one post GET
 router
   .route('/post/:id')
-  .get(controller.getOnePost)
-  .delete(controller.deleteOnePost)
-  .patch(controller.patchPost)
+    .get(controller.getOnePost) // allows user to view one post
+    .delete(controller.deleteOnePost) // allows user to delete their post
+    .patch(controller.editOnePost) // allows user to edit their post
 
 //ATTENDEES: post to attendees/ get attendees/ (confirm/deny) patch boolean
 router
   .route('/attendees')
-  .post(controller.makeAttendeesPost)
-  .get(controller.getAllAttendees)
+    .post(controller.requestToBeAttendee) // allows user to request to join a single post
+    .get(controller.getAllAttendees) // allows user to view attendees of a single post
 
 //ATTENDEES: confirm/deny (boolean)
 router
   .route('/attendees/:id')
-  .patch(controller.confirmAttendees)
+    .patch(controller.confirmAttendee) // allows user (host) to accept or reject a potential attendee of a single post
 
 module.exports = router;
