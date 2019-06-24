@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Button, View, TextInput, Picker} from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
+import RNPickerSelect from 'react-native-picker-select'; 
 
 
 export default class PostScreen extends React.Component {
@@ -10,7 +11,45 @@ export default class PostScreen extends React.Component {
             post: '!!!',
             description: '',
             address: '', 
-            catagory: ''
+            catagory: '', 
+            catgoriesPool: [
+                {
+                    label: 'Art',
+                    value: 'Art',
+                },
+                {
+                    label: 'Book',
+                    value: 'Book',
+                },
+                {
+                    label: 'Education',
+                    value: 'Education',
+                },
+                {
+                    label: 'Food',
+                    value: 'Food',
+                },
+                {
+                    label: 'Game',
+                    value: 'Game',
+                },
+                {
+                    label: 'Language',
+                    value: 'Language',
+                },
+                {
+                    label: 'Sport',
+                    value: 'Sport',
+                },
+                {
+                    label: 'Tour',
+                    value: 'Tour',
+                },
+                {
+                    label: 'Workout',
+                    value: 'Workout',
+                }
+            ]
         };
     }
     render() {
@@ -41,29 +80,21 @@ export default class PostScreen extends React.Component {
                     />
                 </View>
                 <View>
-                    <Button 
-                        title='Catagory'
-                        onPress={() => this.props.navigation.navigate('Catagory')}
+                    <RNPickerSelect
+                        placeholder={{
+                            label: 'Catagory',
+                            value: null,
+                        }}
+                        items={this.state.catgoriesPool}
+                        onValueChange={(value) => {
+                            this.setState({
+                                catagory: value,
+                            });
+                        }}
+                        value={this.state.catagory}
                     />
                 </View>
-                <View>
-                    <Picker
-                        // selectedValue={this.state.language}
-                        style={{height: 50, width: 100}}
-                        // onValueChange={(itemValue, itemIndex) =>
-                        //     this.setState({language: itemValue})}
-                            >
-                        <Picker.Item label="Art" value="Art" />
-                        <Picker.Item label="Book" value="Book" />
-                        <Picker.Item label="Education" value="Education" />
-                        <Picker.Item label="Food" value="Food" />
-                        <Picker.Item label="Games" value="Games" />
-                        <Picker.Item label="Language" value="Language" />
-                        <Picker.Item label="Sport" value="Sport" />
-                        <Picker.Item label="Tours" value="Tours" />
-                        <Picker.Item label="Workout" value="Workout" />
-                    </Picker>
-                </View>
+                <Button>Submit</Button>
             </ScrollView>
         )
     }
