@@ -16,19 +16,19 @@ module.exports = {
       .catch(e => res.status(404).send(e.stack))
   },
   createUser: (req, res) => { // signing up for an account
-    const { email, password, gender, age } = req.body;
+    const { email, password, gender, age, description } = req.body;
     const passphrase = password; // ready for salting. apply hashing function to password.
     const first_name = req.body.first_name[0].toUpperCase() + req.body.first_name.slice(1).toLowerCase();
     const last_name = req.body.last_name[0].toUpperCase() + req.body.last_name.slice(1).toLowerCase();
     //grabs all fields required to sign up for an account. Proper capitalization for first name and last name. Inserts into users table.
     //current database does not take into count of unique emails.
     //to create a user, these values are required: email, password, gender, age, first_name, last_name. All strings except age.
-    db.query(`INSERT INTO users(email, passphrase, first_name, last_name, gender, age) VALUES('${email}', '${passphrase}', '${first_name}', '${last_name}', '${gender}', ${age}) RETURNING *;`)
+    db.query(`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, description) VALUES('${email}', '${passphrase}', '${first_name}', '${last_name}', '${gender}', ${age}, '${description}') RETURNING *;`)
       .then(data =>  res.status(200).send(data.rows[0]))
       .catch(e => res.status(404).send(e.stack))
   },
   editUser: (req, res) => { // editing info of an account based on their email.
-    const { email, password, gender, age } = req.body;
+    const { email, password, gender, age, description } = req.body;
     const passphrase = password; // ready for salting. apply hashing function to password.
     const first_name = req.body.first_name[0].toUpperCase() + req.body.first_name.slice(1).toLowerCase();
     const last_name = req.body.last_name[0].toUpperCase() + req.body.last_name.slice(1).toLowerCase();
@@ -36,7 +36,7 @@ module.exports = {
     // For example, a user might want to edit only their gender. This function edits every column of that user's row (found by email).
     // an edit request will require email, password, gender, age, first_name, last_name fields.
     // this function can be updated in the future based on our application's needs.
-    db.query(`UPDATE users SET passphrase = '${passphrase}', first_name = '${first_name}', last_name = '${last_name}', gender = '${gender}', age = ${age} WHERE email = '${email}'`)
+    db.query(`UPDATE users SET passphrase = '${passphrase}', first_name = '${first_name}', last_name = '${last_name}', gender = '${gender}', age = ${age}, description = ${description} WHERE email = '${email}'`)
       .then(data =>  res.status(200).send(`Updated info for ${email}!`))
       .catch(e => res.status(404).send(e.stack))
   },
@@ -94,10 +94,27 @@ module.exports = {
   },
   confirmAttendee: (req, res) => { // allows user (host) to accept or reject a potential attendee of a single post
 
-  }
+  },
   /*
   ========================================================
   ATTENDEE ROUTE ENDS HERE
+  ========================================================
+  */
+   /*
+  ========================================================
+  RATING ROUTE BEGINS HERE
+  ========================================================
+  */
+  viewUserReviews: (req, res) => { // allows user to view all reviews of a particular user
+
+  },
+
+  writeReview: (req, res) => { // allows user to write a review about another user
+
+  }
+  /*
+  ========================================================
+  RATING ROUTE ENDS HERE
   ========================================================
   */
 }

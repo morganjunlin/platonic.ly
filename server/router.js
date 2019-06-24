@@ -32,4 +32,8 @@ router
   .route('/attendees/:id')
     .patch(controller.confirmAttendee) // allows user (host) to accept or reject a potential attendee of a single post
 
+router
+  .route('/reviews')
+    .get(controller.viewUserReviews)  // allows user to view all reviews of a particular user
+    .post(controller.writeReview) // allows user to write a review about another user
 module.exports = router;
