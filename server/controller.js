@@ -121,11 +121,28 @@ module.exports = {
   ========================================================
   */
   viewUserReviews: (req, res) => { // allows user to view all reviews of a particular user
-
+    const { users_id } = req.body; // id primary key of user
+    // output is an array of reviews represented by objects. each review has a review id, review rating, review text, review author id, author's profile pic, and author's first name.
+    db.query(`SELECT reviews.id, reviews.rating, reviews.review, reviews.author, users.profile_img, users.first_name FROM reviews, users WHERE reviews.id IN (SELECT reviews_id FROM users_reviews WHERE users_id = ${users_id}) AND users.id = reviews.author;`)
+      .then(data => res.status(200).send(data.rows))
+      .catch(e => res.status(404).send(e.stack))
   },
 
   writeReview: (req, res) => { // allows user to write a review about another user
-
+    const { author, rating, review } = req.body;
+    const users_id = req.body.reviewingUser;
+    // pass in values for author (author of review foreign key), rating (number 1-5), review (100 character string), reviewingUser (user being reviewed, foreign key).
+    // this function creates a row in reviews table and then into users_reviews table.
+    // reviews table represents all reviews posted by all users in the entire app.
+    // users_reviews links each of those reviews with the user being reviewed.
+    db.query(`INSERT INTO reviews(author, rating, review) VALUES(${author}, ${rating}, '${review}') RETURNING id;`)
+      .then(data => {
+        const reviews_id = data.rows[0].id; //foreign key id of review just posted
+        db.query(`INSERT INTO users_reviews(users_id, reviews_id) VALUES(${users_id}, ${reviews_id});`)
+          .then(data => res.status(200).send(`successfully posted review`))
+          .catch(e => res.status(404).send(e.stack))
+      })
+      .catch(e => res.status(404).send(e.stack))
   }
   /*
   ========================================================
