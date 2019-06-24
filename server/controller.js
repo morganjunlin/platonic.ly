@@ -63,15 +63,29 @@ module.exports = {
   },
 
   makeNewPost: (req, res) => { // allows user to create a new post
-
+    const { title, post_address, post_city, post_state, post_zip, post_desc, images, category_id } = req.body;
+    db.query(`INSERT INTO posts (title, post_address, post_city, post_state, post_zip, post_desc, images, category_id) VALUES ('${title}', '${post_address}', '${post_city}', '${post_state}', '${post_zip}', '${post_desc}', '${images}', '${category_id}');`)
+      .then(() => res.status(201).send("post ok"))
+      .catch((err) => res.status(404).send("error post: ", err))
   },
 
-  editOnePost: (req, res) => { // allows user to edit their post
-
+  editOnePost: async (req, res) => { // allows user to edit their post
+    const { id } = req.params;
+    let updates = '';
+    for (key in req.body) {
+      updates += await `${key} = '${req.body[key]}', `
+    }
+    updates = updates.slice(0, updates.length - 2);
+    db.query(`UPDATE posts SET ${updates} WHERE id = ${id};`)
+      .then(() => res.status(200).send(`Updated post: ${id}`))
+      .catch((err) => res.status(404).send("error edit: "), err)
   },
 
   deleteOnePost: (req, res) => { // allows user to delete their post
-
+    const { id } = req.params;
+    db.query(`DELETE FROM posts WHERE id = ${id}`)
+      .then(() => res.status(200).send(`Deleted post: ${id}`))
+      .catch((err) => res.status(404).send("error delete: "), err)    
   },
   /*
   ========================================================
@@ -92,6 +106,7 @@ module.exports = {
   requestToBeAttendee: (req, res) => { // allows user to request to join a single post
 
   },
+
   confirmAttendee: (req, res) => { // allows user (host) to accept or reject a potential attendee of a single post
 
   }
