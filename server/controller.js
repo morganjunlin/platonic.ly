@@ -51,10 +51,12 @@ module.exports = {
   ========================================================
   */
   getAllPosts: (req, res) => { // allows user to get all posts with search filters
-    db.query('SELECT * FROM posts')
+    const {} = req.params;
+    db.query('SELECT posts.id, posts.title, posts.post_city, posts.post_zip, posts.category_id, categories.cat_name, categories.cat_image, posts.max_attendees, posts.schedule, posts.created_at FROM posts, categories WHERE categories.id = posts.category_id;')
       .then((data) => res.status(200).send(data.rows))
       .catch((err) => res.status(404).send("error get: ", err))
   },
+
   getOnePost: (req, res) => { // allows user to view one post
     const { id } = req.params;
     db.query(`SELECT * FROM posts WHERE id = ${id}`)
