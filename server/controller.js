@@ -121,22 +121,47 @@ module.exports = {
   },
 
   editOnePost: async (req, res) => { // allows user to edit their post
-    const { id } = req.params;
+    const { id } = req.params; // post ID
     let updates = '';
+    // body json's key names must be in format of posts schema.
     for (key in req.body) {
-      updates += await `${key} = '${req.body[key]}', `
+      if (typeof req.body[key] === 'number') {
+        updates += await `${key} = ${req.body[key]}, `
+      } else {
+        updates += await `${key} = '${req.body[key]}', `
+      }
     }
     updates = updates.slice(0, updates.length - 2);
     db.query(`UPDATE posts SET ${updates} WHERE id = ${id};`)
       .then(() => res.status(200).send(`Updated post: ${id}`))
-      .catch((err) => res.status(404).send("error edit: ", err))
+      .catch(e => res.status(404).send(e.stack))
   },
 
   deleteOnePost: (req, res) => { // allows user to delete their post
-    const { id } = req.params;
-    db.query(`DELETE FROM posts WHERE id = ${id}`)
-      .then(() => res.status(200).send(`Deleted post: ${id}`))
-      .catch((err) => res.status(404).send("error delete: ", err))    
+    const { id } = req.params; // post id
+    // deletes from users_posts table and posts table
+    db.query(`
+      SELECT ARRAY(SELECT attendees_id FROM posts_attendees WHERE posts_id = ${id});`
+    )
+    .then(data => {
+      let attendees = data.rows[0].array;
+      // console.log(`select * from attendees where id in (${attendees});`)
+      db.query(`
+      DELETE FROM posts_attendees WHERE posts_id = ${id};
+      DELETE FROM attendees WHERE id IN (${attendees});
+      DELETE FROM users_posts WHERE posts_id = ${id};
+      DELETE FROM posts WHERE id = ${id};
+      `)
+    })
+
+    //   `
+    //   DELETE FROM attendees WHERE id IN (SELECT attendees_id FROM posts_attendees WHERE posts_id = ${id});
+    //   DELETE FROM posts_attendees WHERE posts_id = ${id};
+    //   DELETE FROM users_posts WHERE posts_id = ${id};
+    //   DELETE FROM posts WHERE id = ${id};
+    // `)
+      .then(data => res.status(200).send(`Deleted post # ${id}`))
+      .catch(e => res.status(404).send(e.stack))
   },
   /*
   ========================================================
