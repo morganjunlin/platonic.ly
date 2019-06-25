@@ -10,6 +10,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import PostScreen from '../screens/post/postScreen.js';
+import PostConfirmScreen from '../screens/post/postConfirm.js';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -19,7 +20,7 @@ HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
-      focused={focused}
+      focused={ focused }
       name={
         Platform.OS === 'ios'
           ? `ios-home`
@@ -45,6 +46,8 @@ LinksStack.navigationOptions = {
 
 const postStack = createStackNavigator({
   post: PostScreen,
+  postConfirm: PostConfirmScreen,
+  ok: HomeScreen
 });
 
 postStack.navigationOptions = {

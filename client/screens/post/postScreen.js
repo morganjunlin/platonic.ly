@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Button, View, TextInput, Picker} from 'react-native';
+import { ScrollView, StyleSheet, Button, View, TextInput, Text, Modal, TouchableHighlight, Alert} from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Dropdown } from 'react-native-material-dropdown';
 
@@ -10,10 +10,11 @@ export default class PostScreen extends React.Component {
     constructor() {
         super();
         this.state={
-            post: '!!!',
+            title: '',
             description: '',
             address: '', 
             catagory: '', 
+            attendees: 0,
             catgoriesPool: [
                 {
                     value: 'Art'
@@ -39,23 +40,31 @@ export default class PostScreen extends React.Component {
                 {
                     value: 'Tour',
                 },
-                {
-                    value: 'Workout',
-                }
+
             ]
         };
+        this.setModalVisible = this.setModalVisible.bind(this);
     }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
+
     render() {
+        let {title, description, address, catagory} = this.state;
+
         return (
             <ScrollView style={styles.container}>
+
                 <View>
                     <TextInput 
                         style={styles.inputField}
                         editable = {true}
                         placeholder = 'Write Title'
-                        onChangeText = {(text) => this.setState({post: text})}
+                        onChangeText = {(text) => this.setState({title: text})}
                     />
                 </View>
+
                 <View>
                     <TextInput 
                         style={styles.inputField}
@@ -64,6 +73,7 @@ export default class PostScreen extends React.Component {
                         onChangeText = {(text) => this.setState({description: text})}
                     />
                 </View>
+
                 <View>
                     <TextInput 
                         style={styles.inputField}
@@ -72,20 +82,19 @@ export default class PostScreen extends React.Component {
                         onChangeText = {(text) => this.setState({address: text})}
                     />
                 </View>
+
                 <View style={styles.pickerSelectStyles}>
-                <Dropdown
-                    label='Select a catagory'
-                    data={this.state.catgoriesPool}
-                    onChangeText = {(target) => this.setState({
-                        catagory: target
-                    }, () => {
-                        console.log(this.state.catagory)
-                    })}
-                />
+                    <Dropdown
+                        label='Select a catagory'
+                        data={this.state.catgoriesPool}
+                        onChangeText = {(target) => this.setState({
+                            catagory: target
+                        })}
+                    />
                 </View>
                 <Button title='submit'
                         accessibilityLabe='submit button'
-                        onPress={() => this.props.navigation.navigate('Home')}
+                        onPress={() => this.props.navigation.navigate('postConfirm', {title, description, address, catagory})}
                 />
             </ScrollView>
         )
