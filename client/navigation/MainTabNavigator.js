@@ -9,6 +9,8 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+
+import PostConfirmScreen from '../screens/post/postConfirm.js';
 import PostScreen from '../screens/post/postScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
@@ -20,7 +22,7 @@ HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
-      focused={focused}
+      focused={ focused }
       name={
         Platform.OS === 'ios'
           ? `ios-home`
@@ -46,6 +48,8 @@ LinksStack.navigationOptions = {
 
 const postStack = createStackNavigator({
   post: PostScreen,
+  postConfirm: PostConfirmScreen,
+  ok: HomeScreen
 });
 
 postStack.navigationOptions = {
