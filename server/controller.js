@@ -51,8 +51,9 @@ module.exports = {
   ========================================================
   */
   getAllPosts: (req, res) => { // allows user to get all posts with search filters
-    const {} = req.params;
-    db.query('SELECT posts.id, posts.title, posts.post_city, posts.post_zip, posts.category_id, categories.cat_name, categories.cat_image, posts.max_attendees, posts.schedule, posts.created_at FROM posts, categories WHERE categories.id = posts.category_id;')
+    const {} = req.params;     //search filter not implemented yet
+    // grabbing all posts and BARE MINIMUM info per post for main feed.
+    db.query('SELECT posts.id, posts.title, posts.post_city, posts.post_zip, posts.category_id, categories.cat_name, categories.cat_image, ARRAY(select posts_attendees.attendees_id from posts_attendees where posts_attendees.posts_id = posts.id) AS current_attendees, posts.max_attendees, posts.schedule, posts.created_at FROM posts, categories WHERE categories.id = posts.category_id;')
       .then((data) => res.status(200).send(data.rows))
       .catch((err) => res.status(404).send("error get: ", err))
   },
