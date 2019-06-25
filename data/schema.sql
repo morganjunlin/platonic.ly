@@ -13,19 +13,22 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS categories (
   id            SERIAL PRIMARY KEY,
-  cat_name      TEXT
+  cat_name      TEXT,
+  cat_image     TEXT
 );
 
 CREATE TABLE IF NOT EXISTS posts (
   id            SERIAL PRIMARY KEY,
-  title         TEXT NOT NULL,
+  title         VARCHAR(140) NOT NULL,
   post_address  TEXT,
   post_city     TEXT NOT NULL,
   post_state    TEXT NOT NULL,
-  post_zip      TEXT,
+  post_zip      INTEGER,
   post_desc     TEXT,
-  images        TEXT[],
-  category_id   INTEGER REFERENCES categories(id)
+  category_id   INTEGER REFERENCES categories(id),
+  max_attendees INTEGER,
+  schedule      TIMESTAMP,
+  created_at    TIMESTAMP default current_timestamp
 );
 
 CREATE TABLE IF NOT EXISTS attendees (

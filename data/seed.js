@@ -10,6 +10,7 @@ const getRandomInt = (min, max) => {
 //data pool 
 let gender = ['male', 'female'];
 let categoriesPool = ['sport', 'art', 'food', 'tours', 'book', 'education', 'workout', 'games', 'language'];
+let categoriesImagePool = ['https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg', 'https://c8.alamy.com/comp/P9K822/young-asian-adult-players-playing-basketball-on-outdoor-court-P9K822.jpg', 'https://ak7.picdn.net/shutterstock/videos/5851637/thumb/6.jpg']
 let images = [faker.image.fashion(), faker.image.food(), faker.image.nightlife(), faker.image.nature(), faker.image.sports(), faker.image.city(), faker.image.business()]
 let images2 = [faker.image.fashion(), faker.image.food(), faker.image.nightlife(), faker.image.nature(), faker.image.sports(), faker.image.city(), faker.image.business()]
 let images3 = [faker.image.fashion(), faker.image.food(), faker.image.nightlife(), faker.image.nature(), faker.image.sports(), faker.image.city(), faker.image.business()]
@@ -32,7 +33,8 @@ for (let i = 0; i < 2; i++) {
   //generate categories
   let newCategories = {
     id: i,
-    cat_name: categoriesPool[getRandomInt(0, categoriesPool.length-1)]
+    cat_name: categoriesPool[getRandomInt(0, categoriesPool.length-1)],
+    cat_image: categoriesPool[getRandomInt(0, categoriesImagePool.length-1)]
   }; 
 
   //generate posts
@@ -42,10 +44,12 @@ for (let i = 0; i < 2; i++) {
     post_address: faker.address.streetAddress(),
     post_city: faker.address.city(),
     post_state: faker.address.state(),
-    post_zip: faker.address.zipCode(),
+    post_zip: 90036, //faker.address.zipCode(),
     post_desc: faker.lorem.sentences(),
-    images: [images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)]],
-    category_id: newCategories.id
+    // images: [images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)]],
+    category_id: newCategories.id,
+    max_attendees: getRandomInt(0, 6),
+    schedule: new Date('June 24, 2019 21:15')
   };
 
   //generate attendees
@@ -83,7 +87,7 @@ for (let i = 0; i < 2; i++) {
   db.query('INSERT INTO users VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [newUser.id, newUser.email, newUser.passphrase, newUser.first_name, newUser.last_name, newUser.gender, newUser.age, newUser.profile_img, newUser.description, newUser.avg_rating])
     .then(() => db.query('INSERT INTO categories VALUES($1, $2)', [newCategories.id, newCategories.cat_name])
                   .catch (err => console.log(err)))
-    .then(() => db.query('INSERT INTO posts VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)', [newPost.id, newPost.title, newPost.post_address, newPost.post_city, newPost.post_state, newPost.post_zip, newPost.post_desc, newPost.images, newPost.category_id])
+    .then(() => db.query('INSERT INTO posts VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [newPost.id, newPost.title, newPost.post_address, newPost.post_city, newPost.post_state, newPost.post_zip, newPost.post_desc, newPost.category_id, newPost.max_attendees, newPost.schedule])
                   .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO attendees VALUES($1, $2)', [newAttendees.id, newAttendees.users_id])
                   .catch (err => console.log(err)))
