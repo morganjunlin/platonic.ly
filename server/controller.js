@@ -53,7 +53,25 @@ module.exports = {
   getAllPosts: (req, res) => { // allows user to get all posts with search filters
     const {} = req.params;     //search filter not implemented yet
     // grabbing all posts and BARE MINIMUM info per post for main feed.
-    db.query('SELECT posts.id, posts.title, posts.post_city, posts.post_zip, posts.category_id, categories.cat_name, categories.cat_image, ARRAY(select posts_attendees.attendees_id from posts_attendees where posts_attendees.posts_id = posts.id) AS current_attendees, posts.max_attendees, posts.schedule, posts.created_at FROM posts, categories WHERE categories.id = posts.category_id;')
+    db.query(
+      `SELECT
+        posts.id, 
+        posts.title, 
+        posts.post_city AS "locationCity", 
+        posts.post_zip AS "locationZip", 
+        json_build_object('id',posts.category_id,'name', categories.cat_name, 'bg', categories.cat_image) AS category,
+        array_length(ARRAY(select posts_attendees.attendees_id
+          FROM posts_attendees INNER JOIN attendees ON posts_attendees.attendees_id = attendees.id WHERE posts_attendees.posts_id = posts.id AND attendees.is_accepted = true
+          ), 1) AS "currentAttendees", 
+        posts.max_attendees as "maxAttendees", 
+        posts.schedule, 
+        posts.created_at 
+      FROM 
+        posts, 
+        categories
+      WHERE
+        categories.id = posts.category_id;`
+        )
       .then((data) => res.status(200).send(data.rows))
       .catch((err) => res.status(404).send("error get: ", err))
   },
@@ -75,7 +93,7 @@ module.exports = {
           'profile_pic', (SELECT profile_img FROM users WHERE id = attendees.users_id),
           'accepted', attendees.is_accepted)
           FROM posts_attendees INNER JOIN attendees ON posts_attendees.attendees_id = attendees.id WHERE posts_attendees.posts_id = posts.id AND attendees.is_accepted = true) AS "currentAttendees", 
-        posts.max_attendees as "maximumAttendees", 
+        posts.max_attendees as "maxAttendees", 
         posts.schedule, 
         posts.created_at
       FROM
@@ -88,9 +106,9 @@ module.exports = {
   },
 
   makeNewPost: (req, res) => { // allows user to create a new post
-    const { title, post_address, post_city, post_state, post_zip, post_desc, images, category_id } = req.body;
-    db.query(`INSERT INTO posts (title, post_address, post_city, post_state, post_zip, post_desc, images, category_id) VALUES ('${title}', '${post_address}', '${post_city}', '${post_state}', '${post_zip}', '${post_desc}', '${images}', '${category_id}');`)
-      .then(() => res.status(201).send("post ok"))
+    const { title, address, city, state, zip, description, category, maxAttendees, schedule } = req.body;
+    db.query(`INSERT INTO posts (title, post_address, post_city, post_state, post_zip, post_desc, category_id, max_attendees, schedule) VALUES ('${title}', '${address}', '${city}', '${state}', '${zip}', '${description}', '${category}', '${maxAttendees}, ${schedule}');`)
+      .then(() => res.status(201).send("new post created"))
       .catch((err) => res.status(404).send("error post: ", err))
   },
 
