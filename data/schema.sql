@@ -1,11 +1,13 @@
 CREATE TABLE IF NOT EXISTS users (
   id            SERIAL PRIMARY KEY,
-  email         TEXT NOT NULL,
+  email         TEXT NOT NULL UNIQUE,
   passphrase    TEXT NOT NULL,
   first_name    TEXT NOT NULL,
   last_name     TEXT,
   gender        TEXT,
   age           INTEGER,
+  profile_img   TEXT,
+  description   TEXT,
   avg_rating    INTEGER
 );
 
@@ -44,8 +46,9 @@ CREATE TABLE IF NOT EXISTS users_posts (
 
 CREATE TABLE IF NOT EXISTS reviews (
   id            SERIAL PRIMARY KEY,
+  author        INTEGER REFERENCES users(id),
   rating        INTEGER,
-  review        TEXT
+  review        VARCHAR(140)
 );
 
 CREATE TABLE IF NOT EXISTS users_reviews (
