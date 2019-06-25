@@ -106,10 +106,18 @@ module.exports = {
   },
 
   makeNewPost: (req, res) => { // allows user to create a new post
-    const { title, address, city, state, zip, description, category, maxAttendees, schedule } = req.body;
-    db.query(`INSERT INTO posts (title, post_address, post_city, post_state, post_zip, post_desc, category_id, max_attendees, schedule) VALUES ('${title}', '${address}', '${city}', '${state}', '${zip}', '${description}', '${category}', '${maxAttendees}, ${schedule}');`)
-      .then(() => res.status(201).send("new post created"))
-      .catch((err) => res.status(404).send("error post: ", err))
+    const { userID, title, address, city, state, zip, description, category, maxAttendees, schedule } = req.body;
+    //above are values needed to create a new post.
+    //below, a new post row is created and the post id is returned
+    //with the returned post id, a new row is created on users_posts, the table that keeps track of posts that a user created.
+    db.query(`INSERT INTO posts(title, post_address, post_city, post_state, post_zip, post_desc, category_id, max_attendees, schedule) VALUES('${title}', '${address}', '${city}', '${state}', ${zip}, '${description}', ${category}, ${maxAttendees}, '${schedule}') RETURNING id as "postID";`)
+      .then(data => {
+        const {postID} = data.rows[0];
+        db.query(`INSERT INTO users_posts(users_id, posts_id) VALUES(${userID}, ${postID});`)
+          .then(data =>  res.status(200).send(`created post #${postID} by user #${userID} titled ${title} scheduled for ${schedule}`))
+          .catch(e => res.status(404).send(e.stack))
+      })
+      .catch(e => res.status(404).send(e.stack))
   },
 
   editOnePost: async (req, res) => { // allows user to edit their post
