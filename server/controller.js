@@ -108,12 +108,14 @@ module.exports = {
   requestToBeAttendee: (req, res) => { // allows user to request to join a single post
     const { id, users_id } = req.body;
     db.query(`INSERT INTO attendees (users_id, is_accepted) VALUES ('${users_id}', 'false');`)
+      .then(() => res.status(201).send("post ok"))
+      .catch((err) => res.status(404).send("error requestToBeAttendee: ", err))
   },
 
   confirmAttendee: (req, res) => { // allows user (host) to accept or reject a potential attendee of a single post
     const { id } = req.params;
     db.query(`UPDATE attendees SET is_accepted = 'true' WHERE id = ${id};`)
-      .then()
+      .then(() => res.status(200).send("update ok"))
       .catch((err) => res.status(404).send("error update: ", err))
   },
   /*
