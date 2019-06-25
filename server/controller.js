@@ -51,23 +51,64 @@ module.exports = {
   ========================================================
   */
   getAllPosts: (req, res) => { // allows user to get all posts with search filters
-    const {} = req.params;
-    db.query('SELECT posts.id, posts.title, posts.post_city, posts.post_zip, posts.category_id, categories.cat_name, categories.cat_image, posts.max_attendees, posts.schedule, posts.created_at FROM posts, categories WHERE categories.id = posts.category_id;')
+    const {} = req.params;     //search filter not implemented yet
+    // grabbing all posts and BARE MINIMUM info per post for main feed.
+    db.query(
+      `SELECT
+        posts.id, 
+        posts.title, 
+        posts.post_city AS "locationCity", 
+        posts.post_zip AS "locationZip", 
+        json_build_object('id',posts.category_id,'name', categories.cat_name, 'bg', categories.cat_image) AS category,
+        array_length(ARRAY(select posts_attendees.attendees_id
+          FROM posts_attendees INNER JOIN attendees ON posts_attendees.attendees_id = attendees.id WHERE posts_attendees.posts_id = posts.id AND attendees.is_accepted = true
+          ), 1) AS "currentAttendees", 
+        posts.max_attendees as "maxAttendees", 
+        posts.schedule, 
+        posts.created_at 
+      FROM 
+        posts, 
+        categories
+      WHERE
+        categories.id = posts.category_id;`
+        )
       .then((data) => res.status(200).send(data.rows))
       .catch((err) => res.status(404).send("error get: ", err))
   },
 
   getOnePost: (req, res) => { // allows user to view one post
-    const { id } = req.params;
-    db.query(`SELECT * FROM posts WHERE id = ${id}`)
-      .then((data) => res.status(200).send(data.rows))
+    const { id } = req.params; // pass in the id of the post you want to see
+    //this queries into multiple tables at once and may not have optimal query time.
+    //returns id, title, description, exact location, category, an array of accepted attendees that includes user id, first name, and profile pic, max attendees, when the event is scheuled, and when the event was created.
+    db.query(
+      `SELECT
+        posts.id,
+        posts.title,
+        posts.post_desc AS description,
+        json_build_object('address',posts.post_address,'city', posts.post_city, 'state',posts.post_state,'zip',posts.post_zip) AS location,
+        json_build_object('id',posts.category_id,'name', categories.cat_name, 'bg', categories.cat_image) AS category,
+        ARRAY(SELECT json_build_object(
+          'userID',attendees.users_id,
+          'first_name', (SELECT first_name FROM users WHERE id = attendees.users_id),
+          'profile_pic', (SELECT profile_img FROM users WHERE id = attendees.users_id),
+          'accepted', attendees.is_accepted)
+          FROM posts_attendees INNER JOIN attendees ON posts_attendees.attendees_id = attendees.id WHERE posts_attendees.posts_id = posts.id AND attendees.is_accepted = true) AS "currentAttendees", 
+        posts.max_attendees as "maxAttendees", 
+        posts.schedule, 
+        posts.created_at
+      FROM
+        posts, 
+        categories 
+      WHERE 
+        posts.id = ${id} AND categories.id = posts.category_id;`)
+      .then((data) => res.status(200).send(data.rows[0]))
       .catch((err) => res.status(404).send("error get: ", err))
   },
 
   makeNewPost: (req, res) => { // allows user to create a new post
-    const { title, post_address, post_city, post_state, post_zip, post_desc, images, category_id } = req.body;
-    db.query(`INSERT INTO posts (title, post_address, post_city, post_state, post_zip, post_desc, images, category_id) VALUES ('${title}', '${post_address}', '${post_city}', '${post_state}', '${post_zip}', '${post_desc}', '${images}', '${category_id}');`)
-      .then(() => res.status(201).send("post ok"))
+    const { title, address, city, state, zip, description, category, maxAttendees, schedule } = req.body;
+    db.query(`INSERT INTO posts (title, post_address, post_city, post_state, post_zip, post_desc, category_id, max_attendees, schedule) VALUES ('${title}', '${address}', '${city}', '${state}', '${zip}', '${description}', '${category}', '${maxAttendees}, ${schedule}');`)
+      .then(() => res.status(201).send("new post created"))
       .catch((err) => res.status(404).send("error post: ", err))
   },
 
