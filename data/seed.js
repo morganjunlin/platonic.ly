@@ -39,7 +39,7 @@ for (let i = 0; i < 5; i++) {
 
   //generate posts
   let newPost = {
-    id: i,
+    id: i+100,
     title: faker.lorem.words(),
     post_address: faker.address.streetAddress(),
     post_city: faker.address.city(),
