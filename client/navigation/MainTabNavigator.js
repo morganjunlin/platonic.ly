@@ -95,5 +95,5 @@ export default createBottomTabNavigator({
   LinksStack,
   SettingsStack,
   postStack,
-  ProfileStac
+  ProfileStack
 });
