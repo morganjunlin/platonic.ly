@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS reviews (
   id            SERIAL PRIMARY KEY,
   author        INTEGER REFERENCES users(id),
   rating        INTEGER,
-  review        VARCHAR(140)
+  review        VARCHAR(140),
+  created_at    TIMESTAMP default current_timestamp
 );
 
 CREATE TABLE IF NOT EXISTS users_reviews (
