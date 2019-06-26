@@ -79,9 +79,9 @@ for (let i = 0; i < 5; i++) {
   
   //generate reviews
   let newReviews = {
-    id: i,
+    id: i + 100,
     author: newUser.id,
-    rating: getRandomInt(80, 100),
+    rating: getRandomInt(1, 5),
     review: faker.lorem.sentences(1)
   };
 

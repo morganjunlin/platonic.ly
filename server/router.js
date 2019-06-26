@@ -7,7 +7,9 @@ router
     .get(controller.getUser) // allows user to log in with id/email and salted pw
     .post(controller.createUser) // allows user to create an account
     .put(controller.editUser) // allows user to edit account info
-
+router
+  .route('/user/:id')
+    .get(controller.viewOneUser)
 //POSTS: create post GET/edit post PATCH/see all posts GET/ see one post GET
 router
   .route('/post')
