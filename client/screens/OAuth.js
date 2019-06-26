@@ -41,13 +41,17 @@ export default class App extends React.Component {
   );
 
   render() {
-    return (
-      <View style={styles.container}>
-        {this.state.result &&
-          this.renderValue(JSON.stringify(this.state.result))}
-        {this.renderButton()}
-      </View>
-    );
+    if (this.state.result !== 'success') {
+      return (
+        <View style={styles.container}>
+          {this.state.result &&
+            this.renderValue(JSON.stringify(this.state.result))}
+          {this.renderButton()}
+        </View>
+        )
+    } else {
+      this.renderValue(this.state.responseJSON)
+    }
   }
 
   _handlePressAsync = async () => {
