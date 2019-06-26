@@ -1,0 +1,77 @@
+[
+    {
+        "id": 104,
+        "title": "help me with my homework pls im dum",
+        "locationCity": "Lulaland",
+        "locationZip": 90036,
+        "category": {
+            "id": 4,
+            "name": "education",
+            "bg": "https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg"
+        },
+        "currentAttendees": 3,
+        "maxAttendees": 5,
+        "schedule": "2019-06-25T04:15:00.000Z",
+        "created_at": "2019-06-26T00:14:02.792Z"
+    },
+    {
+        "id": 101,
+        "title": "Cooking class?",
+        "locationCity": "Vellaton",
+        "locationZip": 90036,
+        "category": {
+            "id": 1,
+            "name": "education",
+            "bg": "https://c8.alamy.com/comp/P9K822/young-asian-adult-players-playing-basketball-on-outdoor-court-P9K822.jpg"
+        },
+        "currentAttendees": 1,
+        "maxAttendees": 2,
+        "schedule": "2019-06-25T04:15:00.000Z",
+        "created_at": "2019-06-26T00:14:02.792Z"
+    },
+    {
+        "id": 100,
+        "title": "Let's go get tacos and beer!",
+        "locationCity": "Los Angeles",
+        "locationZip": 90036,
+        "category": {
+            "id": 0,
+            "name": "dining",
+            "bg": "https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg"
+        },
+        "currentAttendees": 1,
+        "maxAttendees": 3,
+        "schedule": "2019-06-30T04:15:00.000Z",
+        "created_at": "2019-06-26T00:14:02.818Z"
+    },
+    {
+        "id": 102,
+        "title": "Evening hike at Runyon with puppers",
+        "locationCity": "East Kylee",
+        "locationZip": 90036,
+        "category": {
+            "id": 2,
+            "name": "tours",
+            "bg": "https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg"
+        },
+        "currentAttendees": null,
+        "maxAttendees": 2,
+        "schedule": "2019-06-25T04:15:00.000Z",
+        "created_at": "2019-06-26T00:14:02.793Z"
+    },
+    {
+        "id": 103,
+        "title": "Who wants to make an app with me?",
+        "locationCity": "South Quinn",
+        "locationZip": 90036,
+        "category": {
+            "id": 3,
+            "name": "education",
+            "bg": "https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg"
+        },
+        "currentAttendees": null,
+        "maxAttendees": 3,
+        "schedule": "2019-06-25T04:15:00.000Z",
+        "created_at": "2019-06-26T00:14:02.792Z"
+    }
+]
