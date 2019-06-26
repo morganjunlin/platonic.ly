@@ -18,7 +18,7 @@ let images3 = [faker.image.fashion(), faker.image.food(), faker.image.nightlife(
 for (let i = 0; i < 5; i++) {
   //generate Users
   let newUser = {
-    id: i,
+    id: i + 100,
     email: faker.internet.email(),
     passphrase: faker.internet.password(),
     first_name: faker.name.firstName(),
