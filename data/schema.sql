@@ -33,14 +33,21 @@ CREATE TABLE IF NOT EXISTS posts (
 
 CREATE TABLE IF NOT EXISTS attendees (
   id            SERIAL PRIMARY KEY,
+  posts_id      INTEGER REFERENCES posts(id),
   users_id      INTEGER REFERENCES users(id),
   is_accepted   BOOLEAN DEFAULT 'false'
 );
 
-CREATE TABLE IF NOT EXISTS posts_attendees (
-  posts_id      INTEGER REFERENCES posts(id),
-  attendees_id  INTEGER REFERENCES attendees(id)
-);
+-- CREATE TABLE IF NOT EXISTS old_attendees (
+--   id            SERIAL PRIMARY KEY,
+--   users_id      INTEGER REFERENCES users(id),
+--   is_accepted   BOOLEAN DEFAULT 'false'
+-- );
+
+-- CREATE TABLE IF NOT EXISTS old_posts_attendees (
+--   posts_id      INTEGER REFERENCES posts(id),
+--   attendees_id  INTEGER REFERENCES attendees(id)
+-- );
 
 CREATE TABLE IF NOT EXISTS users_posts (
   users_id      INTEGER REFERENCES users(id),
@@ -51,7 +58,8 @@ CREATE TABLE IF NOT EXISTS reviews (
   id            SERIAL PRIMARY KEY,
   author        INTEGER REFERENCES users(id),
   rating        INTEGER,
-  review        VARCHAR(140)
+  review        VARCHAR(140),
+  created_at    TIMESTAMP default current_timestamp
 );
 
 CREATE TABLE IF NOT EXISTS users_reviews (

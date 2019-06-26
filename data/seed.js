@@ -52,18 +52,25 @@ for (let i = 0; i < 5; i++) {
     schedule: new Date('June 24, 2019 21:15')
   };
 
-  //generate attendees
+  // //generate attendees
+  // let newAttendees = {
+  //   id: i,
+  //   users_id: newUser.id
+  // };
+
+  // //generate posts_attendees
+  // let newPosts_attendees = {
+  //   posts_id: newPost.id,
+  //   attendees_id: newAttendees.id
+  // };
+
+  //generate attendees (new)
   let newAttendees = {
-    id: i,
+    id: i + 100,
+    posts_id: newPost.id,
     users_id: newUser.id
   };
 
-  //generate posts_attendees
-  let newPosts_attendees = {
-    posts_id: newPost.id,
-    attendees_id: newAttendees.id
-  };
-  
   //generate users_posts
   let newUsers_posts = {
     users_id: newUser.id,
@@ -72,9 +79,9 @@ for (let i = 0; i < 5; i++) {
   
   //generate reviews
   let newReviews = {
-    id: i,
+    id: i + 100,
     author: newUser.id,
-    rating: getRandomInt(80, 100),
+    rating: getRandomInt(1, 5),
     review: faker.lorem.sentences(1)
   };
 
@@ -89,10 +96,10 @@ for (let i = 0; i < 5; i++) {
                   .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO posts VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [newPost.id, newPost.title, newPost.post_address, newPost.post_city, newPost.post_state, newPost.post_zip, newPost.post_desc, newPost.category_id, newPost.max_attendees, newPost.schedule])
                   .catch (err => console.log(err)))
-    .then(() => db.query('INSERT INTO attendees VALUES($1, $2)', [newAttendees.id, newAttendees.users_id])
+    .then(() => db.query('INSERT INTO attendees VALUES($1, $2, $3)', [newAttendees.id, newAttendees.posts_id, newAttendees.users_id])
                   .catch (err => console.log(err)))
-    .then(() => db.query('INSERT INTO posts_attendees VALUES($1, $2)', [newPosts_attendees.posts_id, newPosts_attendees.attendees_id])
-                  .catch (err => console.log(err)))
+    // .then(() => db.query('INSERT INTO posts_attendees VALUES($1, $2)', [newPosts_attendees.posts_id, newPosts_attendees.attendees_id])
+    //               .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO users_posts VALUES($1, $2)', [newUsers_posts.users_id, newUsers_posts.posts_id])
                   .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO reviews VALUES($1, $2, $3, $4)', [newReviews.id, newReviews.author, newReviews.rating, newReviews.review])
