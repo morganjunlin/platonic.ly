@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Rating, AirbnbRating } from 'react-native-elements';
+import { Avatar, Rating, AirbnbRating } from 'react-native-elements';
 
 export default function ProfileScreen() {
   return (
@@ -17,9 +17,11 @@ export default function ProfileScreen() {
       // contentContainerStyle={styles.contentContainer}
       >
       <View style={styles.welcomeContainer}>
-          <Image
-            source={require('../assets/images/robot-prod.png')}
-            style={styles.welcomeImage}
+          <Avatar
+            size="xlarge"
+            rounded
+            source={require('../assets/images/bob2.png')}
+            // style={styles.welcomeImage}
           />
       </View>
 
@@ -39,14 +41,14 @@ export default function ProfileScreen() {
       </View>
 
       <View style={styles.getStartedContainer}>
-        <Text style={styles.developmentModeText}>Robby is a robot. Robby robots stuff and beeps and boops and stuff. Robby would like to robot and beep and boop and Rob other fellow Robbies.</Text>
+        <Text style={styles.developmentModeText}>Bob is a very passionate man who always shows determination to get the job done and to encourage everyone else. He is also a fun-loving person in general and very smart. During a crisis/problem he isn't one to lose focus and often comes up with ideas on how to fix things.</Text>
       </View>
     </ScrollView>
   )
 }
 
 ProfileScreen.navigationOptions = {
-  title: 'Robby the Robot',
+  title: 'Bob the Builder',
 };
 
 function ratingCompleted(rating) {
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
   developmentModeText: {
     marginTop: 10,
     marginBottom: 10,
-    color: 'rgba(0,0,0,0.4)',
+    // color: 'rgba(0,0,0,0.4)',
     fontSize: 14,
     lineHeight: 19,
     textAlign: 'center',
@@ -80,9 +82,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
+    width: 200,
+    // height: 180,
+    // resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
   },
