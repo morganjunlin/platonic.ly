@@ -1,6 +1,4 @@
-# friends-mvp
-
-App name tentative.
+# Platonicly
 
 ### Usage
 
@@ -23,7 +21,7 @@ yarn start
 yarn run db:regenerate
 ```
 
-#### To update to current develop commit:
+#### To update to current develop commit on your local:
 ```
 git checkout develop
 git pull origin develop
