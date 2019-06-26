@@ -23,16 +23,16 @@ export default function ProfileScreen() {
           />
       </View>
 
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      {/* <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Robby the Robot</Text>
-      </View>
+      </View> */}
 
       <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
         <Rating
           type='heart'
           defaultRating={4}
           ratingCount={5}
-          imageSize={45}
+          imageSize={25}
           showRating
           onFinishRating={ratingCompleted}
         />
@@ -46,7 +46,7 @@ export default function ProfileScreen() {
 }
 
 ProfileScreen.navigationOptions = {
-  title: 'User Profile',
+  title: 'Robby the Robot',
 };
 
 function ratingCompleted(rating) {
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   developmentModeText: {
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
     color: 'rgba(0,0,0,0.4)',
     fontSize: 14,
     lineHeight: 19,
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
   welcomeContainer: {
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   welcomeImage: {
     width: 100,
