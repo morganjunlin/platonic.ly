@@ -1,6 +1,4 @@
-# friends-mvp
-
-App name tentative.
+# Platonicly
 
 ### Usage
 
@@ -30,7 +28,7 @@ expo client:install:ios
 
 after simulator is opened, click on the top right plus and get the url from Metro Bundler
 
-#### To update to current develop commit:
+#### To update to current develop commit on your local:
 ```
 git checkout develop
 git pull origin develop
