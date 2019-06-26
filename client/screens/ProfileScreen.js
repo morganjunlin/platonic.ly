@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+<<<<<<< HEAD
 import { Avatar, Card, ListItem, Rating, AirbnbRating } from 'react-native-elements';
 import UserDummyData from '../../data/dummyData/viewOneUser.json';
 import PostsDummyData from '../../data/dummyData/getAllPosts.json';
@@ -156,4 +157,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
+<<<<<<< HEAD
+=======
+  welcomeImage: {
+    width: 200,
+    // height: 180,
+    // resizeMode: 'contain',
+    marginTop: 3,
+    marginLeft: -10,
+  },
+>>>>>>> 9fb2b52adf4b704b2a9c79baf1333b7c6d53824e
 });
