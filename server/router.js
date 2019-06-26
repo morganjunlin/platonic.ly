@@ -4,7 +4,7 @@ const controller = require('./controller.js')
 //USERS: create account/login/edit account
 router
   .route('/user')
-    .get(controller.getUser) // allows user to log in with id/email and salted pw
+    .get(controller.loginUser) // allows user to log in with id/email and salted pw
     .post(controller.createUser) // allows user to create an account
     .put(controller.editUser) // allows user to edit account info
 router

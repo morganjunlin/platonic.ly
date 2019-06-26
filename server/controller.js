@@ -6,7 +6,7 @@ module.exports = {
   USER ROUTE BEGINS HERE
   ========================================================
   */
-  getUser: (req, res) => { // logging into an account
+  loginUser: (req, res) => { // logging into an account
     const { email, password } = req.body;
     const passphrase = password; // ready for salting. apply hashing function to password.
     // a user inputs email and password to log in to their account. If the credentials are correct, it will send back a success message. If incorrect credentials, it will send a defense message.
