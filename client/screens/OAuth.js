@@ -50,7 +50,19 @@ export default class App extends React.Component {
         </View>
         )
     } else {
-      this.renderValue(this.state.responseJSON)
+      let res = JSON.parse(this.state.responseJSON)
+      console.log(typeof(res));
+      console.log(this.state.responseJSON)
+      for (key in res) {
+        console.log(key, res[key])
+      }
+      return (
+        <View style={styles.container}>
+          <Text>
+            {this.state.responseJSON}
+          </Text>
+        </View>
+        )
     }
   }
 
