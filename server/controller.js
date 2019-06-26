@@ -57,7 +57,7 @@ module.exports = {
         id = ${id};
     `)
       .then(data => res.status(200).send(data.rows[0]))
-      .catch(e => res.status(404).send(e.stack))
+      .catch(e => res.status(404).send(e))
   },
   /*
   ========================================================
