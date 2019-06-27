@@ -25,24 +25,16 @@ export default class MyPosts extends React.Component {
   }
 
   componentDidMount() {
-    // this.handleFetchUserPost();
-    return fetch('/api/post')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-      })
-      .catch((error) =>{
-        console.error(error);
-      });
+    this.handleFetchUserPost();
   }
 
   handleFetchUserPost = () => {
     axios
-    .get('/api/post')
-    .then(data => {
+    .get('http://localhost:3000/api/post')
+    .then(({ data }) => {
       this.setState({
-        data: data.data
-      }, () => console.log(this.state.data));
+        data: data
+      });
     })
     .catch(err => console.error(err))
 
@@ -82,3 +74,36 @@ export default class MyPosts extends React.Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  itemContainer: {
+    borderColor: 'grey',
+    borderWidth: 1,
+    flex: 1
+  }, 
+  itemTitle: {
+    color: '#00A2E5',
+    fontWeight: 'bold'
+  }, 
+  itemLocation: {
+    flexDirection:'row', 
+    flexWrap:'wrap'
+  },
+  innerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  outerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'black',
+    borderBottomColor: '#f2f2f2',
+    borderBottomWidth: 1,
+    padding: 15,
+    height: 70,
+  }
+})
