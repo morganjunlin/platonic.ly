@@ -43,7 +43,7 @@ export default class SignInScreen extends React.Component {
     }
   };
 
-  renderButton = () => (
+  renderButton = (str) => (
     <TouchableOpacity onPress={this._handlePressAsync}>
       <View
         style={{
@@ -54,7 +54,7 @@ export default class SignInScreen extends React.Component {
           backgroundColor: '#3B5998',
         }}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>
-          Login with FB
+          {str}
         </Text>
       </View>
     </TouchableOpacity>
@@ -64,11 +64,12 @@ export default class SignInScreen extends React.Component {
     if (this.state.responseJSON === null) {
       return (
         <View style={styles.container}>
-          {this.renderButton()}
+          {this.renderButton('Login with FB')}
         </View>
         )
     } else {
       console.log("TOKEN:", this.state.token)
+      console.log("JSON RESPONSE:", this.state.responseJSON)
         this.props.navigation.navigate('Main');
         return (
           <View><Text>success</Text></View>
