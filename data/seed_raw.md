@@ -25,6 +25,27 @@ VALUES('sports','https://c8.alamy.com/comp/P9K822/young-asian-adult-players-play
 INSERT INTO categories(cat_name, cat_image)
 VALUES('nature','https://ak7.picdn.net/shutterstock/videos/5851637/thumb/6.jpg');
 
+INSERT INTO categories(cat_name, cat_image)
+VALUES('education','https://cdn.explara.com/thailand20180713154259.jpg');
+
+INSERT INTO categories(cat_name, cat_image)
+VALUES('studying','https://as1.ftcdn.net/jpg/01/87/90/48/500_F_187904831_iGE4JXj48vKUsLVP5MVo81x9SIAyyQfW.jpg');
+
+INSERT INTO categories(cat_name, cat_image)
+VALUES('picnic','https://as2.ftcdn.net/jpg/02/12/98/15/500_F_212981555_5OK5TnV7AKOx1NCTpld4pXDJ2L5CUvjQ.jpg');
+
+INSERT INTO categories(cat_name, cat_image)
+VALUES('beach','https://as1.ftcdn.net/jpg/02/29/50/74/500_F_229507428_bDMkZ13pBOA3hjQfNTEuDgjQVBgKoqKF.jpg');
+
+INSERT INTO categories(cat_name, cat_image)
+VALUES('drinks','https://t3.ftcdn.net/jpg/01/11/55/60/500_F_111556056_E1B9cLEy7JX2rMyv48TKfgKEU6DukFxo.jpg');
+
+INSERT INTO categories(cat_name, cat_image)
+VALUES('barbeque','https://en.pimg.jp/029/849/737/1/29849737.jpg');
+
+INSERT INTO categories(cat_name, cat_image)
+VALUES('camping','https://en.pimg.jp/032/573/255/1/32573255.jpg');
+
 INSERT INTO posts(title, post_address, post_city, post_state, post_zip, post_desc, category_id, max_attendees, schedule)
 VALUES('lets get pizza', 'pizza shop', 'Los Angeles', 'California', 90036, 'who likes pizza lets get pizza', 1, 5, 'June 29, 2019 21:15');
 

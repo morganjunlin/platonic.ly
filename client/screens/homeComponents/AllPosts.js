@@ -10,7 +10,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ImageBackground
+  ImageBackground,
+  RefreshControl
 } from 'react-native';
 import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header } from 'react-native-elements';
@@ -63,7 +64,7 @@ export default class AllPosts extends React.Component {
             
               <EventTitle>{evnt.title}</EventTitle>
               <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
-              <EventForm>{evnt.currentAttendees === null ? `No one joined yet. ` : evnt.currentAttendees + ` people are going! `}
+              <EventForm>{evnt.currentAttendees < 2 ? `One person is going! ` : evnt.currentAttendees + ` people are going! `}
               {evnt.maxAttendees - evnt.currentAttendees} spots left. </EventForm>
               <EventForm> </EventForm>
             </EventBox>
@@ -109,7 +110,7 @@ font-Family: Helvetica
 
 const EventBackground = styled.ImageBackground`
 flex:1;
-margin:2%;
+margin:1% 2%;
 background-color:#fff;
 width:96%;
 height: 200px;

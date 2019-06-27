@@ -93,7 +93,11 @@ module.exports = {
         posts, 
         categories
       WHERE
-        categories.id = posts.category_id;`
+        categories.id = posts.category_id
+      ORDER BY 
+        schedule asc
+        
+      ;`
         )
       .then((data) => res.status(200).send(data.rows))
       .catch(e => res.status(404).send(e.stack))
