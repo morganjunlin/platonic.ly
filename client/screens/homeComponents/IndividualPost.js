@@ -17,25 +17,15 @@ export default class IndividualPost extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      data: []
+      
     }
   }
 
-  handleFetchIndividualPost(targetId) {
-    axios
-    .get(`http://localhost:3000/api/post/${targetId}`)
-    .then(({ data }) => {
-      this.setState({
-        data: data
-      })
-    })
-    .catch(err => console.error(err))
-  }
   render() {
     return(
       <View>
         <View>
-          <Text></Text>
+          <Text>hi</Text>
         </View>
       </View>
     )

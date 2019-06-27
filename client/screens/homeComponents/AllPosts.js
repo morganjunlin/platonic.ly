@@ -1,26 +1,22 @@
+
 import * as WebBrowser from 'expo-web-browser';
 import styled from 'styled-components';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ImageBackground
+  View
 } from 'react-native';
-import dummyData from '../../../data/dummyData/getAllPosts.json';
-import { SearchBar, Header } from 'react-native-elements';
+import { SearchBar, Header , Button} from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
 import url from '../../../conf.js';
+import IndividualPost from './IndividualPost';
 
 export default class AllPosts extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state={
       data: [],
       search: ''
@@ -32,6 +28,7 @@ export default class AllPosts extends React.Component {
 
   componentDidMount() {
     this.handleFetchUserPost();
+
   }
 
   updateSearch = search => {
@@ -44,7 +41,7 @@ export default class AllPosts extends React.Component {
     .then(data => {
       this.setState({
         data: data.data
-      });
+      }, () => console.log(this.props));
     })
     .catch(err => console.error(err));
 
@@ -52,15 +49,16 @@ export default class AllPosts extends React.Component {
 
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
+    // console.log(this.props)
     return (
       // <EventBox key={i}>
-        <EventBackground
-          key = {i}
-          source={bg}
-        >
+      <EventBackground
+      key = {i}
+      source={bg}
+      >
+      <Button onPress={() => this.props.navigation.navigate('Individual')}></Button>
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
             <EventBox>
-            
               <EventTitle>{evnt.title}</EventTitle>
               <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
               <EventForm>{evnt.currentAttendees === null ? `No one joined yet. ` : evnt.currentAttendees + ` people are going! `}

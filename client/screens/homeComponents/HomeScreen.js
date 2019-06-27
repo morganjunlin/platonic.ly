@@ -17,8 +17,8 @@ import MyPosts from './MyPosts.js';
 
 
 export default class HomeScreen extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state={
       page: 'AllPosts',
       data: dummyData,
@@ -47,15 +47,17 @@ export default class HomeScreen extends React.Component {
 
   render () {
     const { search } = this.state;
-
+    console.log(this.props.navigate)
     return (
       <ScrollView>
+        {/* <Button onPress={() => this.props.navigation.navigate('Individual')}></Button> */}
         <View style={styles.HeaderButtonContainer}>
           <View >
             <Button 
               type='clear'
               title='All Posts'
-              onPress={() => {this.handleChangeConents('AllPosts')}}
+              // onPress={() => {this.handleChangeConents('AllPosts')}}
+              onPress={() => this.props.navigation.navigate('AllPosts')}
             />
           </View>
           <View>
