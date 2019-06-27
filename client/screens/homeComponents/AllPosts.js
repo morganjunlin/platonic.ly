@@ -23,15 +23,26 @@ export default class AllPosts extends React.Component {
   constructor() {
     super()
     this.state={
+      refreshing: false,
       data: [],
       search: ''
     }
     this.updateSearch = this.updateSearch.bind(this);
     this.singleEvent = this.singleEvent.bind(this);
     this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
+    this._onRefresh = this._onRefresh.bind(this);
+  }
+
+  _onRefresh = () => {
+    console.log('refreshing')
+    this.setState({refreshing: true});
+    this.handleFetchUserPost().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   componentDidMount() {
+    console.log('yay!!!!! it mounted ')
     this.handleFetchUserPost();
   }
 
@@ -42,10 +53,8 @@ export default class AllPosts extends React.Component {
   handleFetchUserPost = () => {
     axios
     .get(`${url}/api/post`)
-    .then(data => {
-      this.setState({
-        data: data.data
-      });
+    .then(({data}) => {
+      this.setState({ data });
     })
     .catch(err => console.error(err));
 
@@ -77,7 +86,12 @@ export default class AllPosts extends React.Component {
   render () {
     const { search } = this.state;
     return (
-      <ScrollView>
+      <ScrollView refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+      }>
         <View>
           <SearchBar
             placeholder="Search"
