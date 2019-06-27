@@ -72,11 +72,6 @@ export default class AllPosts extends React.Component {
 //   title: 'Meet Friends',
 // };
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 8e3642621914028619aa3c164e7e53f857e03c86
 const EventTitle = styled.Text`
 font-size: 36px;
 color: #fff;
