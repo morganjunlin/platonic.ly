@@ -23,7 +23,7 @@ export default class IndividualPost extends React.Component {
 
   handleFetchIndividualPost(targetId) {
     axios
-    .get(`http://localhost:3000/api/post/{targetId}`)
+    .get(`http://localhost:3000/api/post/${targetId}`)
     .then(({ data }) => {
       this.setState({
         data: data

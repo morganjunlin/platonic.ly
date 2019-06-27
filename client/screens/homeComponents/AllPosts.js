@@ -1,5 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import {
   Image,
@@ -14,21 +15,40 @@ import {
 import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header } from 'react-native-elements';
 import moment from 'moment';
+import axios from 'axios';
+import url from '../../../conf.js';
 
 export default class AllPosts extends React.Component {
   constructor() {
     super()
     this.state={
-      data: dummyData,
+      data: [],
       search: ''
     }
     this.updateSearch = this.updateSearch.bind(this);
     this.singleEvent = this.singleEvent.bind(this);
+    this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleFetchUserPost();
   }
 
   updateSearch = search => {
     this.setState({ search });
   };
+
+  handleFetchUserPost = () => {
+    axios
+    .get(`${url}/api/post`)
+    .then(data => {
+      this.setState({
+        data: data.data
+      });
+    })
+    .catch(err => console.error(err));
+
+  }
 
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
@@ -38,13 +58,16 @@ export default class AllPosts extends React.Component {
           key = {i}
           source={bg}
         >
-          <EventBox>
-            <EventTitle>{evnt.title}</EventTitle>
-            <EventForm>Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
-            <EventForm>{evnt.currentAttendees === null ? `No one joined yet. ` : evnt.currentAttendees + ` people are going! `}
-            {evnt.maxAttendees - evnt.currentAttendees} spots left. </EventForm>
-            <EventForm>Posted {moment(evnt.created_at).fromNow()}</EventForm>
-          </EventBox>
+          <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
+            <EventBox>
+            
+              <EventTitle>{evnt.title}</EventTitle>
+              <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+              <EventForm>{evnt.currentAttendees === null ? `No one joined yet. ` : evnt.currentAttendees + ` people are going! `}
+              {evnt.maxAttendees - evnt.currentAttendees} spots left. </EventForm>
+              <EventForm> </EventForm>
+            </EventBox>
+          </LinearGradient>
         </EventBackground>
       // </EventBox>
     )
@@ -52,7 +75,6 @@ export default class AllPosts extends React.Component {
 
   render () {
     const { search } = this.state;
-
     return (
       <ScrollView>
         <View>
@@ -73,32 +95,31 @@ export default class AllPosts extends React.Component {
 // };
 
 const EventTitle = styled.Text`
-font-size: 36px;
+font-size: 32px;
 color: #fff;
-font-Family: Helvetica
+font-Family: Helvetica;
+font-weight: bold
 `;
 
 const EventForm = styled.Text`
-font-size: 12px;
-color: #D3D3D3;
+font-size: 14px;
+color: #e3e3e3;
 font-Family: Helvetica
 `;
 
 const EventBackground = styled.ImageBackground`
 flex:1;
-margin:1%;
-
+margin:2%;
 background-color:#fff;
-width:98%;
-height: 150px;
-padding: 2%;
+width:96%;
+height: 200px;
 `;
 
 const EventBox = styled.View`
-background-color:rgba(0,0,0,0.5);
 width:100%;
-height: 130px;
-padding: 2%;
+height: 200px;
+padding: 3%;
+justifyContent: flex-end
 `;
 
 const styles = StyleSheet.create({
@@ -111,7 +132,7 @@ const styles = StyleSheet.create({
   evntTitle: {
     color: 'pink',
     fontFamily: 'Helvetica',
-    fontSize: 36
+    fontSize: 24
   }, 
   evntLocation: {
     flexDirection:'row', 
