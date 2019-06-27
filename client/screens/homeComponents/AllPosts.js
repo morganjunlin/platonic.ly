@@ -25,11 +25,16 @@ export default class AllPosts extends React.Component {
     this.state={
       refreshing: false,
       data: [],
-      search: ''
+      singleEventData: {},
+      search: '',
+      form: 'all'
     }
     this.updateSearch = this.updateSearch.bind(this);
     this.singleEvent = this.singleEvent.bind(this);
+    this.singleEventDetailed = this.singleEventDetailed.bind(this);
     this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
+    this.fetchOnePost = this.fetchOnePost.bind(this);
+    this.handleAllEventClick = this.handleAllEventClick.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
   }
 
@@ -50,22 +55,40 @@ export default class AllPosts extends React.Component {
     this.setState({ search });
   };
 
+  // this function fetches all events
   handleFetchUserPost = () => {
     axios
-    .get(`${url}/api/post`)
-    .then(({data}) => {
-      this.setState({ data });
-    })
-    .catch(err => console.error(err));
+      .get(`${url}/api/post`)
+      .then(({data}) => {
+        this.setState({ data });
+      })
+      .catch(err => console.error(err));
+  }
 
+  // this function is the click functionality for events in all posts.
+  // renders state to view one form. then fetches data of that one single event.
+  handleAllEventClick(id) {
+    this.fetchOnePost(id)
+  }
+  
+  // this function fetches a single detailed event and saves it as singleEventData inside state.
+  fetchOnePost(id) {
+    axios
+      .get(`${url}/api/post/${id}`)
+      .then(singleEventData => {
+        this.setState({ 
+          singleEventData: singleEventData,
+          form: 'one'});
+      })
+      .catch(err => console.error(err));
   }
 
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
     return (
       // <EventBox key={i}>
+      <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}>
         <EventBackground
-          key = {i}
           source={bg}
         >
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
@@ -79,8 +102,26 @@ export default class AllPosts extends React.Component {
             </EventBox>
           </LinearGradient>
         </EventBackground>
+      </TouchableOpacity>
       // </EventBox>
     )
+  }
+
+  singleEventDetailed (evnt) {
+    let bg = {uri : evnt.category.bg};
+    <EventBackground
+    source={bg}
+    >
+    <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
+      <EventBox>
+      
+        <EventTitle>{evnt.title}</EventTitle>
+        <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+        <EventForm>LETS GOOOOO</EventForm>
+        <EventForm> </EventForm>
+      </EventBox>
+    </LinearGradient>
+  </EventBackground>
   }
 
   render () {
@@ -99,7 +140,10 @@ export default class AllPosts extends React.Component {
             value={search}
           />
         </View>
-        {this.state.data.map((evnt, i) => this.singleEvent(evnt,i))}
+
+        {this.state.form === 'all'?
+          this.state.data.map((evnt, i) => this.singleEvent(evnt,i)) :
+          this.singleEventDetailed(this.state.singleEventData) }
       </ScrollView>
     )
   }
