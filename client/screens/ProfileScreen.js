@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Avatar, Card, ListItem, Rating, AirbnbRating } from 'react-native-elements';
+import { Avatar, Button, Card, Divider, ListItem, Rating, AirbnbRating } from 'react-native-elements';
 import UserDummyData from '../../data/dummyData/viewOneUser.json';
 import PostsDummyData from '../../data/dummyData/getAllPosts.json';
 
@@ -62,33 +62,44 @@ export default class ProfileScreen extends Component {
         style={styles.container} 
         // contentContainerStyle={styles.contentContainer}
         >
-        <View style={styles.avatarContainer}>
+        
+        <Card
+          title={this.state.user.name}
+        >
+          <View style={styles.avatarContainer}>
             <Avatar
               size="xlarge"
               rounded
               source={{ uri: this.state.user.profilePic, }}
               // style={styles.welcomeImage}
             />
-        </View>
+          </View>
 
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text style={styles.nameText}>{this.state.user.name}</Text>
-        </View>
-
-        <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
-          <Rating
-            type='heart'
-            defaultRating={this.state.user.rating}
-            ratingCount={5}
-            imageSize={25}
-            showRating
-            onFinishRating={this.ratingCompleted}
+          <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
+          <Button
+            title="Solid Button"
           />
-        </View>
 
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.descriptionText}>{this.state.user.description}</Text>
-        </View>
+          <Button
+            title="Solid Button"
+          />
+          <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
+
+          <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
+            <Rating
+              type='heart'
+              defaultRating={this.state.user.rating}
+              ratingCount={5}
+              imageSize={25}
+              showRating
+              onFinishRating={this.ratingCompleted}
+            />
+          </View>
+
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionText}>{this.state.user.description}</Text>
+          </View>
+        </Card>
 
         {/* <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <Text style={styles.nameText}>List of Active Activities</Text>
@@ -123,7 +134,7 @@ export default class ProfileScreen extends Component {
 }
 
 ProfileScreen.navigationOptions = {
-  title: 'Me',
+  title: 'Profile',
 };
 
 const styles = StyleSheet.create({
