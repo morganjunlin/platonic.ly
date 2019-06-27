@@ -40,10 +40,10 @@ export default class AllPosts extends React.Component {
         >
           <EventBox>
             <EventTitle>{evnt.title}</EventTitle>
-            <Text>Starts {moment(new Date(evnt.schedule).toString()).calendar()}</Text>
-            <Text>{evnt.currentAttendees === null ? `No one joined yet. ` : evnt.currentAttendees + ` people are going! `}
-            {evnt.maxAttendees - evnt.currentAttendees} spots left.</Text>
-            <Text>Posted {moment(evnt.created_at).fromNow()}</Text>
+            <EventForm>Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+            <EventForm>{evnt.currentAttendees === null ? `No one joined yet. ` : evnt.currentAttendees + ` people are going! `}
+            {evnt.maxAttendees - evnt.currentAttendees} spots left. </EventForm>
+            <EventForm>Posted {moment(evnt.created_at).fromNow()}</EventForm>
           </EventBox>
         </EventBackground>
       // </EventBox>
@@ -74,7 +74,13 @@ export default class AllPosts extends React.Component {
 
 const EventTitle = styled.Text`
 font-size: 36px;
-color: #333333;
+color: #fff;
+font-Family: Helvetica
+`;
+
+const EventForm = styled.Text`
+font-size: 12px;
+color: #D3D3D3;
 font-Family: Helvetica
 `;
 
@@ -89,7 +95,7 @@ padding: 2%;
 `;
 
 const EventBox = styled.View`
-background-color:rgba(255,255,255,0.8);
+background-color:rgba(0,0,0,0.5);
 width:100%;
 height: 130px;
 padding: 2%;
