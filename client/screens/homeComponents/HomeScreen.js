@@ -13,7 +13,7 @@ import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header, Button } from 'react-native-elements';
 // import moment from 'moment';
 import AllPost from './AllPosts.js';
-// import MyPosts from './MyPosts.js';
+import MyPosts from './MyPosts.js';
 
 
 export default class HomeScreen extends React.Component {
@@ -41,7 +41,7 @@ export default class HomeScreen extends React.Component {
     if (this.state.page === 'AllPosts') {
       return <AllPost />
     } else {
-      return <Text>What!!!</Text>
+      return <MyPosts />
     }
   }
 

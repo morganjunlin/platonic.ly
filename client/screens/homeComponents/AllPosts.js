@@ -58,10 +58,6 @@ export default class AllPosts extends React.Component {
   }
 }
 
-// HomeScreen.navigationOptions = {
-//   title: 'Meet Friends',
-// };
-
 const styles = StyleSheet.create({
   itemContainer: {
     borderColor: 'grey',

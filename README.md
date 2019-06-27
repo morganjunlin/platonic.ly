@@ -23,6 +23,13 @@ yarn start
 yarn run db:regenerate
 ```
 
+#### If you want to run xcode simulator
+
+yarn add expo-cli
+expo client:install:ios
+
+after simulator is opened, click on the top right plus and get the url from Metro Bundler
+
 #### To update to current develop commit:
 ```
 git checkout develop
@@ -34,3 +41,4 @@ git pull origin your_github_handle
 The last line of code will update/fix the HEAD of your_github_handle
 
 Please message in Slack if pull request is made. tyty.
+
