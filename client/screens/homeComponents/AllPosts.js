@@ -68,7 +68,7 @@ export default class AllPosts extends React.Component {
   // this function is the click functionality for events in all posts.
   // renders state to view one form. then fetches data of that one single event.
   handleAllEventClick(id) {
-    this.fetchOnePost(id)
+    this.fetchOnePost(id);
   }
   
   // this function fetches a single detailed event and saves it as singleEventData inside state.
