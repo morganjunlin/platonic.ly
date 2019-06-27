@@ -6,7 +6,11 @@ import React from 'react';
 import {
   ScrollView,
   StyleSheet,
-  View
+  Text,
+  TouchableOpacity,
+  View,
+  ImageBackground,
+  RefreshControl
 } from 'react-native';
 import { SearchBar, Header , Button} from 'react-native-elements';
 import moment from 'moment';
@@ -18,15 +22,31 @@ export default class AllPosts extends React.Component {
   constructor(props) {
     super(props)
     this.state={
+      refreshing: false,
       data: [],
-      search: ''
+      singleEventData: {},
+      search: '',
+      form: 'all'
     }
     this.updateSearch = this.updateSearch.bind(this);
     this.singleEvent = this.singleEvent.bind(this);
+    this.singleEventDetailed = this.singleEventDetailed.bind(this);
     this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
+    this.fetchOnePost = this.fetchOnePost.bind(this);
+    this.handleAllEventClick = this.handleAllEventClick.bind(this);
+    this._onRefresh = this._onRefresh.bind(this);
+  }
+
+  _onRefresh = () => {
+    console.log('refreshing')
+    this.setState({refreshing: true});
+    this.handleFetchUserPost().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   componentDidMount() {
+    console.log('yay!!!!! it mounted ')
     this.handleFetchUserPost();
 
   }
@@ -35,16 +55,32 @@ export default class AllPosts extends React.Component {
     this.setState({ search });
   };
 
+  // this function fetches all events
   handleFetchUserPost = () => {
     axios
-    .get(`${url}/api/post`)
-    .then(data => {
-      this.setState({
-        data: data.data
-      }, () => console.log(this.props));
-    })
-    .catch(err => console.error(err));
+      .get(`${url}/api/post`)
+      .then(({data}) => {
+        this.setState({ data });
+      })
+      .catch(err => console.error(err));
+  }
 
+  // this function is the click functionality for events in all posts.
+  // renders state to view one form. then fetches data of that one single event.
+  handleAllEventClick(id) {
+    this.fetchOnePost(id)
+  }
+  
+  // this function fetches a single detailed event and saves it as singleEventData inside state.
+  fetchOnePost(id) {
+    axios
+      .get(`${url}/api/post/${id}`)
+      .then(({data}) => {
+        this.setState({ 
+          singleEventData: data,
+          form: 'one'});
+      })
+      .catch(err => console.error(err));
   }
 
   singleEvent (evnt, i) {
@@ -52,29 +88,52 @@ export default class AllPosts extends React.Component {
     // console.log(this.props)
     return (
       // <EventBox key={i}>
-      <EventBackground
-      key = {i}
-      source={bg}
-      >
-      <Button onPress={() => this.props.navigation.navigate('Individual')}></Button>
+      <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}>
+        <EventBackground
+          source={bg}
+        >
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
             <EventBox>
               <EventTitle>{evnt.title}</EventTitle>
               <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
-              <EventForm>{evnt.currentAttendees === null ? `No one joined yet. ` : evnt.currentAttendees + ` people are going! `}
+              <EventForm>{evnt.currentAttendees < 2 ? `One person is going! ` : evnt.currentAttendees + ` people are going! `}
               {evnt.maxAttendees - evnt.currentAttendees} spots left. </EventForm>
               <EventForm> </EventForm>
             </EventBox>
           </LinearGradient>
         </EventBackground>
+      </TouchableOpacity>
       // </EventBox>
     )
+  }
+
+  singleEventDetailed (evnt) {
+    // let bg = {uri : evnt.category.bg};
+    <View><Text>You want to see it but you cant</Text></View>
+  //   <EventBackground
+  //   source={bg}
+  //   >
+  //   <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
+  //     <EventBox>
+      
+  //       <EventTitle>{evnt.title}</EventTitle>
+  //       <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+  //       <EventForm>LETS GOOOOO</EventForm>
+  //       <EventForm> </EventForm>
+  //     </EventBox>
+  //   </LinearGradient>
+  // </EventBackground>
   }
 
   render () {
     const { search } = this.state;
     return (
-      <ScrollView>
+      <ScrollView refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+      }>
         <View>
           <SearchBar
             placeholder="Search"
@@ -82,7 +141,10 @@ export default class AllPosts extends React.Component {
             value={search}
           />
         </View>
-        {this.state.data.map((evnt, i) => this.singleEvent(evnt,i))}
+
+        {this.state.form === 'all'?
+          this.state.data.map((evnt, i) => this.singleEvent(evnt,i)) :
+          this.singleEventDetailed(this.state.singleEventData) }
       </ScrollView>
     )
   }
@@ -107,7 +169,7 @@ font-Family: Helvetica
 
 const EventBackground = styled.ImageBackground`
 flex:1;
-margin:2%;
+margin:1% 2%;
 background-color:#fff;
 width:96%;
 height: 200px;
