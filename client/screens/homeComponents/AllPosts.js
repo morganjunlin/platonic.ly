@@ -1,4 +1,5 @@
 import * as WebBrowser from 'expo-web-browser';
+import styled from 'styled-components'
 import React from 'react';
 import {
   Image,
@@ -8,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ImageBackground
 } from 'react-native';
 import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header } from 'react-native-elements';
@@ -21,11 +23,32 @@ export default class AllPosts extends React.Component {
       search: ''
     }
     this.updateSearch = this.updateSearch.bind(this);
+    this.singleEvent = this.singleEvent.bind(this);
   }
 
   updateSearch = search => {
     this.setState({ search });
   };
+
+  singleEvent (evnt, i) {
+    let bg = {uri : evnt.category.bg};
+    return (
+      // <EventBox key={i}>
+        <EventBackground
+          key = {i}
+          source={bg}
+        >
+          <EventBox>
+            <EventTitle>{evnt.title}</EventTitle>
+            <Text>Starts {moment(new Date(evnt.schedule).toString()).calendar()}</Text>
+            <Text>{evnt.currentAttendees === null ? `No one joined yet. ` : evnt.currentAttendees + ` people are going! `}
+            {evnt.maxAttendees - evnt.currentAttendees} spots left.</Text>
+            <Text>Posted {moment(evnt.created_at).fromNow()}</Text>
+          </EventBox>
+        </EventBackground>
+      // </EventBox>
+    )
+  }
 
   render () {
     const { search } = this.state;
@@ -39,20 +62,7 @@ export default class AllPosts extends React.Component {
             value={search}
           />
         </View>
-        {this.state.data.map((item, i) => {
-          return (
-            <View key={i} style={styles.itemContainer}>
-              <Text style={styles.itemTitle}>{item.title}</Text>
-              <View style={styles.itemLocation}>
-                <Text>Location: </Text><Text>{item.locationCity}</Text>
-              </View>
-              <Text>Attendees: {item.currentAttendees === null ? 
-                                0 : item.currentAttendees}/{item.maxAttendees}</Text>
-              <Text>Schedule: {new Date(item.schedule).toString()}</Text>
-              <Text>Posted {moment(item.created_at).fromNow()}</Text>
-            </View>
-          )
-        })}
+        {this.state.data.map((evnt, i) => this.singleEvent(evnt,i))}
       </ScrollView>
     )
   }
@@ -62,17 +72,44 @@ export default class AllPosts extends React.Component {
 //   title: 'Meet Friends',
 // };
 
+
+
+const EventTitle = styled.Text`
+font-size: 36px;
+color: #333333;
+font-Family: Helvetica
+`;
+
+const EventBackground = styled.ImageBackground`
+flex:1;
+margin:1%;
+
+background-color:#fff;
+width:98%;
+height: 150px;
+padding: 2%;
+`;
+
+const EventBox = styled.View`
+background-color:rgba(255,255,255,0.8);
+width:100%;
+height: 130px;
+padding: 2%;
+`;
+
 const styles = StyleSheet.create({
-  itemContainer: {
-    borderColor: 'grey',
+  evntContainer: {
+    borderColor: 'red',
     borderWidth: 1,
+    height:100,
     flex: 1
   }, 
-  itemTitle: {
-    color: '#00A2E5',
-    fontWeight: 'bold'
+  evntTitle: {
+    color: 'pink',
+    fontFamily: 'Helvetica',
+    fontSize: 36
   }, 
-  itemLocation: {
+  evntLocation: {
     flexDirection:'row', 
     flexWrap:'wrap'
   },
