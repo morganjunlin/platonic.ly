@@ -76,13 +76,18 @@ export default class ProfileScreen extends Component {
           </View>
 
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
-          <Button
-            title="Solid Button"
-          />
 
-          <Button
-            title="Solid Button"
-          />
+          <View style={styles.buttonContainer}>
+            <Button 
+              title='Edit Profile'
+              style={styles.editButton}
+            /> 
+            <Button 
+              title='Logout'
+              style={styles.logoutButton} 
+            />
+          </View>
+
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
 
           <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
@@ -143,12 +148,23 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     backgroundColor: '#fff',
   },
-   contentContainer: {
+  contentContainer: {
     paddingTop: 30,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  editButton: {
+    marginHorizontal: 10,
+  },
+  logoutButton: {
+    marginHorizontal: 10,
   },
   nameText: {
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   descriptionText: {
     marginTop: 10,
