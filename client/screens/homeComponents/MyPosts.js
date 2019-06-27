@@ -25,20 +25,21 @@ export default class MyPosts extends React.Component {
   }
 
   componentDidMount() {
-    this.handleFetchUserPost();
+    // this.handleFetchUserPost();
   }
 
-  handleFetchUserPost = () => {
-    axios
-    .get('http://localhost:3000/api/post')
-    .then(({ data }) => {
-      this.setState({
-        data: data
-      });
-    })
-    .catch(err => console.error(err))
+  // handleFetchUserPost = () => {
+  //   axios
+  //   .get('https://localhost:3000/api/post')
+  //   .then(( data ) => {
+  //     // console.log(data);
+  //     this.setState({
+  //       data: data.data
+  //     });
+  //   })
+  //   .catch(err => console.error(err))
 
-  }
+  // }
 
   updateSearch = search => {
     this.setState({ search });
@@ -70,6 +71,7 @@ export default class MyPosts extends React.Component {
             </View>
           )
         })}
+        <Text>hi</Text>
       </ScrollView>
     )
   }
