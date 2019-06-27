@@ -29,17 +29,21 @@ export default class SignInScreen extends React.Component {
       `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
     );
     const responseJSON = JSON.stringify(await response.json());
-    this.setState({ responseJSON }, () => {
-      var json = JSON.parse(responseJSON);
-      this.setState({
-        id: json.id,
-        name: json.name,
-        // profile: json.picture.data.url
-      })
-    });
+
+    let test = JSON.parse(responseJSON)
+    if (test.id) {
+      this.setState({ responseJSON }, () => {
+        var json = JSON.parse(responseJSON);
+        this.setState({
+          id: json.id,
+          name: json.name,
+          profile: json.picture.data.url
+        })
+      });
+    }
   };
 
-  renderButton = () => (
+  renderButton = (str) => (
     <TouchableOpacity onPress={this._handlePressAsync}>
       <View
         style={{
@@ -50,36 +54,26 @@ export default class SignInScreen extends React.Component {
           backgroundColor: '#3B5998',
         }}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>
-          Login with FB
+          {str}
         </Text>
       </View>
     </TouchableOpacity>
   );
 
-  renderValue = value => (
-    <Text key={value} style={styles.paragraph}>Status: {value}</Text>
-  );
-
   render() {
     if (this.state.responseJSON === null) {
-      // this.props.navigation.navigate('Auth');
-      console.log("LOGIN FAIL")
       return (
         <View style={styles.container}>
-          {this.state.result && this.renderValue(JSON.stringify(this.state.result))}
-          {this.renderButton()}
+          {this.renderButton('Login with FB')}
         </View>
         )
     } else {
-      this.props.navigation.navigate('Main');
-      console.log(this.state.responseJSON)
-      console.log("LOGIN SUCCESS!")
-      return (
-        <View style={styles.container}>
-          <Text>SignIn successful!
-          </Text>
-        </View>
-        )
+      console.log("TOKEN:", this.state.token)
+      console.log("JSON RESPONSE:", this.state.responseJSON)
+        this.props.navigation.navigate('Main');
+        return (
+          <View><Text>success</Text></View>
+          )
     }
   }
 
