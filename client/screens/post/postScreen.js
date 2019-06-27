@@ -26,7 +26,7 @@ export default class PostScreen extends React.Component {
                 { value: 'Sport' },
                 { value: 'Tour' },
             ], 
-            attendeesPool: [{value: 1}, {value: 2}, 
+            attendeesPool: [{value: 2}, 
                 {value: 3}, {value: 4}, {value: 5}, 
                 {value: 6}, {value: 7}, {value: 8}, 
                 {value: 9}, {value: 10}, {value: 11}, 
@@ -66,7 +66,7 @@ export default class PostScreen extends React.Component {
                     <TextInput 
                         style={styles.inputField}
                         editable = {true}
-                        placeholder = 'Write Title'
+                        placeholder = 'Title of your event'
                         onChangeText = {(text) => this.setState({title: text})}
                     />
                 </View>
@@ -74,7 +74,7 @@ export default class PostScreen extends React.Component {
                     <TextInput 
                         style={styles.inputField}
                         editable = {true}
-                        placeholder = 'Write description'
+                        placeholder = 'Description'
                         onChangeText = {(text) => this.setState({description: text})}
                     />
                 </View>
