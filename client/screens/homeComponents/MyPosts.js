@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header } from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
+import url from '../../../conf.js';
 
 export default class MyPosts extends React.Component {
   constructor() {
@@ -25,21 +27,21 @@ export default class MyPosts extends React.Component {
   }
 
   componentDidMount() {
-    // this.handleFetchUserPost();
+    this.handleFetchUserPost();
   }
 
-  // handleFetchUserPost = () => {
-  //   axios
-  //   .get('https://localhost:3000/api/post')
-  //   .then(( data ) => {
-  //     // console.log(data);
-  //     this.setState({
-  //       data: data.data
-  //     });
-  //   })
-  //   .catch(err => console.error(err))
+  handleFetchUserPost = () => {
+    axios
+    .get(`${url}/api/post`)
+    .then(( data ) => {
+      // console.log(data);
+      this.setState({
+        data: data.data
+      });
+    })
+    .catch(err => console.error(err))
 
-  // }
+  }
 
   updateSearch = search => {
     this.setState({ search });

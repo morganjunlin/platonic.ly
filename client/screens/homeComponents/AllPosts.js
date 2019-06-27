@@ -1,10 +1,9 @@
+
 import * as WebBrowser from 'expo-web-browser';
 import styled from 'styled-components';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,15 +12,15 @@ import {
   ImageBackground,
   RefreshControl
 } from 'react-native';
-import dummyData from '../../../data/dummyData/getAllPosts.json';
-import { SearchBar, Header } from 'react-native-elements';
+import { SearchBar, Header , Button} from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
 import url from '../../../conf.js';
+import IndividualPost from './IndividualPost';
 
 export default class AllPosts extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state={
       refreshing: false,
       data: [],
@@ -49,6 +48,7 @@ export default class AllPosts extends React.Component {
   componentDidMount() {
     console.log('yay!!!!! it mounted ')
     this.handleFetchUserPost();
+
   }
 
   updateSearch = search => {
@@ -68,16 +68,16 @@ export default class AllPosts extends React.Component {
   // this function is the click functionality for events in all posts.
   // renders state to view one form. then fetches data of that one single event.
   handleAllEventClick(id) {
-    this.fetchOnePost(id)
+    this.fetchOnePost(id);
   }
   
   // this function fetches a single detailed event and saves it as singleEventData inside state.
   fetchOnePost(id) {
     axios
       .get(`${url}/api/post/${id}`)
-      .then(singleEventData => {
+      .then(({data}) => {
         this.setState({ 
-          singleEventData: singleEventData,
+          singleEventData: data,
           form: 'one'});
       })
       .catch(err => console.error(err));
@@ -85,6 +85,7 @@ export default class AllPosts extends React.Component {
 
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
+    // console.log(this.props)
     return (
       // <EventBox key={i}>
       <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}>
@@ -93,7 +94,6 @@ export default class AllPosts extends React.Component {
         >
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
             <EventBox>
-            
               <EventTitle>{evnt.title}</EventTitle>
               <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
               <EventForm>{evnt.currentAttendees < 2 ? `One person is going! ` : evnt.currentAttendees + ` people are going! `}
@@ -108,20 +108,21 @@ export default class AllPosts extends React.Component {
   }
 
   singleEventDetailed (evnt) {
-    let bg = {uri : evnt.category.bg};
-    <EventBackground
-    source={bg}
-    >
-    <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
-      <EventBox>
+    // let bg = {uri : evnt.category.bg};
+    <View><Text>You want to see it but you cant</Text></View>
+  //   <EventBackground
+  //   source={bg}
+  //   >
+  //   <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
+  //     <EventBox>
       
-        <EventTitle>{evnt.title}</EventTitle>
-        <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
-        <EventForm>LETS GOOOOO</EventForm>
-        <EventForm> </EventForm>
-      </EventBox>
-    </LinearGradient>
-  </EventBackground>
+  //       <EventTitle>{evnt.title}</EventTitle>
+  //       <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+  //       <EventForm>LETS GOOOOO</EventForm>
+  //       <EventForm> </EventForm>
+  //     </EventBox>
+  //   </LinearGradient>
+  // </EventBackground>
   }
 
   render () {
