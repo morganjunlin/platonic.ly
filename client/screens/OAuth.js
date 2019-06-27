@@ -91,7 +91,7 @@ export default class SignInScreen extends React.Component {
         `&client_id=${FB_APP_ID}` +
         `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
     });
-
+console.log(redirectUrl)
     const { type } = result;
     this.setState({ result: type }, () => {
       if (type === 'success') {
