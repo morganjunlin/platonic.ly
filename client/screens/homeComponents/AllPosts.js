@@ -129,7 +129,7 @@ export default class AllPosts extends React.Component {
           <EventForm>This event starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
           <EventForm>Address: {evnt.location.address} {evnt.location.city}, {evnt.location.state}, {evnt.location.zip}</EventForm>
           <EventForm> </EventForm>
-          <EventFormDetails>Details: {evnt.description}</EventFormDetails>
+          <EventForm>Details: {evnt.description}</EventForm>
           <EventForm> </EventForm>
           <EventForm>
             {evnt.currentAttendees.length < 2 ? `One person is going! ` : `There are ${evnt.currentAttendees.length} people are going! `}

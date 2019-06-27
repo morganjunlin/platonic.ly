@@ -55,7 +55,7 @@ export default class HomeScreen extends React.Component {
           <View >
             <Button 
               type='clear'
-              title='All Posts'
+              title='All Posts' 
               // onPress={() => {this.handleChangeConents('AllPosts')}}
               onPress={() => this.props.navigation.navigate('AllPosts')}
             />
