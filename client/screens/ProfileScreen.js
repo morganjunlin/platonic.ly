@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { Avatar, Button, Card, Divider, ListItem, Rating, AirbnbRating } from 'react-native-elements';
 import UserDummyData from '../../data/dummyData/viewOneUser.json';
 import PostsDummyData from '../../data/dummyData/getAllPosts.json';
+import axios from 'axios';
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -56,6 +58,10 @@ export default class ProfileScreen extends Component {
     })
   }
 
+  logoutAsync = async () => {
+    this.props.navigation.navigate('Auth');
+  }
+
   render() {
     return (
       <ScrollView 
@@ -83,6 +89,7 @@ export default class ProfileScreen extends Component {
               style={styles.editButton}
             /> 
             <Button 
+              onPress={this.logoutAsync}
               title='Logout'
               style={styles.logoutButton} 
             />
