@@ -1,14 +1,27 @@
 import React from 'react';
-import { TouchableOpacity, Button, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, Button, StyleSheet, Text, View, Image } from 'react-native';
 import { AuthSession } from 'expo';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
 const FB_APP_ID = '769268703474829';
 
-export default class App extends React.Component {
-  state = {
-    result: null,
-    token: null,
-    responseJSON: null
+export default class SignInScreen extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      result: null,
+      token: null,
+      responseJSON: null,
+      id: null,
+      name: null,
+      profile: null,
+    };
+  }
+
+  _signOutAsync = async () => {
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Auth');
   };
 
   callGraph = async token => {
@@ -16,7 +29,14 @@ export default class App extends React.Component {
       `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
     );
     const responseJSON = JSON.stringify(await response.json());
-    this.setState({ responseJSON });
+    this.setState({ responseJSON }, () => {
+      var json = JSON.parse(responseJSON);
+      this.setState({
+        id: json.id,
+        name: json.name,
+        // profile: json.picture.data.url
+      })
+    });
   };
 
   renderButton = () => (
@@ -37,29 +57,26 @@ export default class App extends React.Component {
   );
 
   renderValue = value => (
-    <Text key={value} style={styles.paragraph}>{value}</Text>
+    <Text key={value} style={styles.paragraph}>Status: {value}</Text>
   );
 
   render() {
-    if (this.state.result !== 'success') {
+    if (this.state.responseJSON === null) {
+      // this.props.navigation.navigate('Auth');
+      console.log("LOGIN FAIL")
       return (
         <View style={styles.container}>
-          {this.state.result &&
-            this.renderValue(JSON.stringify(this.state.result))}
+          {this.state.result && this.renderValue(JSON.stringify(this.state.result))}
           {this.renderButton()}
         </View>
         )
     } else {
-      let res = JSON.parse(this.state.responseJSON)
-      console.log(typeof(res));
+      this.props.navigation.navigate('Main');
       console.log(this.state.responseJSON)
-      for (key in res) {
-        console.log(key, res[key])
-      }
+      console.log("LOGIN SUCCESS!")
       return (
         <View style={styles.container}>
-          <Text>
-            {this.state.responseJSON}
+          <Text>SignIn successful!
           </Text>
         </View>
         )
@@ -81,11 +98,8 @@ export default class App extends React.Component {
         this.setState({
           token: result['params']['access_token']
         }, () => {
-          console.log(this.state.token);
           this.callGraph(this.state.token)
         })
-      } else {
-        console.log("FAILURE!!")
       }
     })
   }
