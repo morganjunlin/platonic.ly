@@ -54,7 +54,7 @@ export default class HomeScreen extends React.Component {
           <View >
             <Button 
               type='clear'
-              title='Al Posts'
+              title='All Posts'
               onPress={() => {this.handleChangeConents('AllPosts')}}
             />
           </View>

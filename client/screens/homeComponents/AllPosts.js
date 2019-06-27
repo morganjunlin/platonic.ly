@@ -15,21 +15,40 @@ import {
 import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header } from 'react-native-elements';
 import moment from 'moment';
+import axios from 'axios';
+import url from '../../../conf.js';
 
 export default class AllPosts extends React.Component {
   constructor() {
     super()
     this.state={
-      data: dummyData,
+      data: [],
       search: ''
     }
     this.updateSearch = this.updateSearch.bind(this);
     this.singleEvent = this.singleEvent.bind(this);
+    this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleFetchUserPost();
   }
 
   updateSearch = search => {
     this.setState({ search });
   };
+
+  handleFetchUserPost = () => {
+    axios
+    .get(`${url}/api/post`)
+    .then(data => {
+      this.setState({
+        data: data.data
+      });
+    })
+    .catch(err => console.error(err));
+
+  }
 
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
@@ -56,7 +75,6 @@ export default class AllPosts extends React.Component {
 
   render () {
     const { search } = this.state;
-
     return (
       <ScrollView>
         <View>
@@ -92,7 +110,6 @@ font-Family: Helvetica
 const EventBackground = styled.ImageBackground`
 flex:1;
 margin:2%;
-
 background-color:#fff;
 width:96%;
 height: 200px;
