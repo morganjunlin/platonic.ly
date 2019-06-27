@@ -21,7 +21,9 @@ yarn start
 yarn run db:regenerate
 ```
 
-#### To update to current develop commit on your local:
+#### Before pull request && to update to current develop commit on your local:
+Before your start, make sure your current branch is up-to-date. Then run the following commands:
+
 ```
 git checkout develop
 git pull origin develop
