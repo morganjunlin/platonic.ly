@@ -10,7 +10,9 @@ import TabBarIcon from '../components/TabBarIcon';
 // import SettingsScreen from '../screens/SettingsScreen';
 
 import HomeScreen from '../screens/homeComponents/HomeScreen';
-import IndividualPost from '../screens/homeComponents/IndividualPost'
+import IndividualPost from '../screens/homeComponents/IndividualPost';
+import HostPost from '../screens/homeComponents/HostPost';
+
 
 import PostConfirmScreen from '../screens/post/postConfirm';
 import PostScreen from '../screens/post/postScreen';
@@ -20,6 +22,7 @@ import AllPost from '../screens/homeComponents/AllPosts';
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Individual: IndividualPost,
+  HostPost: HostPost,
   AllPosts: AllPost
 });
 

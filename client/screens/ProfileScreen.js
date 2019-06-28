@@ -48,7 +48,7 @@ export default class ProfileScreen extends Component {
     //   .catch(err => console.log(err))
 
     axios
-      .get(`${url}/api/user/10`)
+      .get(`${url}/api/user/12`)
       .then(({ data }) => this.setState({
         user: data
       }, console.log('THIS IS DATA====== ', data)))

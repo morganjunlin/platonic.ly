@@ -18,7 +18,6 @@ import moment from 'moment';
 import axios from 'axios';
 import url from '../../../conf.js';
 
-const userID = 12;
 
 export default class IndividualPost extends React.Component {
   constructor(props) {
@@ -39,14 +38,14 @@ export default class IndividualPost extends React.Component {
     }
     this.fetchOnePost = this.fetchOnePost.bind(this);
     this.attendeeProfile = this.attendeeProfile.bind(this);
-    this.requestToJoin = this.requestToJoin.bind(this);
+    this.triggerAcceptance = this.triggerAcceptance.bind(this);
   }
 
 
   // this function fetches a single detailed event and saves it as singleEventData inside state.
   fetchOnePost(id) {
     axios
-      .get(`${url}/api/post/${id}`)
+      .get(`${url}/api/hostpost/${id}`)
       .then(({data}) => {
         this.setState({ data });
       }, () => console.log(data, '!!!!!!'))
@@ -58,21 +57,21 @@ export default class IndividualPost extends React.Component {
     let img = {uri: profile.profilePic};
     return (
       <View key={profile.userID} style={{margin: 5}}>
-        <Image style={{width: 100, height: 100}} source={img} />
+        <Image style={{width: 100, height: 100, borderRadius: '50%'}} source={img} />
         <EventFormDetails style={{textAlign: 'center'}}>{profile.firstName}</EventFormDetails>
+        {profile.accepted ? <AcceptedButton style={{textAlign: 'center'}}>Accepted!</AcceptedButton> : <PendingButton style={{textAlign: 'center'}} onPress={() => this.triggerAcceptance(profile.attendeeID)}>Pending</PendingButton>}
       </View>
     )
+  }
+  triggerAcceptance(attendeeID) {
+    axios
+      .patch(`${url}/api/attendees/${attendeeID}`)
+      .then(() => console.log(`attendee updated!`))
+      .catch(err => console.error(err));
   }
 
   componentDidMount() {
     this.fetchOnePost(this.state.eventID);
-  }
-
-  requestToJoin(postID) {
-    axios
-    .post(`${url}/api/attendees`, { userID, postID })
-    .then(() => console.log(`user requested to join`))
-    .catch(err => console.error(err));
   }
 
   render() {
@@ -107,7 +106,7 @@ export default class IndividualPost extends React.Component {
             style={{flex:1}}
             dataSource={attendList}
             renderRow={(profile) => this.attendeeProfile(profile) } />
-          <EventRequest style={{textAlign: 'center'}} onPress={() => this.requestToJoin(data.id)}>Request to join event!</EventRequest>
+          <EventFormDetails style={{textAlign: 'center'}}>Choose who to accept into your event.</EventFormDetails>
         </SingleEventDetails>
       </SingleEventPage>
   )
@@ -134,18 +133,26 @@ color: #e3e3e3;
 font-Family: Helvetica
 `;
 
+const AcceptedButton = styled.Text`
+font-size: 14px;
+color: #e3e3e3;
+borderColor: #008000;
+borderWidth: 1;
+font-Family: Helvetica;
+`;
+
+const PendingButton = styled.Text`
+font-size: 14px;
+color: #e3e3e3;
+borderColor: #FF0000;
+borderWidth: 1;
+font-Family: Helvetica;
+`;
+
 const EventFormDetails = styled.Text`
 font-size: 20px;
 color: #e3e3e3;
 font-Family: Helvetica
-`;
-
-const EventRequest = styled.Text`
-font-size: 20px;
-color: #e3e3e3;
-font-Family: Helvetica;
-borderColor: #FFffff;
-borderWidth: 1;
 `;
 
 

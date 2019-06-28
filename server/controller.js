@@ -108,33 +108,6 @@ module.exports = {
   getMyPosts: (req, res) => { // allows user to get all posts with search filters
     const { id } = req.params;     //search filter not implemented yet
     console.log(`getting all posts for ${id}`)
-    console.log(      `SELECT
-    posts.id, 
-    posts.title, 
-    posts.post_city AS "locationCity", 
-    posts.post_zip AS "locationZip", 
-    json_build_object(
-      'id',posts.category_id,'name',
-      categories.cat_name,
-      'bg',categories.cat_image
-      ) AS category,
-    array_length(ARRAY(select id
-      FROM attendees WHERE attendees.posts_id = posts.id AND attendees.is_accepted = true
-      ), 1) AS "currentAttendees", 
-    posts.max_attendees as "maxAttendees", 
-    posts.schedule, 
-    posts.created_at 
-  FROM 
-    posts, 
-    categories
-  WHERE
-    categories.id = posts.category_id AND
-    posts.id IN (select posts_id from users_posts where users_id = ${id})
-
-  ORDER BY 
-    schedule asc
-    
-  ;`)
     // grabbing all posts and BARE MINIMUM info per post for main feed.
     db.query(
       `SELECT
@@ -194,6 +167,46 @@ module.exports = {
           'profilePic', (SELECT profile_img FROM users WHERE id = attendees.users_id),
           'accepted', attendees.is_accepted)
           FROM attendees WHERE attendees.posts_id = posts.id AND attendees.is_accepted = true) AS "currentAttendees",
+        posts.max_attendees as "maxAttendees", 
+        posts.schedule, 
+        posts.created_at
+      FROM
+        posts, 
+        categories 
+      WHERE 
+        posts.id = ${id} AND categories.id = posts.category_id;`)
+      .then((data) => res.status(200).send(data.rows[0]))
+      .catch(e => res.status(404).send(e.stack))
+  },
+
+  getOneHostPost: (req, res) => { // allows user to view one post
+    const { id } = req.params; // pass in the id of the post you want to see
+    console.log('look at one post as a host')
+    //this queries into multiple tables at once and may not have optimal query time.
+    //returns id, title, description, exact location, category, an array of accepted attendees that includes user id, first name, and profile pic, max attendees, when the event is scheuled, and when the event was created.
+    db.query(
+      `SELECT
+        posts.id,
+        posts.title,
+        posts.post_desc AS description,
+        json_build_object(
+          'address',posts.post_address,
+          'city', posts.post_city,
+          'state',posts.post_state,
+          'zip',posts.post_zip
+          ) AS location,
+        json_build_object(
+          'id',posts.category_id,
+          'name', categories.cat_name,
+          'bg', categories.cat_image
+          ) AS category,
+        ARRAY(SELECT json_build_object(
+          'attendeeID',attendees.id,
+          'userID',attendees.users_id,
+          'firstName', (SELECT first_name FROM users WHERE id = attendees.users_id),
+          'profilePic', (SELECT profile_img FROM users WHERE id = attendees.users_id),
+          'accepted', attendees.is_accepted)
+          FROM attendees WHERE attendees.posts_id = posts.id) AS "currentAttendees",
         posts.max_attendees as "maxAttendees", 
         posts.schedule, 
         posts.created_at
@@ -297,6 +310,7 @@ module.exports = {
   requestToBeAttendee: (req, res) => { // allows user to request to join a single post
     const { postID, userID } = req.body;
     //requires id of post and id of user. default to false for is_attending.
+    console.log(`INSERT INTO attendees (posts_id, users_id) VALUES (${postID}, ${userID}) RETURNING *;`)
     db.query(`INSERT INTO attendees (posts_id, users_id) VALUES (${postID}, ${userID}) RETURNING *;`)
       .then(data =>  res.status(200).send(data.rows[0]))
       .catch(e => res.status(404).send(e.stack))
