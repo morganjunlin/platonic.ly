@@ -24,7 +24,17 @@ export default class IndividualPost extends React.Component {
     super(props);
     this.state = {
       eventID: this.props.navigation.state.params.id,
-      data: {}
+      data: {
+        id: -1,
+        title: "",
+        description: "",
+        location: {},
+        category: {},
+        currentAttendees: [],
+        maxAttendees: 0,
+        schedule: "",
+        created_at: ""
+      }
     }
     this.fetchOnePost = this.fetchOnePost.bind(this);
     this.attendeeProfile = this.attendeeProfile.bind(this);
@@ -61,9 +71,8 @@ export default class IndividualPost extends React.Component {
     // let bg = {uri : data.evnt.category.bg};
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     let attendList = ds.cloneWithRows(data.currentAttendees);
-    
-    if (data.id !== undefined) {
-      return (
+    if (data.id > -1) {
+    return (
       <SingleEventPage>
         <SingleEventBackground source={bg}>
           <LinearGradient colors={['transparent', 'rgba(0,0,0,1)']}>
@@ -92,9 +101,15 @@ export default class IndividualPost extends React.Component {
           <EventFormDetails>Request to join event!</EventFormDetails>
         </SingleEventDetails>
       </SingleEventPage>
-      )
-    }}
-  
+  )
+}
+  else {
+    return (
+      <SingleEventPage>
+      </SingleEventPage>
+    )
+  }
+  }
 }
 
 const EventTitle = styled.Text`

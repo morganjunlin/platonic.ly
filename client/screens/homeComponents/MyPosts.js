@@ -73,7 +73,6 @@ export default class MyPosts extends React.Component {
             </View>
           )
         })}
-        <Text>hi</Text>
       </ScrollView>
     )
   }

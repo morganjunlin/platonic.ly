@@ -6,8 +6,8 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+// import LinksScreen from '../screens/LinksScreen';
+// import SettingsScreen from '../screens/SettingsScreen';
 
 import HomeScreen from '../screens/homeComponents/HomeScreen';
 import IndividualPost from '../screens/homeComponents/IndividualPost'
@@ -37,19 +37,19 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
-});
+// const LinksStack = createStackNavigator({
+//   Links: LinksScreen,
+// });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Messages',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-mail-open' : 'md-link'}
-    />
-  ),
-};
+// LinksStack.navigationOptions = {
+//   tabBarLabel: 'Messages',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === 'ios' ? 'ios-mail-open' : 'md-link'}
+//     />
+//   ),
+// };
 
 const postStack = createStackNavigator({
   post: PostScreen,
@@ -67,19 +67,19 @@ postStack.navigationOptions = {
   ),
 }
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
-});
+// const SettingsStack = createStackNavigator({
+//   Settings: SettingsScreen,
+// });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Notification',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-    />
-  ),
-};
+// SettingsStack.navigationOptions = {
+//   tabBarLabel: 'Notification',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+//     />
+//   ),
+// };
 
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
@@ -97,8 +97,8 @@ ProfileStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  // LinksStack,
   postStack,
+  // SettingsStack,
   ProfileStack
 });
