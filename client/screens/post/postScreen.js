@@ -1,11 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
 import { ScrollView, StyleSheet, View, TextInput, Text, Modal, TouchableHighlight, Alert} from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Button, Overlay} from 'react-native-elements';
 import url from '../../../conf.js';
 import axios from 'axios';
-
-
 
 
 export default class PostScreen extends React.Component {
@@ -64,14 +63,13 @@ export default class PostScreen extends React.Component {
             return true;
         }
     }
-    
+
     handleSubmitInfo() {
         let { userID, title, address, city, state, zip, description, maxAttendees, schedule } = this.state;
         axios
             .post(`${url}/api/post`, {userID: 2, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category: 1, maxAttendees, schedule: this.handleGetSchedule() })
             .then(() => console.log('data saved'))
             .catch(err => console.error(err));
-        
     }
 
     handleSubmitAndGoHome () {
@@ -106,42 +104,45 @@ export default class PostScreen extends React.Component {
         let { userID, title, address, description, catagory, maxAttendees, Month, Day, Hour, Min} = this.state
         return (
         <ScrollView style={styles.container}>
-                <View>
-                    <TextInput 
-                        style={styles.inputField}
-                        editable = {true}
-                        placeholder = 'Title of your event'
-                        onChangeText = {(text) => this.setState({title: text})}
-                    />
-                </View>
-                <View>
-                    <TextInput 
-                        style={styles.inputField}
-                        editable = {true}
-                        placeholder = 'Description'
-                        onChangeText = {(text) => this.setState({description: text})}
-                    />
-                </View>
-                <View>
-                    <TextInput 
-                        style={styles.inputField}
-                        editable = {true}
-                        placeholder = 'Street adress, City, State, Zipcode'
-                        onChangeText = {(text) => this.setState({address: text})}
-                    />
-                </View>
+          <View>
+            <PageTitle style={{textAlign: 'center'}}>Host an event!</PageTitle>
+            <PageTitle style={{textAlign: 'center'}}>Host an event!</PageTitle>
+            <PageTitle style={{textAlign: 'center'}}>Host an event!</PageTitle>
+            <Text>Give your event a short, eye catching title. </Text>
+            <TextInput 
+              style={styles.inputField}
+              editable = {true}
+              placeholder = 'Enter title here'
+              onChangeText = {(text) => this.setState({title: text})}
+            />
+            <Text>What should people know about your event? Should people bring something? Any additional information that people should know about?</Text>
+            <TextInput 
+              style ={styles.inputField}
+              editable = {true}
+              placeholder = 'Description'
+              onChangeText = {(text) => this.setState({description: text})}
+            />
+            <Text>Where will your event take place? Currently our app only supports events taking place in Los Angeles.</Text>
+            <TextInput 
+              style={styles.inputField}
+              editable = {true}
+              placeholder = 'Enter street address'
+              onChangeText = {(text) => this.setState({address: text})}
+            />
+            </View>
                 <View style={styles.pickerSelectStyles}>
                     <Dropdown
-                        label='Select a catagory'
+                        label='Select the best fitting category for your event'
                         data={this.state.catgoriesPool}
                         onChangeText = {(target) => this.setState({
                             catagory: target
                         })}
                     />
                 </View>
+                
                 <View style={styles.pickerSelectStyles}>
                     <Dropdown
-                        label='Number of attendees'
+                        label='How many people incuding yourself can attend?'
                         data={this.state.attendeesPool}
                         onChangeText = {(target) => this.setState({
                             maxAttendees: target
@@ -182,7 +183,7 @@ export default class PostScreen extends React.Component {
                             })}
                     />
                 </View>
-                <Button title='submit'
+                <Button title='Submit your event!'
                         type="outline"
                         accessibilityLabe='submit button'
                         // onPress={() => this.props.navigation.navigate('postConfirm', {title, description, address, catagory})}
@@ -227,34 +228,40 @@ PostScreen.navigationOptions = {
     title: 'Post',
 };
 
+const PageTitle = styled.Text`
+font-size: 32px;
+color: black;
+font-Family: Helvetica;
+font-weight: bold
+`;
+
 const styles = StyleSheet.create({
     container: {
         fontSize: 16,
-        paddingVertical: 40,
+        paddingVertical: 10,
         paddingHorizontal: 10,
         flex: 1,
     },
+
     inputField: {
-        borderBottomWidth: 1,
-        marginBottom: '20%'
+      margin: 10,
+      height: 40,
+      borderColor: '#d3d3d3',
+      borderWidth: 1,
+      padding: 5 
     },
+
     pickerSelectStyles: {
         fontSize: 16,
-        paddingVertical: 12,
+        paddingVertical: 5,
         paddingHorizontal: 10,
-        // borderWidth: 1,
-        // borderColor: 'grey',
-        // borderRadius: 5,
         color: 'black',
-        paddingRight: 30,
         fontWeight: 'bold',
     },
     pickerContainer: {
         flex: 1,
         flexDirection: 'row', 
         justifyContent: 'space-between',
-        paddingRight: 30,
-        paddingLeft: 30
     }, 
     schedulePickerContainer: {
         // paddingVertical: 40,
