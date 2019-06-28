@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TouchableOpacity, Button, StyleSheet, Text, View, Image, AsyncStorage } from 'react-native';
 import { AuthSession } from 'expo';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
@@ -18,6 +18,18 @@ export default class SignInScreen extends React.Component {
       profile: null,
     };
   }
+
+
+_storeData = async () => {
+  let str = JSON.stringify(responseJSON)
+  try {
+    await AsyncStorage.setItem('responseJSON', str);
+  } catch (error) {
+    // Error saving data
+    console.log("ERROR SAVING DATA:", error);
+  }
+};
+
 
   callGraph = async token => {
     const response = await fetch(
@@ -65,8 +77,9 @@ export default class SignInScreen extends React.Component {
         </View>
         )
     } else {
-      console.log("TOKEN:", this.state.token)
-      console.log("JSON RESPONSE:", this.state.responseJSON)
+        console.log("TOKEN:", this.state.token)
+        console.log("JSON RESPONSE:", this.state.responseJSON)
+        this._storeData();
         this.props.navigation.navigate('Main', {
           user: this.state.responseJSON,
         });
