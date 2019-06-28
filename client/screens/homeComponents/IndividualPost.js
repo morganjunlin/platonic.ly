@@ -25,7 +25,7 @@ export default class IndividualPost extends React.Component {
     return(
       <View>
         <View>
-          <Text>hi</Text>
+          <Text>hiJOJOJOJOJODSFNJASL:FMNASO:FNMESKJOF:SNE;</Text>
         </View>
       </View>
     )

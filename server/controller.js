@@ -16,14 +16,14 @@ module.exports = {
       .catch(e => res.status(404).send(e.stack))
   },
   createUser: (req, res) => { // signing up for an account
-    const { email, password, gender, age, description } = req.body;
+    const { id, email, password, gender, age, profilePic, description } = req.body;
     const passphrase = password; // ready for salting. apply hashing function to password.
     const firstName = req.body.firstName[0].toUpperCase() + req.body.firstName.slice(1).toLowerCase();
     const lastName = req.body.lastName[0].toUpperCase() + req.body.lastName.slice(1).toLowerCase();
     //grabs all fields required to sign up for an account. Proper capitalization for first name and last name. Inserts into users table.
     //current database does not take into count of unique emails.
     //to create a user, these values are required: email, password, gender, age, first_name, last_name. All strings except age.
-    db.query(`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, description) VALUES('${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${description}') RETURNING *;`)
+    db.query(`INSERT INTO users(id, email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${id}','${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`)
       .then(data =>  res.status(200).send(data.rows[0]))
       .catch(e => res.status(404).send(e.stack))
   },
@@ -142,14 +142,14 @@ module.exports = {
   },
 
   makeNewPost: (req, res) => { // allows user to create a new post
-    const { userID, title, address, city, state, zip, description, category, maxAttendees, schedule } = req.body;
+    const { userID, title, address, description, category, maxAttendees, schedule } = req.body;
 
 
     //above are values needed to create a new post.
     //below, a new post row is created and the post id is returned
     //with the returned post id, a new row is created on users_posts, the table that keeps track of posts that a user created.
     db.query(`
-      INSERT INTO posts(title, post_address, post_city, post_state, post_zip, post_desc, category_id, max_attendees, schedule)
+      INSERT INTO posts(title, post_address, post_desc, category_id, max_attendees, schedule)
       VALUES('${title}', '${address}', '${city}', '${state}', ${zip}, '${description}', ${category}, ${maxAttendees}, '${schedule}')
       RETURNING id as "postID";
       `)
