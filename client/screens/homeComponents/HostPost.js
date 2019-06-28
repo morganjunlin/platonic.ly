@@ -38,6 +38,7 @@ export default class IndividualPost extends React.Component {
     }
     this.fetchOnePost = this.fetchOnePost.bind(this);
     this.attendeeProfile = this.attendeeProfile.bind(this);
+    this.triggerAcceptance = this.triggerAcceptance.bind(this);
   }
 
 
@@ -56,11 +57,17 @@ export default class IndividualPost extends React.Component {
     let img = {uri: profile.profilePic};
     return (
       <View key={profile.userID} style={{margin: 5}}>
-        <Image style={{width: 100, height: 100}} source={img} />
+        <Image style={{width: 100, height: 100, borderRadius: '50%'}} source={img} />
         <EventFormDetails style={{textAlign: 'center'}}>{profile.firstName}</EventFormDetails>
-        {profile.accepted ? <AcceptedButton style={{textAlign: 'center'}}>Accepted!</AcceptedButton> : <PendingButton style={{textAlign: 'center'}}>Accepted!</PendingButton>}
+        {profile.accepted ? <AcceptedButton style={{textAlign: 'center'}}>Accepted!</AcceptedButton> : <PendingButton style={{textAlign: 'center'}} onPress={() => this.triggerAcceptance(profile.attendeeID)}>Pending</PendingButton>}
       </View>
     )
+  }
+  triggerAcceptance(attendeeID) {
+    axios
+      .patch(`${url}/api/attendees/${attendeeID}`)
+      .then(() => console.log(`attendee updated!`))
+      .catch(err => console.error(err));
   }
 
   componentDidMount() {
@@ -129,17 +136,17 @@ font-Family: Helvetica
 const AcceptedButton = styled.Text`
 font-size: 14px;
 color: #e3e3e3;
-borderColor: 'green',
-borderWidth: 1,
-font-Family: Helvetica
+borderColor: #008000;
+borderWidth: 1;
+font-Family: Helvetica;
 `;
 
 const PendingButton = styled.Text`
 font-size: 14px;
 color: #e3e3e3;
-borderColor: 'red',
-borderWidth: 1,
-font-Family: Helvetica
+borderColor: #FF0000;
+borderWidth: 1;
+font-Family: Helvetica;
 `;
 
 const EventFormDetails = styled.Text`
