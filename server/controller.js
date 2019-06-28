@@ -308,7 +308,7 @@ module.exports = {
   },
 
   requestToBeAttendee: (req, res) => { // allows user to request to join a single post
-    const { postID, userID } = req.params;
+    const { postID, userID } = req.body;
     //requires id of post and id of user. default to false for is_attending.
     console.log(`INSERT INTO attendees (posts_id, users_id) VALUES (${postID}, ${userID}) RETURNING *;`)
     db.query(`INSERT INTO attendees (posts_id, users_id) VALUES (${postID}, ${userID}) RETURNING *;`)
