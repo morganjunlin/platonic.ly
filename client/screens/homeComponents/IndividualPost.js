@@ -22,10 +22,13 @@ export default class IndividualPost extends React.Component {
   }
 
   render() {
+    console.log('inside individual post')
+    console.log(this.props.navigation.state.params.id)
+    console.log('wll the id show?')
     return(
       <View>
         <View>
-          <Text>hiJOJOJOJOJODSFNJASL:FMNASO:FNMESKJOF:SNE;</Text>
+          <Text>clicked post id: {this.props.navigation.state.params.id}</Text>
         </View>
       </View>
     )

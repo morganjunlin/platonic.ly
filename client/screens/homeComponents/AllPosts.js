@@ -88,11 +88,12 @@ export default class AllPosts extends React.Component {
 
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
+    let id = { id: evnt.id }
     // console.log(this.props)
     return (
       // <EventBox key={i}>
       // <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}>
-      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual')}>
+      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual', id)}>
         <EventBackground
           source={bg}
         >

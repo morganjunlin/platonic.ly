@@ -19,7 +19,7 @@ export default class PostScreen extends React.Component {
             maxAttendees: 0,
             isVisible: false,
             Month: '',
-            Date: '',
+            Day: '',
             Hour: '', 
             Min: '',
 
@@ -84,15 +84,15 @@ export default class PostScreen extends React.Component {
     handleGetSchedule() {
         let year = new Date().getFullYear();
         let month = this.state.Month;
-        let date = this.state.Date;
+        let day = this.state.Day;
         let hour = this.state.Hour;
         let min = this.state.Min;
 
-        return new Date(year, month, date, hour, min);
+        return new Date(year, month, day, hour, min);
     }
     
     render() {
-        let { userID, title, address, city, state, zip, description, catagory, maxAttendees, schedule } = this.state
+        let { userID, title, address, description, catagory, maxAttendees, Month, Day, Hour, Min} = this.state
         return (
         <ScrollView style={styles.container}>
                 <View>
@@ -151,7 +151,7 @@ export default class PostScreen extends React.Component {
                             label='Date'
                             data={this.state.DatePool}
                             onChangeText = {(target) => this.setState({
-                                Date: target
+                                Day: target
                             })}
                     />
                     <Dropdown
@@ -180,11 +180,11 @@ export default class PostScreen extends React.Component {
                 />
                 <Overlay
                     isVisible={this.state.isVisible}
-                    windowBackgroundColor="rgba(228, 233, 237, 0.2)"
+                    windowBackgroundColor="rgba(228, 233, 237, 0.9)"
                     overlayBackgroundColor="white"
                     containerStyle={{borderColor: 'grey'}}
                     width="50%"
-                    height="30%"
+                    height="40%"
                     >
                     <View style={{fontSize: 25,
                                 paddingVertical: 40,
@@ -195,8 +195,9 @@ export default class PostScreen extends React.Component {
                         <Text>Address: {address}</Text>
                         <Text>Catagory: {catagory}</Text>
                         <Text>Number of attendees: {maxAttendees}</Text>
-                        <Text>Time: {this.handleGetSchedule}</Text>
+                        <Text>Time: {Month}/{Day} @ {Hour}:{Min}</Text>
                         <Button 
+                            style={styles.confirmButton}
                             type="solid"
                             title="Confirm"
                             onPress={() => {this.props.navigation.navigate('Home'), this.setState({isVisible: !this.state.isVisible})}}
@@ -245,5 +246,8 @@ const styles = StyleSheet.create({
         paddingVertical: 40,
         width: 100,
         paddingHorizontal: 2
+    }, 
+    confirmButton: {
+        marginBottom: 30
     }
 });
