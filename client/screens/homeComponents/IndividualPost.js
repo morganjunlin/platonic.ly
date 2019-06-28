@@ -25,7 +25,7 @@ export default class IndividualPost extends React.Component {
     this.state = {
       eventID: this.props.navigation.state.params.id,
       data: {
-        id: 0,
+        id: -1,
         title: "",
         description: "",
         location: {},
@@ -71,7 +71,7 @@ export default class IndividualPost extends React.Component {
     let bg = {uri : data.category.bg};
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     let attendList = ds.cloneWithRows(data.currentAttendees);
-    if (data.id > 0) {
+    if (data.id > -1) {
     return (
       <SingleEventPage>
         <SingleEventBackground source={bg}>
