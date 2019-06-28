@@ -91,7 +91,8 @@ export default class AllPosts extends React.Component {
     // console.log(this.props)
     return (
       // <EventBox key={i}>
-      <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}>
+      // <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}>
+      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual')}>
         <EventBackground
           source={bg}
         >
@@ -129,7 +130,7 @@ export default class AllPosts extends React.Component {
           <EventForm>This event starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
           <EventForm>Address: {evnt.location.address} {evnt.location.city}, {evnt.location.state}, {evnt.location.zip}</EventForm>
           <EventForm> </EventForm>
-          <EventFormDetails>Details: {evnt.description}</EventFormDetails>
+          <EventForm>Details: {evnt.description}</EventForm>
           <EventForm> </EventForm>
           <EventForm>
             {evnt.currentAttendees.length < 2 ? `One person is going! ` : `There are ${evnt.currentAttendees.length} people are going! `}
@@ -158,6 +159,8 @@ export default class AllPosts extends React.Component {
   }
 
   render () {
+    console.log('inside all posts render')
+    console.log(this.props.navigation)
     const { search } = this.state;
     if (this.state.form === 'all') {
       return (

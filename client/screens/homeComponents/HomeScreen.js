@@ -40,7 +40,7 @@ export default class HomeScreen extends React.Component {
 
   handlePageChange = () => {
     if (this.state.page === 'AllPosts') {
-      return <AllPost />
+      return <AllPost navigation={this.props.navigation}/>
     } else {
       return <MyPosts />
     }
@@ -56,9 +56,9 @@ export default class HomeScreen extends React.Component {
           <View >
             <Button 
               type='clear'
-              title='All Posts'
-              onPress={() => {this.handleChangeConents('AllPosts')}}
-              // onPress={() => this.props.navigation.navigate('AllPosts')}
+              title='All Posts' 
+              // onPress={() => {this.handleChangeConents('AllPosts')}}
+              onPress={() => this.handleChangeConents('AllPosts')}
             />
           </View>
           <View>
