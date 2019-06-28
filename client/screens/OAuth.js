@@ -66,7 +66,7 @@ export default class SignInScreen extends React.Component {
   render() {
     if (this.state.responseJSON === null) {
       return (
-          <ImageBackground source={require('../assets/images/bg2.jpg')} style={{width: '100%', height: '100%'}} resizeMode="stretch">
+          <ImageBackground source={require('../assets/images/bg3.jpg')} style={{width: '100%', height: '100%'}} >
           <View style={styles.container}>
           <Text style={styles.paragraph}>Platonic.ly</Text>
           {this.renderButton('Login with FB')}
