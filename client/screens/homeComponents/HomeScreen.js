@@ -42,7 +42,7 @@ export default class HomeScreen extends React.Component {
     if (this.state.page === 'AllPosts') {
       return <AllPost navigation = {this.props.navigation}/>
     } else {
-      return <MyPosts />
+      return <MyPosts navigation = {this.props.navigation}/>
     }
   }
 

@@ -14,7 +14,7 @@ import {
   ListView,
   Image
 } from 'react-native';
-import { SearchBar, Header , Button} from 'react-native-elements';
+import { SearchBar, Header , Button } from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
 import url from '../../../conf.js';

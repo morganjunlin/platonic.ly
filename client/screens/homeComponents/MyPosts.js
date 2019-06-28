@@ -1,4 +1,6 @@
 import React from 'react';
+import styled from 'styled-components';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   Image,
   Platform,
@@ -15,6 +17,8 @@ import moment from 'moment';
 import axios from 'axios';
 import url from '../../../conf.js';
 
+const userID = 12;
+
 export default class MyPosts extends React.Component {
   constructor() {
     super()
@@ -23,6 +27,7 @@ export default class MyPosts extends React.Component {
       search: ''
     }
     this.updateSearch = this.updateSearch.bind(this);
+    this.singleEvent = this.singleEvent.bind(this);
     // this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
   }
 
@@ -32,12 +37,10 @@ export default class MyPosts extends React.Component {
 
   handleFetchUserPost = () => {
     axios
-    .get(`${url}/api/post`)
-    .then(( data ) => {
+    .get(`${url}/api/myposts/${userID}`)
+    .then(({ data }) => {
       // console.log(data);
-      this.setState({
-        data: data.data
-      });
+      this.setState({ data });
     })
     .catch(err => console.error(err))
 
@@ -46,6 +49,32 @@ export default class MyPosts extends React.Component {
   updateSearch = search => {
     this.setState({ search });
   };
+
+  singleEvent (evnt, i) {
+    let bg = {uri : evnt.category.bg};
+    let id = { id: evnt.id };
+    // console.log(this.props)
+    return (
+      // <EventBox key={i}>
+      // <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}> 
+      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual', id )}>
+        <EventBackground
+          source={bg}
+        >
+          <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
+            <EventBox>
+              <EventTitle>{evnt.title}</EventTitle>
+              <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+              <EventForm>{evnt.currentAttendees < 2 ? `One person is going! ` : evnt.currentAttendees + ` people are going! `}
+              {evnt.maxAttendees - evnt.currentAttendees} spots left. </EventForm>
+              <EventForm> </EventForm>
+            </EventBox>
+          </LinearGradient>
+        </EventBackground>
+      </TouchableOpacity>
+      // </EventBox>
+    )
+  }
 
   render () {
     const { search } = this.state;
@@ -59,24 +88,39 @@ export default class MyPosts extends React.Component {
             value={search}
           />
         </View>
-        {this.state.data.map((item, i) => {
-          return (
-            <View key={i} style={styles.itemContainer}>
-              <Text style={styles.itemTitle}>{item.title}</Text>
-              <View style={styles.itemLocation}>
-                <Text>Location: </Text><Text>{item.locationCity}</Text>
-              </View>
-              <Text>Attendees: {item.currentAttendees === null ? 
-                                0 : item.currentAttendees}/{item.maxAttendees}</Text>
-              <Text>Schedule: {new Date(item.schedule).toString()}</Text>
-              <Text>Posted {moment(item.created_at).fromNow()}</Text>
-            </View>
-          )
-        })}
+        {this.state.data.map((evnt, i) => this.singleEvent(evnt,i))}        
       </ScrollView>
     )
   }
 }
+
+const EventBackground = styled.ImageBackground`
+flex:1;
+margin:1% 2%;
+background-color:#fff;
+width:96%;
+height: 200px;
+`;
+
+const EventBox = styled.View`
+width:100%;
+height: 200px;
+padding: 3%;
+justifyContent: flex-end
+`;
+
+const EventTitle = styled.Text`
+font-size: 32px;
+color: #fff;
+font-Family: Helvetica;
+font-weight: bold
+`;
+
+const EventForm = styled.Text`
+font-size: 14px;
+color: #e3e3e3;
+font-Family: Helvetica
+`;
 
 const styles = StyleSheet.create({
   itemContainer: {
