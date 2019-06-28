@@ -143,9 +143,9 @@ module.exports = {
   },
 
   makeNewPost: (req, res) => { // allows user to create a new post
-    const { userID, title, address, description, category, maxAttendees, schedule } = req.body;
+    const { userID, title, address, zip, description, category, maxAttendees, schedule } = req.body;
     console.log(`INSERT INTO posts(title, post_address, post_desc, category_id, max_attendees, schedule)
-    VALUES('${title}', '${address}', '${city}', '${state}', ${zip}, '${description}', ${category}, ${maxAttendees}, '${schedule}')
+    VALUES('${title}', '${address}', 'Los Angeles', 'CA', ${zip}, '${description}', ${category}, ${maxAttendees}, '${schedule}')
     RETURNING id as "postID";`)    
 
 
@@ -154,7 +154,7 @@ module.exports = {
     //with the returned post id, a new row is created on users_posts, the table that keeps track of posts that a user created.
     db.query(`
       INSERT INTO posts(title, post_address, post_desc, category_id, max_attendees, schedule)
-      VALUES('${title}', '${address}', '${city}', '${state}', ${zip}, '${description}', ${category}, ${maxAttendees}, '${schedule}')
+      VALUES('${title}', '${address}', 'Los Angeles', 'CA', ${zip}, '${description}', ${category}, ${maxAttendees}, '${schedule}')
       RETURNING id as "postID";
       `)
       .then(data => {
