@@ -68,7 +68,7 @@ export default class IndividualPost extends React.Component {
 
   render() {
     const data = this.state.data;
-    // let bg = {uri : data.evnt.category.bg};
+    let bg = {uri : data.category.bg};
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     let attendList = ds.cloneWithRows(data.currentAttendees);
     if (data.id > -1) {
