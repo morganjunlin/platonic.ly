@@ -8,6 +8,8 @@ import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
 
+const userIDHard = 12;
+
 const categories = {
   'Food': { value: 1, bg: 'https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg' },
   'Sports': { value: 2, bg: 'https://c8.alamy.com/comp/P9K822/young-asian-adult-players-playing-basketball-on-outdoor-court-P9K822.jpg' },
@@ -100,7 +102,7 @@ export default class PostScreen extends React.Component {
   handleSubmitInfo() {
     let { userID, title, address, city, state, zip, description, category, maxAttendees, schedule } = this.state;
     axios
-      .post(`${url}/api/post`, { userID: 12, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category, maxAttendees, schedule })
+      .post(`${url}/api/post`, { userID: userIDHard, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category, maxAttendees, schedule })
       .then(() => console.log('data saved'))
       .catch(err => console.error(err));
   }

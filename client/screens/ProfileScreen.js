@@ -16,6 +16,8 @@ import PostsDummyData from '../../data/dummyData/getAllPosts.json';
 import axios from 'axios';
 import url from '../../conf.js';
 
+const userID = 12;
+
 export default class ProfileScreen extends Component {
   constructor(props) {
     super(props)
@@ -48,7 +50,7 @@ export default class ProfileScreen extends Component {
     //   .catch(err => console.log(err))
 
     axios
-      .get(`${url}/api/user/12`)
+      .get(`${url}/api/user/${userID}`)
       .then(({ data }) => this.setState({
         user: data
       }, console.log('THIS IS DATA====== ', data)))
