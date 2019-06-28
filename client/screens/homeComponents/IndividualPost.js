@@ -26,6 +26,7 @@ export default class IndividualPost extends React.Component {
     this.state = {
       eventID: this.props.navigation.state.params.id,
       data: {
+        hasRequested: false,
         id: -1,
         title: "",
         description: "",
@@ -58,7 +59,7 @@ export default class IndividualPost extends React.Component {
     let img = {uri: profile.profilePic};
     return (
       <View key={profile.userID} style={{margin: 5}}>
-        <Image style={{width: 100, height: 100}} source={img} />
+        <Image style={{width: 100, height: 100, borderRadius: '50%'}} source={img} />
         <EventFormDetails style={{textAlign: 'center'}}>{profile.firstName}</EventFormDetails>
       </View>
     )
@@ -71,7 +72,10 @@ export default class IndividualPost extends React.Component {
   requestToJoin(postID) {
     axios
     .post(`${url}/api/attendees`, { userID, postID })
-    .then(() => console.log(`user requested to join`))
+    .then(() => {
+      this.setState({hasRequested:false})
+      console.log(`${userID} requested to join event # ${postID}`)
+    })
     .catch(err => console.error(err));
   }
 
@@ -107,7 +111,8 @@ export default class IndividualPost extends React.Component {
             style={{flex:1}}
             dataSource={attendList}
             renderRow={(profile) => this.attendeeProfile(profile) } />
-          <EventRequest style={{textAlign: 'center'}} onPress={() => this.requestToJoin(data.id)}>Request to join event!</EventRequest>
+            {this.state.hasRequested ?  <EventRequest style={{textAlign: 'center'}}>Request sent!</EventRequest> : <EventRequest style={{textAlign: 'center'}} onPress={() => this.requestToJoin(data.id)}>Request to join event!</EventRequest>}
+          
         </SingleEventDetails>
       </SingleEventPage>
   )
@@ -143,6 +148,7 @@ font-Family: Helvetica
 const EventRequest = styled.Text`
 font-size: 20px;
 color: #e3e3e3;
+background: rgba(255,255,255,0.2);
 font-Family: Helvetica;
 borderColor: #FFffff;
 borderWidth: 1;
