@@ -66,12 +66,11 @@ export default class PostScreen extends React.Component {
     }
     
     handleSubmitInfo() {
-
         let { userID, title, address, city, state, zip, description, maxAttendees, schedule } = this.state;
         axios
-        .post(`${url}/api/post`, {userID: 2, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category: 1, maxAttendees, schedule: this.handleGetSchedule() })
-        .then(() => console.log('data saved'))
-        .catch(err => console.error(err));
+            .post(`${url}/api/post`, {userID: 2, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category: 1, maxAttendees, schedule: this.handleGetSchedule() })
+            .then(() => console.log('data saved'))
+            .catch(err => console.error(err));
         
     }
 
