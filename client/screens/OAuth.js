@@ -21,11 +21,9 @@ export default class SignInScreen extends React.Component {
 
 
 _storeData = async () => {
-  let str = JSON.stringify(responseJSON)
   try {
-    await AsyncStorage.setItem('responseJSON', str);
+    await AsyncStorage.setItem('responseJSON', this.state.responseJSON);
   } catch (error) {
-    // Error saving data
     console.log("ERROR SAVING DATA:", error);
   }
 };
