@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   Image,
   Platform,
   ScrollView,
@@ -21,24 +22,40 @@ export default class ProfileScreen extends Component {
 
     this.state = {
       user: {},
-      participating: []
+      participating: [],
+      description: ''
     }
 
     this.handleLoadData = this.handleLoadData.bind(this);
     this.ratingCompleted = this.ratingCompleted.bind(this);
+    this.handleUserParticipatingActivity = this.handleUserParticipatingActivity.bind(this);
   }
 
   componentDidMount() {
     this.handleLoadData();
   }
 
-  handleLoadData() {
-    let { id, name, gender, age, profilePic, description, rating } = UserDummyData;
-    // axios function
+  handleLoadData = () => {
+    let { profilePic, description, rating } = UserDummyData;
 
-    this.setState({ 
-      user: { id, name, gender, age, profilePic, description, rating }
-    });
+    //   .then(data => this.setState({ user: JSON.parse(data) }, () => console.log(this.state, '===== MY NAME ====', this.state.user.name)))
+    //   .then(() => this.setState({ description, user: { profilePic } }))
+    //   .catch(error => console.log("Error AsyncStorage retrieve:", error))
+    
+    // testing: this should work but it doesn't
+    // AsyncStorage.getItem('id')
+    //   .then(data => console.log('YEOGI ITTDAAAAA', data))
+    //   .catch(err => console.log(err))
+
+    axios
+      .get(`${url}/api/user/10`)
+      .then(({ data }) => this.setState({
+        user: data
+      }, console.log('THIS IS DATA====== ', data)))
+      .catch(err => console.log('DATA FETCH ERROR =====', err))
+        
+
+    // this.setState({ description, user: { id, name, gender, age, profilePic, rating } })
 
     this.handleUserParticipatingActivity();
   }
@@ -47,13 +64,7 @@ export default class ProfileScreen extends Component {
     console.log("Rating is: " + rating);
   };
 
-  handleUserMadeActivity() {
-
-  }
-
   handleUserParticipatingActivity() {
-    // let { id, title, locationCity, locationZip, category, currentAttendees, maxAttendees, schedule, created_at } = PostsDummyData;
-
     axios
       .get(`${url}/api/post`)
       .then(({data}) => {
@@ -88,10 +99,10 @@ export default class ProfileScreen extends Component {
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
 
           <View style={styles.buttonContainer}>
-            <Button 
+            {/* <Button 
               title='Edit Profile'
               style={styles.editButton}
-            /> 
+            />  */}
             <Button 
               onPress={this.logoutAsync}
               title='Logout'
@@ -101,7 +112,7 @@ export default class ProfileScreen extends Component {
 
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
 
-          <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
+          {/* <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
             <Rating
               type='heart'
               defaultRating={this.state.user.rating}
@@ -110,7 +121,7 @@ export default class ProfileScreen extends Component {
               showRating
               onFinishRating={this.ratingCompleted}
             />
-          </View>
+          </View> */}
 
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionText}>{this.state.user.description}</Text>

@@ -2,6 +2,8 @@ import React from 'react';
 import { TouchableOpacity, Button, StyleSheet, Text, View, Image, AsyncStorage, ImageBackground } from 'react-native';
 import { AuthSession } from 'expo';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import axios from 'axios';
+import url from '../../conf.js';
 
 const FB_APP_ID = '769268703474829';
 
@@ -19,13 +21,24 @@ export default class SignInScreen extends React.Component {
     };
   }
 
-  _storeData = async () => {
+
+_storeData = async () => {
     try {
       await AsyncStorage.setItem('responseJSON', this.state.responseJSON);
     } catch (error) {
       console.log("ERROR SAVING DATA:", error);
     }
-  };
+};
+
+_storeID = async (id) => {
+  try {
+    await AsyncStorage.setItem('id', JSON.stringify(id))
+  } catch (err) {
+    console.log("ERROR SAVING DATA:", err);
+  }
+}
+
+  
 
   callGraph = async token => {
     const response = await fetch(
@@ -37,12 +50,33 @@ export default class SignInScreen extends React.Component {
     if (test.id) {
       this.setState({ responseJSON }, () => {
         var json = JSON.parse(responseJSON);
-        this.setState({
-          id: json.id,
-          name: json.name,
-          profile: json.picture.data.url
-        })
+        // this.setState({
+        //   id: json.id,
+        //   name: json.name,
+        //   profile: json.picture.data.url
+        // })
+        axios
+          .get(`${url}/api/user/`, { params: { email: json.email, password: 'password' } })
+          .then(({ data }) => {
+              if (!data.id) {
+                let { id, email, name } = json
+                id = Number(id)
+                let firstName = name.split(' ')[0]
+                let lastName = name.split(' ')[1]
+                let profilePic = `http://graph.facebook.com/${id}/picture?type=large`
+
+                axios
+                  .post(`${url}/api/user`, { email, password: 'password', firstName, lastName, gender: (firstName === 'Angela') ? 'female' : 'male', age: 99, profilePic, description: 'hello i am cool pls be friend me' })
+                  .then(({data}) => console.log('=== POST SUCCESSFUL OF USER ===', data))
+                  .catch(err => console.log('=== SOMETHING WENT WRONG CREATING USER ===',  err))
+              } else {
+                console.log('USER IS IN DATABASE. COOL:', data)
+                // this should work but it doesn't
+                this._storeID(data[id])
+              }
+            })
       });
+
     }
   };
 
