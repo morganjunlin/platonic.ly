@@ -6,6 +6,7 @@ import { Button, Overlay} from 'react-native-elements';
 import url from '../../../conf.js';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
+import moment from 'moment';
 
 const categories = {
   'Food': { value: 1, bg: 'https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg' },
@@ -33,7 +34,8 @@ for (let i = 0; i < 7; i++) {
   letsDate[i].setDate(today.getDate() + i)
 }
 
-const dateOptions = Object.values(letsDate)
+let dateOptions = Object.values(letsDate);
+dateOptions = dateOptions.map(date => { return { value : moment(date).format("dddd, MMM Do, YYYY") } });
 
 export default class PostScreen extends React.Component {
   constructor(props) {
@@ -73,9 +75,9 @@ export default class PostScreen extends React.Component {
       DatePool: [{value: 1 }, {value: 2}, {value: 3}, {value: 4}, {value: 5}, {value: 6 }, {value: 7}, {value: 8}, {value: 9}, {value: 10},
                 {value: 11 }, {value: 12}, {value: 13}, {value: 14}, {value: 15}, {value: 16 }, {value: 17}, {value: 18}, {value: 19}, {value: 20},
                 {value: 21 }, {value: 22}, {value: 23}, {value: 24}, {value: 25}, {value: 26 }, {value: 27}, {value: 28}, {value: 29}, {value: 30}],
-      HourPool: [{value: 1 }, {value: 2}, {value: 3}, {value: 4}, {value: 5}, {value: 6 }, {value: 7}, {value: 8}, {value: 9}, {value: 10},
+      HourPool: [{value: 0}, {value: 1 }, {value: 2}, {value: 3}, {value: 4}, {value: 5}, {value: 6 }, {value: 7}, {value: 8}, {value: 9}, {value: 10},
                 {value: 11 }, {value: 12}, {value: 13 }, {value: 14}, {value: 15}, {value: 16}, {value: 17}, {value: 18 }, {value: 19}, {value: 20}, {value: 21}, {value: 22},
-                {value: 23 }, {value: 24}], 
+                {value: 23 }], 
       MinPool: [{value: '00'}, {value: '15'}, {value: '30'}, {value: '45'}],
     };
           
@@ -98,7 +100,7 @@ export default class PostScreen extends React.Component {
   handleSubmitInfo() {
     let { userID, title, address, city, state, zip, description, category, maxAttendees, schedule } = this.state;
     axios
-      .post(`${url}/api/post`, {userID: 2, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category, maxAttendees, schedule: this.handleGetSchedule() })
+      .post(`${url}/api/post`, { userID: 2, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category, maxAttendees, schedule })
       .then(() => console.log('data saved'))
       .catch(err => console.error(err));
   }
@@ -122,12 +124,10 @@ export default class PostScreen extends React.Component {
   }
 
   handleGetSchedule() {
-    let year = new Date().getFullYear();
-    let month = this.state.Month;
-    let day = this.state.Day;
-    let hour = this.state.Hour;
-    let min = this.state.Min;
-    return new Date(year, month, day, hour, min)
+    let final = this.state.schedule
+    final.setHours(this.state.Hour);
+    final.setMinutes(this.state.Min);
+    return final
   }
   
   categoryBackgroundRender() {
@@ -140,10 +140,7 @@ export default class PostScreen extends React.Component {
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
-            <Text style={{textAlign: 'center'}}>Today: {dateOptions[0].toString()}</Text>
-            <Text style={{textAlign: 'center'}}>Schedule: {this.state.schedule.toString()}</Text>
-
-            <Text style={{textAlign: 'center'}}>{this.handleGetSchedule().toString()}</Text>
+            <Text style={{textAlign: 'center'}}>Schedule: {moment(this.handleGetSchedule()).format("dddd, MMM Do, YYYY [at] h:mm a")}</Text>
             <PageTitle style={{textAlign: 'center'}}>Host an event!</PageTitle>
           </SingleEventBox>
         </LinearGradient>
@@ -156,16 +153,8 @@ export default class PostScreen extends React.Component {
     
     return (
       <ScrollView style={styles.container}>
-        <Dropdown
-          style={styles.schedulePickerContainer}
-          label='Date'
-          data={letsDate}
-          onChangeText = {(target) => this.setState({
-            schedule: target
-          })}
-        />
         {this.categoryBackgroundRender()}
-        {/* <View>
+        <View style={styles.formContainer}>
           <View style={styles.pickerSelectStyles}>
             <Dropdown
               label = 'Select the best fitting category for your event'
@@ -197,10 +186,7 @@ export default class PostScreen extends React.Component {
               placeholder = 'Enter street address'
               onChangeText = {(text) => this.setState({address: text})}
             />
-            </View>
                 
-                
-                <View style={styles.pickerSelectStyles}>
                     <Dropdown
                         label='How many people incuding yourself can attend?'
                         data={this.state.attendeesPool}
@@ -208,41 +194,35 @@ export default class PostScreen extends React.Component {
                             maxAttendees: target
                         })}
                     />
-                </View> */}
-                <View style={styles.pickerContainer}>
-                    
-                    {/* <Dropdown
-                            style={styles.schedulePickerContainer}
-                            label='Date'
-                            data={this.state.DatePool}
-                            onChangeText = {(target) => this.setState({
-                                Day: target
-                            })}
-                    />
-                    <Dropdown
-                            style={styles.schedulePickerContainer}
-                            label='Hour'
-                            data={this.state.HourPool}
-                            onChangeText = {(target) => this.setState({
-                                Hour: target
-                            })}
-                    />
-                    <Dropdown
-                            style={styles.schedulePickerContainer}
-                            label='Min'
-                            data={this.state.MinPool}
-                            onChangeText = {(target) => this.setState({
-                                Min: target
-                            })}
-                    /> */}
-                </View>
+                <Dropdown
+          dropdownStyle={{ width: 100 }}
+          label='Schedule the date of your event'
+          data={dateOptions}
+          onChangeText = {(target, indx) => this.setState({
+            schedule: letsDate[indx]
+          })}
+        />
+        <Dropdown
+          dropdownStyle={{ width: 100 }}
+          label='Hour'
+          data={this.state.HourPool}
+          onChangeText = {Hour => this.setState({ Hour })}
+        />
+        <Dropdown
+          dropdownStyle={{ width: 100 }}
+          label='Minute'
+          data={this.state.MinPool}
+          onChangeText = { Min => this.setState({ Min })}
+        />
+
+        
                 <Button title='Submit your event!'
                         type="outline"
                         accessibilityLabe='submit button'
                         // onPress={() => this.props.navigation.navigate('postConfirm', {title, description, address, category})}
                         onPress={this.checkInputFields() ? () => this.setState({isVisible: !this.state.isVisible}) : 
                                 () => this.handleInputAlert()}
-                />
+                /></View>
                 <PageTitle style={{textAlign: 'center'}}> </PageTitle>
                 <Overlay
                     isVisible={this.state.isVisible}
@@ -309,7 +289,11 @@ const styles = StyleSheet.create({
         // paddingHorizontal: 10,
         flex: 1,
     },
-
+    formContainer : {
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        flex: 1,
+    },
     inputField: {
       margin: 10,
       height: 40,
@@ -325,15 +309,15 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight: 'bold',
     },
+
     pickerContainer: {
         flex: 1,
         flexDirection: 'row', 
-        justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
     }, 
     schedulePickerContainer: {
         // paddingVertical: 40,
         width: 50, 
-        height: 50,
         // paddingHorizontal: 2
     }, 
     confirmButton: {
