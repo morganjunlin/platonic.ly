@@ -12,7 +12,7 @@ module.exports = {
     // a user inputs email and password to log in to their account. If the credentials are correct, it will send back a success message. If incorrect credentials, it will send a defense message.
     // this is a general function for user login. Currently our team is trying to figure out how to auth and save cookies and sessions, so that's why the queries send back sucess or defense messages rather than sending session info.
     db.query(`SELECT id FROM users WHERE email = '${email}' AND passphrase = '${passphrase}'`)
-      .then(data => data.rows.length ? res.status(200).send(data.rows[0].id) : res.status(200).send(0) )
+      .then(data => data.rows.length ? res.status(200).send(`ya its in there`) : res.status(200).send(`no its not in there`) )
       .catch(e => res.status(404).send(e.stack))
   },
   createUser: (req, res) => { // signing up for an account

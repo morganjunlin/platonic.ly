@@ -33,6 +33,8 @@ for (let i = 0; i < 7; i++) {
   letsDate[i].setDate(today.getDate() + i)
 }
 
+const dateOptions = Object.values(letsDate)
+
 export default class PostScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -138,8 +140,8 @@ export default class PostScreen extends React.Component {
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
-            <Text style={{textAlign: 'center'}}>Today: {letsDate[0].toString()}</Text>
-            <Text style={{textAlign: 'center'}}>Tmrw: {letsDate[1].toString()}</Text>
+            <Text style={{textAlign: 'center'}}>Today: {dateOptions[0].toString()}</Text>
+            <Text style={{textAlign: 'center'}}>Schedule: {this.state.schedule.toString()}</Text>
 
             <Text style={{textAlign: 'center'}}>{this.handleGetSchedule().toString()}</Text>
             <PageTitle style={{textAlign: 'center'}}>Host an event!</PageTitle>
@@ -154,6 +156,14 @@ export default class PostScreen extends React.Component {
     
     return (
       <ScrollView style={styles.container}>
+        <Dropdown
+          style={styles.schedulePickerContainer}
+          label='Date'
+          data={letsDate}
+          onChangeText = {(target) => this.setState({
+            schedule: target
+          })}
+        />
         {this.categoryBackgroundRender()}
         {/* <View>
           <View style={styles.pickerSelectStyles}>
@@ -200,14 +210,7 @@ export default class PostScreen extends React.Component {
                     />
                 </View> */}
                 <View style={styles.pickerContainer}>
-                    <Dropdown
-                            style={styles.schedulePickerContainer}
-                            label='Date'
-                            data={this.state.MonthPool}
-                            onChangeText = {(target) => this.setState({
-                                Month: target
-                            })}
-                    />
+                    
                     {/* <Dropdown
                             style={styles.schedulePickerContainer}
                             label='Date'
