@@ -57,7 +57,7 @@ export default class MyPosts extends React.Component {
     return (
       // <EventBox key={i}>
       // <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}> 
-      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual', id )}>
+      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('HostPost', id )}>
         <EventBackground
           source={bg}
         >

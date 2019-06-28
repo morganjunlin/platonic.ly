@@ -201,6 +201,7 @@ module.exports = {
           'bg', categories.cat_image
           ) AS category,
         ARRAY(SELECT json_build_object(
+          'attendeeID',attendees.id,
           'userID',attendees.users_id,
           'firstName', (SELECT first_name FROM users WHERE id = attendees.users_id),
           'profilePic', (SELECT profile_img FROM users WHERE id = attendees.users_id),
