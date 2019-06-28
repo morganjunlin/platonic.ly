@@ -32,11 +32,8 @@ export default class AllPosts extends React.Component {
     }
     this.updateSearch = this.updateSearch.bind(this);
     this.singleEvent = this.singleEvent.bind(this);
-    this.singleEventDetailed = this.singleEventDetailed.bind(this);
     this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
-    this.fetchOnePost = this.fetchOnePost.bind(this);
     this.handleAllEventClick = this.handleAllEventClick.bind(this);
-    this.attendeeProfile = this.attendeeProfile.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
   }
 
@@ -75,25 +72,15 @@ export default class AllPosts extends React.Component {
   }
   
   // this function fetches a single detailed event and saves it as singleEventData inside state.
-  fetchOnePost(id) {
-    axios
-      .get(`${url}/api/post/${id}`)
-      .then(({data}) => {
-        this.setState({ 
-          singleEventData: data,
-          form: 'one'});
-      })
-      .catch(err => console.error(err));
-  }
 
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
-    let id = { id: evnt.id }
+    let id = { id: evnt.id };
     // console.log(this.props)
     return (
       // <EventBox key={i}>
       // <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}>
-      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual', id)}>
+      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual', id )}>
         <EventBackground
           source={bg}
         >
@@ -109,53 +96,6 @@ export default class AllPosts extends React.Component {
         </EventBackground>
       </TouchableOpacity>
       // </EventBox>
-    )
-  }
-
-  // this function renders a detailed event post for single view.
-  singleEventDetailed (evnt) {
-    let bg = {uri : evnt.category.bg};
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    let attendList = ds.cloneWithRows(evnt.currentAttendees);
-    return (
-      <SingleEventPage>
-        <SingleEventBackground source={bg}>
-          <LinearGradient colors={['transparent', 'rgba(0,0,0,1)']}>
-            <SingleEventBox>
-              <EventTitle>{evnt.title}</EventTitle>
-            </SingleEventBox>
-          </LinearGradient>
-        </SingleEventBackground>
-        <SingleEventDetails>
-          <EventForm>Posted {moment(evnt.created_at).fromNow()}.</EventForm>
-          <EventForm>This event starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
-          <EventForm>Address: {evnt.location.address} {evnt.location.city}, {evnt.location.state}, {evnt.location.zip}</EventForm>
-          <EventForm> </EventForm>
-          <EventForm>Details: {evnt.description}</EventForm>
-          <EventForm> </EventForm>
-          <EventForm>
-            {evnt.currentAttendees.length < 2 ? `One person is going! ` : `There are ${evnt.currentAttendees.length} people are going! `}
-            {evnt.maxAttendees - evnt.currentAttendees.length === 0 ? `No more spots left!` : evnt.maxAttendees - evnt.currentAttendees.length > 1 ? `There are ${evnt.maxAttendees - evnt.currentAttendees.length} spots left!` : `Only 1 spot left!` }
-          </EventForm>
-          <ListView
-            horizontal={true}
-            style={{flex:1}}
-            dataSource={attendList}
-            renderRow={(profile) => this.attendeeProfile(profile) } />
-          <EventFormDetails>Request to join event!</EventFormDetails>
-        </SingleEventDetails>
-      </SingleEventPage>
-    )
-  }
-
-  //this function renders a single attendee's mini info with photo and first name, and link to the full profile page.
-  attendeeProfile(profile) {
-    let img = {uri: profile.profilePic};
-    return (
-      <View key={profile.userID} style={{margin: 5}}>
-        <Image style={{width: 100, height: 100}} source={img} />
-        <EventFormDetails style={{textAlign: 'center'}}>{profile.firstName}</EventFormDetails>
-      </View>
     )
   }
 

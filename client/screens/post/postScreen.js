@@ -53,6 +53,8 @@ export default class PostScreen extends React.Component {
         this.checkInputFields = this.checkInputFields.bind(this);
         this.handleInputAlert = this.handleInputAlert.bind(this);
         this.handleGetSchedule = this.handleGetSchedule.bind(this);
+        this.handleSubmitInfo = this.handleSubmitInfo.bind(this);
+        this.handleSubmitAndGoHome = this.handleSubmitAndGoHome.bind(this)
     }
     
     checkInputFields() {
@@ -63,12 +65,22 @@ export default class PostScreen extends React.Component {
         }
     }
     
-    // handleSubmitInfo() {
-    //     let { userID, title, address, city, state, zip, description, category, maxAttendees, schedule } = this.state
-    //     axios
-    //     .post(`${url}/api/makeNewPost`, {title, address, city, state, zip, description, category, maxAttendees, schedule })
+    handleSubmitInfo() {
+
+        let { userID, title, address, city, state, zip, description, maxAttendees, schedule } = this.state;
+        axios
+        .post(`${url}/api/post`, {userID: 2, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category: 1, maxAttendees, schedule: this.handleGetSchedule() })
+        .then(() => console.log('data saved'))
+        .catch(err => console.error(err));
         
-    // }
+    }
+
+    handleSubmitAndGoHome () {
+        this.handleGetSchedule();
+        this.handleSubmitInfo();
+        this.props.navigation.navigate('Home');
+        this.setState({isVisible: !this.state.isVisible});
+    }
     
     handleInputAlert() {
         Alert.alert(
@@ -88,7 +100,7 @@ export default class PostScreen extends React.Component {
         let hour = this.state.Hour;
         let min = this.state.Min;
 
-        return new Date(year, month, day, hour, min);
+        return new Date(year, month, day, hour, min)
     }
     
     render() {
@@ -200,7 +212,8 @@ export default class PostScreen extends React.Component {
                             style={styles.confirmButton}
                             type="solid"
                             title="Confirm"
-                            onPress={() => {this.props.navigation.navigate('Home'), this.setState({isVisible: !this.state.isVisible})}}
+                            // onPress={() => {this.props.navigation.navigate('Home'), this.setState({isVisible: !this.state.isVisible})}}
+                            onPress={() => {this.handleSubmitAndGoHome()}}
                         />
                     </View>
                 </Overlay>
@@ -230,9 +243,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingVertical: 12,
         paddingHorizontal: 10,
-        borderWidth: 1,
+        // borderWidth: 1,
         // borderColor: 'grey',
-        borderRadius: 5,
+        // borderRadius: 5,
         color: 'black',
         paddingRight: 30,
         fontWeight: 'bold',
@@ -240,12 +253,15 @@ const styles = StyleSheet.create({
     pickerContainer: {
         flex: 1,
         flexDirection: 'row', 
-        justifyContent: 'space-around'
+        justifyContent: 'space-between',
+        paddingRight: 30,
+        paddingLeft: 30
     }, 
     schedulePickerContainer: {
-        paddingVertical: 40,
-        width: 100,
-        paddingHorizontal: 2
+        // paddingVertical: 40,
+        width: 50, 
+        height: 50,
+        // paddingHorizontal: 2
     }, 
     confirmButton: {
         marginBottom: 30

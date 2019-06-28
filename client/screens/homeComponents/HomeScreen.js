@@ -40,7 +40,7 @@ export default class HomeScreen extends React.Component {
 
   handlePageChange = () => {
     if (this.state.page === 'AllPosts') {
-      return <AllPost navigation={this.props.navigation}/>
+      return <AllPost navigation = {this.props.navigation}/>
     } else {
       return <MyPosts />
     }
