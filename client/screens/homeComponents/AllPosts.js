@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
-  RefreshControl
+  RefreshControl,
+  ListView,
+  Image
 } from 'react-native';
 import { SearchBar, Header , Button} from 'react-native-elements';
 import moment from 'moment';
@@ -34,6 +36,7 @@ export default class AllPosts extends React.Component {
     this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
     this.fetchOnePost = this.fetchOnePost.bind(this);
     this.handleAllEventClick = this.handleAllEventClick.bind(this);
+    this.attendeeProfile = this.attendeeProfile.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
   }
 
@@ -107,26 +110,81 @@ export default class AllPosts extends React.Component {
     )
   }
 
+  // this function renders a detailed event post for single view.
   singleEventDetailed (evnt) {
-    // let bg = {uri : evnt.category.bg};
-    <View><Text>You want to see it but you cant</Text></View>
-  //   <EventBackground
-  //   source={bg}
-  //   >
-  //   <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
-  //     <EventBox>
-      
-  //       <EventTitle>{evnt.title}</EventTitle>
-  //       <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
-  //       <EventForm>LETS GOOOOO</EventForm>
-  //       <EventForm> </EventForm>
-  //     </EventBox>
-  //   </LinearGradient>
-  // </EventBackground>
+    let bg = {uri : evnt.category.bg};
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    let attendList = ds.cloneWithRows(evnt.currentAttendees);
+    return (
+      <SingleEventPage>
+        <SingleEventBackground source={bg}>
+          <LinearGradient colors={['transparent', 'rgba(0,0,0,1)']}>
+            <SingleEventBox>
+              <EventTitle>{evnt.title}</EventTitle>
+            </SingleEventBox>
+          </LinearGradient>
+        </SingleEventBackground>
+        <SingleEventDetails>
+          <EventForm>Posted {moment(evnt.created_at).fromNow()}.</EventForm>
+          <EventForm>This event starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+          <EventForm>Address: {evnt.location.address} {evnt.location.city}, {evnt.location.state}, {evnt.location.zip}</EventForm>
+          <EventForm> </EventForm>
+          <EventFormDetails>Details: {evnt.description}</EventFormDetails>
+          <EventForm> </EventForm>
+          <EventForm>
+            {evnt.currentAttendees.length < 2 ? `One person is going! ` : `There are ${evnt.currentAttendees.length} people are going! `}
+            {evnt.maxAttendees - evnt.currentAttendees.length === 0 ? `No more spots left!` : evnt.maxAttendees - evnt.currentAttendees.length > 1 ? `There are ${evnt.maxAttendees - evnt.currentAttendees.length} spots left!` : `Only 1 spot left!` }
+          </EventForm>
+          <ListView
+            horizontal={true}
+            style={{flex:1}}
+            dataSource={attendList}
+            renderRow={(profile) => this.attendeeProfile(profile) } />
+          <EventFormDetails>Request to join event!</EventFormDetails>
+        </SingleEventDetails>
+      </SingleEventPage>
+    )
+  }
+
+  //this function renders a single attendee's mini info with photo and first name, and link to the full profile page.
+  attendeeProfile(profile) {
+    let img = {uri: profile.profilePic};
+    return (
+      <View key={profile.userID} style={{margin: 5}}>
+        <Image style={{width: 100, height: 100}} source={img} />
+        <EventFormDetails style={{textAlign: 'center'}}>{profile.firstName}</EventFormDetails>
+      </View>
+    )
   }
 
   render () {
     const { search } = this.state;
+    if (this.state.form === 'all') {
+      return (
+      <ScrollView refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+      }>
+        <View>
+          <SearchBar
+            placeholder="Search"
+            onChangeText={this.updateSearch}
+            value={search}
+          />
+        </View>
+
+        {this.state.data.map((evnt, i) => this.singleEvent(evnt,i))}
+      </ScrollView>
+      )
+    } else {
+      return (
+        <ScrollView>
+          {this.singleEventDetailed(this.state.singleEventData)}
+        </ScrollView>
+      )
+    }
     return (
       <ScrollView refreshControl={
         <RefreshControl
@@ -166,6 +224,12 @@ color: #e3e3e3;
 font-Family: Helvetica
 `;
 
+const EventFormDetails = styled.Text`
+font-size: 20px;
+color: #e3e3e3;
+font-Family: Helvetica
+`;
+
 const EventBackground = styled.ImageBackground`
 flex:1;
 margin:1% 2%;
@@ -179,6 +243,35 @@ width:100%;
 height: 200px;
 padding: 3%;
 justifyContent: flex-end
+`;
+
+const SingleEventPage = styled.View`
+flex:1;
+background-color:#000;
+width:100%;
+height: 100%;
+justifyContent: flex-start;
+`;
+
+const SingleEventBackground = styled.ImageBackground`
+background-color:#fff;
+width:100%;
+height: 300px;
+`;
+
+const SingleEventBox = styled.View`
+width:100%;
+height:100%;
+padding: 3%;
+justifyContent: flex-end;
+`;
+
+const SingleEventDetails = styled.View`
+flex: 1;
+width:100%;
+height:400px;
+background-color:#000;
+padding: 3%;
 `;
 
 const styles = StyleSheet.create({

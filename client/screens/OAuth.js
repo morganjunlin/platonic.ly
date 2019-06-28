@@ -19,11 +19,6 @@ export default class SignInScreen extends React.Component {
     };
   }
 
-  _signOutAsync = async () => {
-    await AsyncStorage.clear();
-    this.props.navigation.navigate('Auth');
-  };
-
   callGraph = async token => {
     const response = await fetch(
       `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
@@ -64,13 +59,17 @@ export default class SignInScreen extends React.Component {
     if (this.state.responseJSON === null) {
       return (
         <View style={styles.container}>
+        <Text style={styles.paragraph}>Platonic.ly</Text>
           {this.renderButton('Login with FB')}
+          <Text onPress={() => this.props.navigation.navigate('Main')}>bypass</Text>
         </View>
         )
     } else {
       console.log("TOKEN:", this.state.token)
       console.log("JSON RESPONSE:", this.state.responseJSON)
-        this.props.navigation.navigate('Main');
+        this.props.navigation.navigate('Main', {
+          user: this.state.responseJSON,
+        });
         return (
           <View><Text>success</Text></View>
           )
@@ -102,7 +101,7 @@ export default class SignInScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     backgroundColor: '#ecf0f1',
   },
   paragraph: {
