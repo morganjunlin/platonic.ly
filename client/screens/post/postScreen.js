@@ -19,6 +19,17 @@ const categories = {
   'Barbeque': { value: 9, bg: 'https://en.pimg.jp/029/849/737/1/29849737.jpg' },
   'Camping': { value: 10, bg: 'https://en.pimg.jp/032/573/255/1/32573255.jpg' }
 };
+const today = new Date();
+const letsDate = {
+  0: today,
+  1: new Date().setDate(today.getDate() + 1)
+      // 2: ,
+      // 3: ,
+      // 4: ,
+      // 5: ,
+      // 6: ,
+      // 7:
+}
 
 export default class PostScreen extends React.Component {
   constructor(props) {
@@ -124,8 +135,10 @@ export default class PostScreen extends React.Component {
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
-            <PageTitle style={{textAlign: 'center'}}> </PageTitle>
-            <PageTitle style={{textAlign: 'center'}}>{this.handleGetSchedule()}</PageTitle>
+            <Text style={{textAlign: 'center'}}>Today: {letsDate[0].toString()}</Text>
+            <Text style={{textAlign: 'center'}}>Tmrw: {letsDate[1].toString()}</Text>
+
+            <Text style={{textAlign: 'center'}}>{this.handleGetSchedule().toString()}</Text>
             <PageTitle style={{textAlign: 'center'}}>Host an event!</PageTitle>
           </SingleEventBox>
         </LinearGradient>
@@ -134,11 +147,12 @@ export default class PostScreen extends React.Component {
   }
 
   render() {
-    let { userID, title, address, description, category, maxAttendees, Month, Day, Hour, Min } = this.state
+    let { userID, title, address, description, category, maxAttendees, Month, Day, Hour, Min } = this.state;
+    
     return (
       <ScrollView style={styles.container}>
         {this.categoryBackgroundRender()}
-        <View>
+        {/* <View>
           <View style={styles.pickerSelectStyles}>
             <Dropdown
               label = 'Select the best fitting category for your event'
@@ -181,7 +195,7 @@ export default class PostScreen extends React.Component {
                             maxAttendees: target
                         })}
                     />
-                </View>
+                </View> */}
                 <View style={styles.pickerContainer}>
                     <Dropdown
                             style={styles.schedulePickerContainer}
@@ -191,7 +205,7 @@ export default class PostScreen extends React.Component {
                                 Month: target
                             })}
                     />
-                    <Dropdown
+                    {/* <Dropdown
                             style={styles.schedulePickerContainer}
                             label='Date'
                             data={this.state.DatePool}
@@ -214,7 +228,7 @@ export default class PostScreen extends React.Component {
                             onChangeText = {(target) => this.setState({
                                 Min: target
                             })}
-                    />
+                    /> */}
                 </View>
                 <Button title='Submit your event!'
                         type="outline"
