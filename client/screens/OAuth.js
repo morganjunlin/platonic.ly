@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Button, StyleSheet, Text, View, Image, AsyncStorage } from 'react-native';
+import { TouchableOpacity, Button, StyleSheet, Text, View, Image, AsyncStorage, ImageBackground } from 'react-native';
 import { AuthSession } from 'expo';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
@@ -19,15 +19,13 @@ export default class SignInScreen extends React.Component {
     };
   }
 
-
-_storeData = async () => {
-  try {
-    await AsyncStorage.setItem('responseJSON', this.state.responseJSON);
-  } catch (error) {
-    console.log("ERROR SAVING DATA:", error);
-  }
-};
-
+  _storeData = async () => {
+    try {
+      await AsyncStorage.setItem('responseJSON', this.state.responseJSON);
+    } catch (error) {
+      console.log("ERROR SAVING DATA:", error);
+    }
+  };
 
   callGraph = async token => {
     const response = await fetch(
@@ -68,11 +66,12 @@ _storeData = async () => {
   render() {
     if (this.state.responseJSON === null) {
       return (
-        <View style={styles.container}>
-        <Text style={styles.paragraph}>Platonic.ly</Text>
+          <ImageBackground source={require('../assets/images/bg2.jpg')} style={{width: '100%', height: '100%'}} resizeMode="stretch">
+          <View style={styles.container}>
+          <Text style={styles.paragraph}>Platonic.ly</Text>
           {this.renderButton('Login with FB')}
-          <Text onPress={() => this.props.navigation.navigate('Main')}>bypass</Text>
-        </View>
+          </View>
+          </ImageBackground>
         )
     } else {
         console.log("TOKEN:", this.state.token)
@@ -113,13 +112,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-around',
-    backgroundColor: '#ecf0f1',
   },
   paragraph: {
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10,
     margin: 24,
-    fontSize: 18,
+    fontSize: 34,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#34495e',
+    color: '#fffff0',
   },
 });
