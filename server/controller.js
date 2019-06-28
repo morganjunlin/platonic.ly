@@ -70,8 +70,8 @@ module.exports = {
   POST ROUTE BEGINS HERE
   ========================================================
   */
-  getMyPosts: (req, res) => { // allows user to get all posts with search filters
-    console.log('getting my posts')
+  getAllPosts: (req, res) => { // allows user to get all posts with search filters
+    console.log('getting all posts')
     const {} = req.params;     //search filter not implemented yet
     // grabbing all posts and BARE MINIMUM info per post for main feed.
     db.query(
@@ -105,7 +105,7 @@ module.exports = {
       .catch(e => res.status(404).send(e.stack))
   },
 
-  getAllPosts: (req, res) => { // allows user to get all posts with search filters
+  getMyPosts: (req, res) => { // allows user to get all posts with search filters
     const { id } = req.params;     //search filter not implemented yet
     console.log(`getting all posts for ${id}`)
     console.log(      `SELECT
