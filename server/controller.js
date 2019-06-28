@@ -24,7 +24,7 @@ module.exports = {
     //current database does not take into count of unique emails.
     //to create a user, these values are required: email, password, gender, age, first_name, last_name. All strings except age.
     console.log((`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`))
-    db.query(`INSERT INTO users(id, email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES(${id},'${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`)
+    db.query(`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`)
       .then(data =>  res.status(200).send(data.rows[0]))
       .catch(e => res.status(404).send(e.stack))
   },
