@@ -15,7 +15,9 @@ router
   .route('/post')
     .get(controller.getAllPosts) // allows user to get all posts with search filters
     .post(controller.makeNewPost) // allows user to create a new post
-
+router
+  .route('/myposts/:id')
+    .get(controller.getMyPosts)
 //POSTS: create post GET/edit post PATCH/see all posts GET/ see one post GET
 router
   .route('/post/:id')
