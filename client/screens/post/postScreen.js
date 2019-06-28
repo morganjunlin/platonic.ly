@@ -127,7 +127,7 @@ export default class PostScreen extends React.Component {
     let final = this.state.schedule
     final.setHours(this.state.Hour);
     final.setMinutes(this.state.Min);
-    return final
+    this.setState({ schedule: final })
   }
   
   categoryBackgroundRender() {
@@ -140,7 +140,6 @@ export default class PostScreen extends React.Component {
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
             <PageTitle style={{textAlign: 'center'}}> </PageTitle>
-            <Text style={{textAlign: 'center'}}>Schedule: {moment(this.handleGetSchedule()).format("dddd, MMM Do, YYYY [at] h:mm a")}</Text>
             <PageTitle style={{textAlign: 'center'}}>Host an event!</PageTitle>
           </SingleEventBox>
         </LinearGradient>
@@ -206,13 +205,18 @@ export default class PostScreen extends React.Component {
           dropdownStyle={{ width: 100 }}
           label='Hour'
           data={this.state.HourPool}
-          onChangeText = {Hour => this.setState({ Hour })}
+          onChangeText = { Hour => {
+            this.handleGetSchedule()
+            this.setState({ Hour })
+          }}
         />
         <Dropdown
           dropdownStyle={{ width: 100 }}
           label='Minute'
           data={this.state.MinPool}
-          onChangeText = { Min => this.setState({ Min })}
+          onChangeText = { Min => {
+            this.handleGetSchedule()
+            this.setState({ Min })}}
         />
 
         
