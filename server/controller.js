@@ -105,6 +105,69 @@ module.exports = {
       .catch(e => res.status(404).send(e.stack))
   },
 
+  getMyPosts: (req, res) => { // allows user to get all posts with search filters
+    const { id } = req.params;     //search filter not implemented yet
+    console.log(`getting all posts for ${id}`)
+    console.log(      `SELECT
+    posts.id, 
+    posts.title, 
+    posts.post_city AS "locationCity", 
+    posts.post_zip AS "locationZip", 
+    json_build_object(
+      'id',posts.category_id,'name',
+      categories.cat_name,
+      'bg',categories.cat_image
+      ) AS category,
+    array_length(ARRAY(select id
+      FROM attendees WHERE attendees.posts_id = posts.id AND attendees.is_accepted = true
+      ), 1) AS "currentAttendees", 
+    posts.max_attendees as "maxAttendees", 
+    posts.schedule, 
+    posts.created_at 
+  FROM 
+    posts, 
+    categories
+  WHERE
+    categories.id = posts.category_id AND
+    posts.id IN (select posts_id from users_posts where users_id = ${id})
+
+  ORDER BY 
+    schedule asc
+    
+  ;`)
+    // grabbing all posts and BARE MINIMUM info per post for main feed.
+    db.query(
+      `SELECT
+        posts.id, 
+        posts.title, 
+        posts.post_city AS "locationCity", 
+        posts.post_zip AS "locationZip", 
+        json_build_object(
+          'id',posts.category_id,'name',
+          categories.cat_name,
+          'bg',categories.cat_image
+          ) AS category,
+        array_length(ARRAY(select id
+          FROM attendees WHERE attendees.posts_id = posts.id AND attendees.is_accepted = true
+          ), 1) AS "currentAttendees", 
+        posts.max_attendees as "maxAttendees", 
+        posts.schedule, 
+        posts.created_at 
+      FROM 
+        posts, 
+        categories
+      WHERE
+        categories.id = posts.category_id AND
+        posts.id IN (select posts_id from users_posts where users_id = ${id})
+
+      ORDER BY 
+        schedule asc
+        
+      ;`)
+      .then((data) => res.status(200).send(data.rows))
+      .catch(e => res.status(404).send(e.stack))
+  },
+
   getOnePost: (req, res) => { // allows user to view one post
     const { id } = req.params; // pass in the id of the post you want to see
     //this queries into multiple tables at once and may not have optimal query time.
