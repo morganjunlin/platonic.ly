@@ -47,7 +47,7 @@ export default class IndividualPost extends React.Component {
       .get(`${url}/api/post/${id}`)
       .then(({data}) => {
         this.setState({ data });
-      })
+      }, () => console.log(data, '!!!!!!'))
       .catch(err => console.error(err));
   }
 
@@ -68,7 +68,7 @@ export default class IndividualPost extends React.Component {
 
   render() {
     const data = this.state.data;
-    let bg = {uri : data.category.bg};
+    // let bg = {uri : data.evnt.category.bg};
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     let attendList = ds.cloneWithRows(data.currentAttendees);
     if (data.id > -1) {
