@@ -135,6 +135,7 @@ export default class AllPosts extends React.Component {
         />
       }>
         <View>
+          <Button onPress={ () => this.props.navigation.navigate('Individual')}></Button>
           <SearchBar
             placeholder="Search"
             onChangeText={this.updateSearch}
@@ -150,9 +151,7 @@ export default class AllPosts extends React.Component {
   }
 }
 
-// HomeScreen.navigationOptions = {
-//   title: 'Meet Friends',
-// };
+
 
 const EventTitle = styled.Text`
 font-size: 32px;

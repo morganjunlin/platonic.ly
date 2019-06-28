@@ -142,14 +142,14 @@ module.exports = {
   },
 
   makeNewPost: (req, res) => { // allows user to create a new post
-    const { userID, title, address, city, state, zip, description, category, maxAttendees, schedule } = req.body;
+    const { userID, title, address, description, category, maxAttendees, schedule } = req.body;
 
 
     //above are values needed to create a new post.
     //below, a new post row is created and the post id is returned
     //with the returned post id, a new row is created on users_posts, the table that keeps track of posts that a user created.
     db.query(`
-      INSERT INTO posts(title, post_address, post_city, post_state, post_zip, post_desc, category_id, max_attendees, schedule)
+      INSERT INTO posts(title, post_address, post_desc, category_id, max_attendees, schedule)
       VALUES('${title}', '${address}', '${city}', '${state}', ${zip}, '${description}', ${category}, ${maxAttendees}, '${schedule}')
       RETURNING id as "postID";
       `)

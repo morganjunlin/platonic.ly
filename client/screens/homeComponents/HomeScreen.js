@@ -14,6 +14,7 @@ import { SearchBar, Header, Button } from 'react-native-elements';
 // import moment from 'moment';
 import AllPost from './AllPosts.js';
 import MyPosts from './MyPosts.js';
+import IndividualPost from './IndividualPost.js';
 
 
 export default class HomeScreen extends React.Component {
@@ -56,8 +57,8 @@ export default class HomeScreen extends React.Component {
             <Button 
               type='clear'
               title='All Posts'
-              // onPress={() => {this.handleChangeConents('AllPosts')}}
-              onPress={() => this.props.navigation.navigate('AllPosts')}
+              onPress={() => {this.handleChangeConents('AllPosts')}}
+              // onPress={() => this.props.navigation.navigate('AllPosts')}
             />
           </View>
           <View>
