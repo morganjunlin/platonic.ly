@@ -16,14 +16,14 @@ module.exports = {
       .catch(e => res.status(404).send(e.stack))
   },
   createUser: (req, res) => { // signing up for an account
-    const { id, email, password, gender, age, profilePic, description } = req.body;
+    const { email, password, gender, age, profilePic, description } = req.body;
     const passphrase = password; // ready for salting. apply hashing function to password.
     const firstName = req.body.firstName[0].toUpperCase() + req.body.firstName.slice(1).toLowerCase();
     const lastName = req.body.lastName[0].toUpperCase() + req.body.lastName.slice(1).toLowerCase();
     //grabs all fields required to sign up for an account. Proper capitalization for first name and last name. Inserts into users table.
     //current database does not take into count of unique emails.
     //to create a user, these values are required: email, password, gender, age, first_name, last_name. All strings except age.
-    console.log((`INSERT INTO users(id, email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES(${id},'${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`))
+    console.log((`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`))
     db.query(`INSERT INTO users(id, email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES(${id},'${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`)
       .then(data =>  res.status(200).send(data.rows[0]))
       .catch(e => res.status(404).send(e.stack))

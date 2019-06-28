@@ -22,13 +22,15 @@ const categories = {
 const today = new Date();
 const letsDate = {
   0: today,
-  1: new Date().setDate(today.getDate() + 1)
-      // 2: ,
-      // 3: ,
-      // 4: ,
-      // 5: ,
-      // 6: ,
-      // 7:
+  1: new Date(),
+  2: new Date(),
+  3: new Date(),
+  4: new Date(),
+  5: new Date(),
+  6: new Date()
+}
+for (let i = 0; i < 7; i++) {
+  letsDate[i].setDate(today.getDate() + i)
 }
 
 export default class PostScreen extends React.Component {
@@ -42,6 +44,7 @@ export default class PostScreen extends React.Component {
       category: 100, 
       maxAttendees: 0,
       isVisible: false,
+      schedule: today,
       Month: '',
       Day: '',
       Hour: '', 
@@ -199,7 +202,7 @@ export default class PostScreen extends React.Component {
                 <View style={styles.pickerContainer}>
                     <Dropdown
                             style={styles.schedulePickerContainer}
-                            label='Month'
+                            label='Date'
                             data={this.state.MonthPool}
                             onChangeText = {(target) => this.setState({
                                 Month: target
