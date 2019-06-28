@@ -13,6 +13,7 @@ import { Avatar, Button, Card, Divider, ListItem, Rating, AirbnbRating } from 'r
 import UserDummyData from '../../data/dummyData/viewOneUser.json';
 import PostsDummyData from '../../data/dummyData/getAllPosts.json';
 import axios from 'axios';
+import url from '../../conf.js';
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -53,9 +54,12 @@ export default class ProfileScreen extends Component {
   handleUserParticipatingActivity() {
     // let { id, title, locationCity, locationZip, category, currentAttendees, maxAttendees, schedule, created_at } = PostsDummyData;
 
-    this.setState({
-      participating: PostsDummyData
-    })
+    axios
+      .get(`${url}/api/post`)
+      .then(({data}) => {
+        this.setState({ participating: data });
+      })
+      .catch(err => console.error(err));
   }
 
   logoutAsync = async () => {
