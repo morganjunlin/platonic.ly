@@ -18,6 +18,7 @@ import moment from 'moment';
 import axios from 'axios';
 import url from '../../../conf.js';
 
+const userID = 12;
 
 export default class IndividualPost extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export default class IndividualPost extends React.Component {
     }
     this.fetchOnePost = this.fetchOnePost.bind(this);
     this.attendeeProfile = this.attendeeProfile.bind(this);
+    this.requestToJoin = this.requestToJoin.bind(this);
   }
 
 
@@ -64,6 +66,13 @@ export default class IndividualPost extends React.Component {
 
   componentDidMount() {
     this.fetchOnePost(this.state.eventID);
+  }
+
+  requestToJoin(postID) {
+    axios
+    .post(`${url}/api/attendees`, { userID, postID })
+    .then(() => console.log(`user requested to join`))
+    .catch(err => console.error(err));
   }
 
   render() {
@@ -98,7 +107,7 @@ export default class IndividualPost extends React.Component {
             style={{flex:1}}
             dataSource={attendList}
             renderRow={(profile) => this.attendeeProfile(profile) } />
-          <EventFormDetails>Request to join event!</EventFormDetails>
+          <EventRequest style={{textAlign: 'center'}} onPress={() => this.requestToJoin(data.id)}>Request to join event!</EventRequest>
         </SingleEventDetails>
       </SingleEventPage>
   )
@@ -129,6 +138,14 @@ const EventFormDetails = styled.Text`
 font-size: 20px;
 color: #e3e3e3;
 font-Family: Helvetica
+`;
+
+const EventRequest = styled.Text`
+font-size: 20px;
+color: #e3e3e3;
+font-Family: Helvetica;
+borderColor: #FFffff;
+borderWidth: 1;
 `;
 
 
