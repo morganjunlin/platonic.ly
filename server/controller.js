@@ -7,23 +7,24 @@ module.exports = {
   ========================================================
   */
   loginUser: (req, res) => { // logging into an account
-    const { email, password } = req.body;
+    const { email, password } = req.query;
     const passphrase = password; // ready for salting. apply hashing function to password.
     // a user inputs email and password to log in to their account. If the credentials are correct, it will send back a success message. If incorrect credentials, it will send a defense message.
     // this is a general function for user login. Currently our team is trying to figure out how to auth and save cookies and sessions, so that's why the queries send back sucess or defense messages rather than sending session info.
-    db.query(`SELECT * FROM users WHERE email = '${email}' AND passphrase = '${passphrase}'`)
-      .then(data => data.rows.length ? res.status(200).send(`correct credentials! data.rows[0] has your login info`) : res.status(200).send(`are you a hacker`) )
+    db.query(`SELECT id FROM users WHERE email = '${email}' AND passphrase = '${passphrase}'`)
+      .then(data => data.rows.length ? res.status(200).send(data.rows[0]) : res.status(200).send(`no its not in there`) )
       .catch(e => res.status(404).send(e.stack))
   },
   createUser: (req, res) => { // signing up for an account
-    const { id, email, password, gender, age, profilePic, description } = req.body;
+    const { email, password, gender, age, profilePic, description } = req.body;
     const passphrase = password; // ready for salting. apply hashing function to password.
     const firstName = req.body.firstName[0].toUpperCase() + req.body.firstName.slice(1).toLowerCase();
     const lastName = req.body.lastName[0].toUpperCase() + req.body.lastName.slice(1).toLowerCase();
     //grabs all fields required to sign up for an account. Proper capitalization for first name and last name. Inserts into users table.
     //current database does not take into count of unique emails.
     //to create a user, these values are required: email, password, gender, age, first_name, last_name. All strings except age.
-    db.query(`INSERT INTO users(id, email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${id}','${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`)
+    console.log((`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`))
+    db.query(`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`)
       .then(data =>  res.status(200).send(data.rows[0]))
       .catch(e => res.status(404).send(e.stack))
   },
