@@ -14,6 +14,7 @@ import { SearchBar, Header, Button } from 'react-native-elements';
 // import moment from 'moment';
 import AllPost from './AllPosts.js';
 import MyPosts from './MyPosts.js';
+import IndividualPost from './IndividualPost.js';
 
 
 export default class HomeScreen extends React.Component {
