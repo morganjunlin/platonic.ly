@@ -60,7 +60,7 @@ export default class IndividualPost extends React.Component {
     return (
       <View key={profile.userID} style={{margin: 5}}>
         <Image style={{width: 100, height: 100, borderRadius: '50%'}} source={img} />
-        <EventFormDetails style={{textAlign: 'center'}}>{profile.firstName}</EventFormDetails>
+        <EventForm style={{textAlign: 'center'}}>{profile.firstName}</EventForm>
       </View>
     )
   }
@@ -73,7 +73,7 @@ export default class IndividualPost extends React.Component {
     axios
     .post(`${url}/api/attendees`, { userID, postID })
     .then(() => {
-      this.setState({hasRequested:false})
+      this.setState({hasRequested:true})
       console.log(`${userID} requested to join event # ${postID}`)
     })
     .catch(err => console.error(err));
@@ -108,11 +108,12 @@ export default class IndividualPost extends React.Component {
           <ListView
             enableEmptySections={true}
             horizontal={true}
-            style={{flex:1}}
+            style={{flex:1, height:100}}
             dataSource={attendList}
             renderRow={(profile) => this.attendeeProfile(profile) } />
-            {this.state.hasRequested ?  <EventRequest style={{textAlign: 'center'}}>Request sent!</EventRequest> : <EventRequest style={{textAlign: 'center'}} onPress={() => this.requestToJoin(data.id)}>Request to join event!</EventRequest>}
-          
+            <EventRequestContainer>
+              {this.state.hasRequested ?  <EventRequest style={{textAlign: 'center'}}>Request sent!</EventRequest> : <EventRequest style={{textAlign: 'center'}} onPress={() => this.requestToJoin(data.id)}>Request to join event!</EventRequest>}
+            </EventRequestContainer>
         </SingleEventDetails>
       </SingleEventPage>
   )
@@ -148,19 +149,23 @@ font-Family: Helvetica
 const EventRequest = styled.Text`
 font-size: 20px;
 color: #e3e3e3;
-background: rgba(255,255,255,0.2);
 font-Family: Helvetica;
-borderColor: #FFffff;
-borderWidth: 1;
+
 `;
 
+const EventRequestContainer = styled.View`
+background: rgba(255,255,255,0.2);
+borderColor: #FFffff;
+borderWidth: 1;
+borderRadius: 25;
+`
 
-const SingleEventPage = styled.View`
+
+const SingleEventPage = styled.ScrollView`
 flex:1;
 background-color:#000;
 width:100%;
 height: 100%;
-justifyContent: flex-start;
 `;
 
 const SingleEventBackground = styled.ImageBackground`

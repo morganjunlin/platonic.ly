@@ -143,7 +143,7 @@ module.exports = {
 
   getOnePost: (req, res) => { // allows user to view one post
     const { id } = req.params; // pass in the id of the post you want to see
-    //this queries into multiple tables at once and may not have optimal query time.
+    //this queries into multiple tables at once.
     //returns id, title, description, exact location, category, an array of accepted attendees that includes user id, first name, and profile pic, max attendees, when the event is scheuled, and when the event was created.
     db.query(
       `SELECT

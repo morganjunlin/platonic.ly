@@ -58,8 +58,8 @@ export default class IndividualPost extends React.Component {
     return (
       <View key={profile.userID} style={{margin: 5}}>
         <Image style={{width: 100, height: 100, borderRadius: '50%'}} source={img} />
-        <EventFormDetails style={{textAlign: 'center'}}>{profile.firstName}</EventFormDetails>
-        {profile.accepted ? <AcceptedButton style={{textAlign: 'center'}}>Accepted!</AcceptedButton> : <PendingButton style={{textAlign: 'center'}} onPress={() => this.triggerAcceptance(profile.attendeeID)}>Pending</PendingButton>}
+        <EventForm style={{textAlign: 'center'}}>{profile.firstName}</EventForm>
+        {profile.accepted ? <AcceptedButton><Text style={{textAlign: 'center', color: 'white'}}>Accepted!</Text></AcceptedButton> : <PendingButton onPress={() => this.triggerAcceptance(profile.attendeeID)}><Text style={{textAlign: 'center', color: 'white'}}>Pending</Text></PendingButton>}
       </View>
     )
   }
@@ -106,7 +106,7 @@ export default class IndividualPost extends React.Component {
             style={{flex:1}}
             dataSource={attendList}
             renderRow={(profile) => this.attendeeProfile(profile) } />
-          <EventFormDetails style={{textAlign: 'center'}}>Choose who to accept into your event.</EventFormDetails>
+          <EventForm style={{textAlign: 'center'}}>Choose who to accept into your event.</EventForm>
         </SingleEventDetails>
       </SingleEventPage>
   )
@@ -133,20 +133,24 @@ color: #e3e3e3;
 font-Family: Helvetica
 `;
 
-const AcceptedButton = styled.Text`
+const AcceptedButton = styled.View`
 font-size: 14px;
 color: #e3e3e3;
 borderColor: #008000;
 borderWidth: 1;
 font-Family: Helvetica;
+borderRadius: 25;
+
 `;
 
-const PendingButton = styled.Text`
+const PendingButton = styled.View`
 font-size: 14px;
 color: #e3e3e3;
 borderColor: #FF0000;
 borderWidth: 1;
 font-Family: Helvetica;
+borderRadius: 25;
+
 `;
 
 const EventFormDetails = styled.Text`
@@ -156,12 +160,11 @@ font-Family: Helvetica
 `;
 
 
-const SingleEventPage = styled.View`
+const SingleEventPage = styled.ScrollView`
 flex:1;
 background-color:#000;
 width:100%;
 height: 100%;
-justifyContent: flex-start;
 `;
 
 const SingleEventBackground = styled.ImageBackground`
