@@ -40,5 +40,9 @@ git pull origin your_github_handle
 ```
 The last line of code will update/fix the HEAD of your_github_handle
 
-Please message in Slack if pull request is made. tyty.
+### Contributors:
 
+- Angela Choi https://github.com/losangela
+- Jeff Cho https://github.com/jeffcho0227
+- Li Sun https://github.com/lsun1
+- Morgan Lin https://github.com/morganl92
