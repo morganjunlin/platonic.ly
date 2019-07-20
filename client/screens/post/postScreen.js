@@ -47,7 +47,7 @@ export default class PostScreen extends React.Component {
       title: '',
       description: '',
       address: '', 
-      category: 100, 
+      category: 0, 
       maxAttendees: 0,
       isVisible: false,
       schedule: today,
