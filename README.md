@@ -1,5 +1,11 @@
 # Platonicly
 
+### About
+
+Our iOS application allows clients to sort through user-submitted events happening in their area. Events are time boxed between an hour and a few days. Users can request to join an event and the host can decide whether to accept them or not based on the user’s profile and potential for a quality friendly connection. Our app is for everyone to use, with some of our primary target audience being new transplants, since they may find it challenging to meet friends in a new city.
+
+Database and server are both running on AWS!
+
 ### Usage
 
 ```
