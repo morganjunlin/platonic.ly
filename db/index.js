@@ -1,7 +1,7 @@
 const { Pool } = require('pg')
 
 const pool = new Pool({
-  host: 'ec2-18-216-16-167.us-east-2.compute.amazonaws.com',
+  host: '',//'aws',
   database: 'justfriends',
   user: 'ubuntu',
   password: 'password',
