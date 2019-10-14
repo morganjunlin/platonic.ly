@@ -40,25 +40,13 @@ export default class ProfileScreen extends Component {
   handleLoadData = () => {
     let { profilePic, description, rating } = UserDummyData;
 
-    //   .then(data => this.setState({ user: JSON.parse(data) }, () => console.log(this.state, '===== MY NAME ====', this.state.user.name)))
-    //   .then(() => this.setState({ description, user: { profilePic } }))
-    //   .catch(error => console.log("Error AsyncStorage retrieve:", error))
-    
-    // testing: this should work but it doesn't
-    // AsyncStorage.getItem('id')
-    //   .then(data => console.log('YEOGI ITTDAAAAA', data))
-    //   .catch(err => console.log(err))
-
     axios
       .get(`${url}/api/user/${userID}`)
       .then(({ data }) => this.setState({
         user: data
-      }, console.log('THIS IS DATA====== ', data)))
-      .catch(err => console.log('DATA FETCH ERROR =====', err))
-        
-
-    // this.setState({ description, user: { id, name, gender, age, profilePic, rating } })
-
+      }))
+      .catch(err => console.log('ProfileScreen: Profile data retrieve error: ', err))
+  
     this.handleUserParticipatingActivity();
   }
 
@@ -81,71 +69,31 @@ export default class ProfileScreen extends Component {
 
   render() {
     return (
-      <ScrollView 
-        style={styles.container} 
-        // contentContainerStyle={styles.contentContainer}
-        >
+      <ScrollView style={styles.container}>
         
-        <Card
-          title={this.state.user.name}
-        >
+        <Card title={this.state.user.name}>
           <View style={styles.avatarContainer}>
-            <Avatar
-              size="xlarge"
-              rounded
-              source={{ uri: this.state.user.profilePic, }}
-              // style={styles.welcomeImage}
-            />
+            <Avatar size="xlarge" rounded source={{ uri: this.state.user.profilePic, }}/>
           </View>
 
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
 
           <View style={styles.buttonContainer}>
-            {/* <Button 
-              title='Edit Profile'
-              style={styles.editButton}
-            />  */}
-            <Button 
-              onPress={this.logoutAsync}
-              title='Logout'
-              style={styles.logoutButton} 
-            />
+            <Button onPress={this.logoutAsync} title='Logout' style={styles.logoutButton} />
           </View>
 
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
-
-          {/* <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
-            <Rating
-              type='heart'
-              defaultRating={this.state.user.rating}
-              ratingCount={5}
-              imageSize={25}
-              showRating
-              onFinishRating={this.ratingCompleted}
-            />
-          </View> */}
 
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionText}>{this.state.user.description}</Text>
           </View>
         </Card>
 
-        {/* <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text style={styles.nameText}>List of Active Activities</Text>
-        </View> */}
-
-        <Card 
-          // style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          title='List of Participating Activities'
-        >
+        <Card title='List of Participating Activities'>
           {
             this.state.participating.map((post, i) => {
               return (
-                <Card 
-                  // containerStyle={{padding: 0}} 
-                  key={i}
-                  title={post.title}
-                >
+                <Card key={i} title={post.title}>
                   <View style={{ marginHorizontal: 5, marginBottom: 5 }}>
                     <Text>City: {post.locationCity}</Text>
                     <Text>Attendees: {post.currentAttendees === null ? 
