@@ -21,7 +21,6 @@ export default class SignInScreen extends React.Component {
     };
   }
 
-
 _storeData = async () => {
     try {
       await AsyncStorage.setItem('responseJSON', this.state.responseJSON);
@@ -38,45 +37,38 @@ _storeID = async (id) => {
   }
 }
 
-  
+callGraph = async token => {
+  const response = await fetch(
+    `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
+  );
+  const responseJSON = JSON.stringify(await response.json());
 
-  callGraph = async token => {
-    const response = await fetch(
-      `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
-    );
-    const responseJSON = JSON.stringify(await response.json());
+  let test = JSON.parse(responseJSON)
+  if (test.id) {
+    this.setState({ responseJSON }, () => {
+      var json = JSON.parse(responseJSON);
 
-    let test = JSON.parse(responseJSON)
-    if (test.id) {
-      this.setState({ responseJSON }, () => {
-        var json = JSON.parse(responseJSON);
-        // this.setState({
-        //   id: json.id,
-        //   name: json.name,
-        //   profile: json.picture.data.url
-        // })
-        axios
-          .get(`${url}/api/user/`, { params: { email: json.email, password: 'password' } })
-          .then(({ data }) => {
-              if (!data.id) {
-                let { id, email, name } = json
-                id = Number(id)
-                let firstName = name.split(' ')[0]
-                let lastName = name.split(' ')[1]
-                let profilePic = `http://graph.facebook.com/${id}/picture?type=large`
+      axios
+        .get(`${url}/api/user/`, { params: { email: json.email, password: 'password' } })
+        .then(({ data }) => {
+            if (!data.id) {
+              let { id, email, name } = json
+              id = Number(id)
+              let firstName = name.split(' ')[0]
+              let lastName = name.split(' ')[1]
+              let profilePic = `http://graph.facebook.com/${id}/picture?type=large`
 
-                axios
-                  .post(`${url}/api/user`, { email, password: 'password', firstName, lastName, gender: (firstName === 'Angela') ? 'female' : 'male', age: 99, profilePic, description: 'hello i am cool pls be friend me' })
-                  .then(({data}) => console.log('=== POST SUCCESSFUL OF USER ===', data))
-                  .catch(err => console.log('=== SOMETHING WENT WRONG CREATING USER ===',  err))
-              } else {
-                console.log('USER IS IN DATABASE. COOL:', data)
-                // this should work but it doesn't
-                this._storeID(data[id])
-              }
-            })
+              axios
+                .post(`${url}/api/user`, { email, password: 'password', firstName, lastName, gender: (firstName === 'Angela') ? 'female' : 'male', age: 99, profilePic, description: 'hello i am cool pls be friend me' })
+                .then(({data}) => console.log('=== POST SUCCESSFUL OF USER ===', data))
+                .catch(err => console.log('=== SOMETHING WENT WRONG CREATING USER ===',  err))
+            } else {
+              console.log('USER IS IN DATABASE. COOL:', data)
+              // this should work but it doesn't
+              this._storeID(data[id])
+            }
+          })
       });
-
     }
   };
 
