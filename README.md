@@ -1,4 +1,4 @@
-# Platonicly
+# Platonic.ly
 
 ### About
 
