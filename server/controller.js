@@ -23,7 +23,6 @@ module.exports = {
     //grabs all fields required to sign up for an account. Proper capitalization for first name and last name. Inserts into users table.
     //current database does not take into count of unique emails.
     //to create a user, these values are required: email, password, gender, age, first_name, last_name. All strings except age.
-    console.log((`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`))
     db.query(`INSERT INTO users(email, passphrase, first_name, last_name, gender, age, profile_img, description) VALUES('${email}', '${passphrase}', '${firstName}', '${lastName}', '${gender}', ${age}, '${profilePic}', '${description}') RETURNING *;`)
       .then(data =>  res.status(200).send(data.rows[0]))
       .catch(e => res.status(404).send(e.stack))
@@ -66,12 +65,12 @@ module.exports = {
   ========================================================
   */
   /*
+
   ========================================================
   POST ROUTE BEGINS HERE
   ========================================================
   */
   getAllPosts: (req, res) => { // allows user to get all posts with search filters
-    console.log('getting all posts')
     const {} = req.params;     //search filter not implemented yet
     // grabbing all posts and BARE MINIMUM info per post for main feed.
     db.query(
@@ -107,7 +106,6 @@ module.exports = {
 
   getMyPosts: (req, res) => { // allows user to get all posts with search filters
     const { id } = req.params;     //search filter not implemented yet
-    console.log(`getting all posts for ${id}`)
     // grabbing all posts and BARE MINIMUM info per post for main feed.
     db.query(
       `SELECT
@@ -181,7 +179,6 @@ module.exports = {
 
   getOneHostPost: (req, res) => { // allows user to view one post
     const { id } = req.params; // pass in the id of the post you want to see
-    console.log('look at one post as a host')
     //this queries into multiple tables at once and may not have optimal query time.
     //returns id, title, description, exact location, category, an array of accepted attendees that includes user id, first name, and profile pic, max attendees, when the event is scheuled, and when the event was created.
     db.query(
@@ -221,11 +218,6 @@ module.exports = {
 
   makeNewPost: (req, res) => { // allows user to create a new post
     const { userID, title, address, zip, description, category, maxAttendees, schedule } = req.body;
-    console.log(`INSERT INTO posts(title, post_address, post_city, post_state, post_zip, post_desc, category_id, max_attendees, schedule)
-    VALUES('${title}', '${address}', 'Los Angeles', 'CA', ${zip}, '${description}', ${category}, ${maxAttendees}, '${schedule}')
-    RETURNING id as "postID";`)    
-
-
     //above are values needed to create a new post.
     //below, a new post row is created and the post id is returned
     //with the returned post id, a new row is created on users_posts, the table that keeps track of posts that a user created.
@@ -310,7 +302,6 @@ module.exports = {
   requestToBeAttendee: (req, res) => { // allows user to request to join a single post
     const { postID, userID } = req.body;
     //requires id of post and id of user. default to false for is_attending.
-    console.log(`INSERT INTO attendees (posts_id, users_id) VALUES (${postID}, ${userID}) RETURNING *;`)
     db.query(`INSERT INTO attendees (posts_id, users_id) VALUES (${postID}, ${userID}) RETURNING *;`)
       .then(data =>  res.status(200).send(data.rows[0]))
       .catch(e => res.status(404).send(e.stack))

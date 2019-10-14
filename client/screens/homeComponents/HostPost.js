@@ -48,7 +48,7 @@ export default class IndividualPost extends React.Component {
       .get(`${url}/api/hostpost/${id}`)
       .then(({data}) => {
         this.setState({ data });
-      }, () => console.log(data, '!!!!!!'))
+      })
       .catch(err => console.error(err));
   }
 
@@ -66,8 +66,7 @@ export default class IndividualPost extends React.Component {
   triggerAcceptance(attendeeID) {
     axios
       .patch(`${url}/api/attendees/${attendeeID}`)
-      .then(() => console.log(`attendee updated!`))
-      .catch(err => console.error(err));
+      .catch(err => console.error('Attendee acceptance error: ', err));
   }
 
   componentDidMount() {
@@ -112,11 +111,11 @@ export default class IndividualPost extends React.Component {
   )
 }
   else {
-    return (
-      <SingleEventPage>
-      </SingleEventPage>
-    )
-  }
+      return (
+        <SingleEventPage>
+        </SingleEventPage>
+      )
+    }
   }
 }
 

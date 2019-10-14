@@ -28,7 +28,7 @@ export default class MyPosts extends React.Component {
     }
     this.updateSearch = this.updateSearch.bind(this);
     this.singleEvent = this.singleEvent.bind(this);
-    // this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
+    this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +39,6 @@ export default class MyPosts extends React.Component {
     axios
     .get(`${url}/api/myposts/${userID}`)
     .then(({ data }) => {
-      // console.log(data);
       this.setState({ data });
     })
     .catch(err => console.error(err))
@@ -53,10 +52,7 @@ export default class MyPosts extends React.Component {
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
     let id = { id: evnt.id };
-    // console.log(this.props)
     return (
-      // <EventBox key={i}>
-      // <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}> 
       <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('HostPost', id )}>
         <EventBackground
           source={bg}
@@ -72,7 +68,6 @@ export default class MyPosts extends React.Component {
           </LinearGradient>
         </EventBackground>
       </TouchableOpacity>
-      // </EventBox>
     )
   }
 
@@ -82,13 +77,9 @@ export default class MyPosts extends React.Component {
     return (
       <ScrollView>
         <View>
-          <SearchBar
-            placeholder="Search"
-            onChangeText={this.updateSearch}
-            value={search}
-          />
+          <SearchBar placeholder="Search" onChangeText={this.updateSearch} value={search} />
         </View>
-        {this.state.data.map((evnt, i) => this.singleEvent(evnt,i))}        
+        {this.state.data.map((evnt, i) => this.singleEvent(evnt, i))}        
       </ScrollView>
     )
   }

@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header, Button } from 'react-native-elements';
-// import moment from 'moment';
 import AllPost from './AllPosts.js';
 import MyPosts from './MyPosts.js';
 import IndividualPost from './IndividualPost.js';
@@ -26,7 +25,7 @@ export default class HomeScreen extends React.Component {
       search: ''
     }
     this.updateSearch = this.updateSearch.bind(this);
-    this.handleChangeConents = this.handleChangeConents.bind(this);
+    this.handleChangeContents = this.handleChangeContents.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
@@ -34,7 +33,7 @@ export default class HomeScreen extends React.Component {
     this.setState({ search });
   };
 
-  handleChangeConents = (target) => {
+  handleChangeContents = (target) => {
     this.setState({ page: target });
   };
 
@@ -48,25 +47,14 @@ export default class HomeScreen extends React.Component {
 
   render () {
     const { search } = this.state;
-    console.log(this.props.navigate)
     return (
       <ScrollView>
-        {/* <Button onPress={() => this.props.navigation.navigate('Individual')}></Button> */}
         <View style={styles.HeaderButtonContainer}>
           <View >
-            <Button 
-              type='clear'
-              title='All Posts' 
-              // onPress={() => {this.handleChangeConents('AllPosts')}}
-              onPress={() => this.handleChangeConents('AllPosts')}
-            />
+            <Button type='clear' title='All Posts' onPress={() => this.handleChangeContents('AllPosts')}/>
           </View>
           <View>
-            <Button 
-              type='clear'
-              title='My Posts'
-              onPress={() => {this.handleChangeConents('MyPosts')}}
-            />
+            <Button type='clear' title='My Posts' onPress={() => {this.handleChangeContents('MyPosts')}}/>
           </View>
         </View>
         <View>

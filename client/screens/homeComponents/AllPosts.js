@@ -1,4 +1,3 @@
-
 import * as WebBrowser from 'expo-web-browser';
 import styled from 'styled-components';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -38,7 +37,6 @@ export default class AllPosts extends React.Component {
   }
 
   _onRefresh = () => {
-    console.log('refreshing')
     this.setState({refreshing: true});
     this.handleFetchUserPost().then(() => {
       this.setState({refreshing: false});
@@ -46,9 +44,7 @@ export default class AllPosts extends React.Component {
   }
 
   componentDidMount() {
-    console.log('yay!!!!! it mounted ')
     this.handleFetchUserPost();
-
   }
 
   updateSearch = search => {
@@ -72,18 +68,12 @@ export default class AllPosts extends React.Component {
   }
   
   // this function fetches a single detailed event and saves it as singleEventData inside state.
-
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
     let id = { id: evnt.id };
-    // console.log(this.props)
     return (
-      // <EventBox key={i}>
-      // <TouchableOpacity key = {i} onPress={() => this.handleAllEventClick(evnt.id)}>
       <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual', id )}>
-        <EventBackground
-          source={bg}
-        >
+        <EventBackground source={bg}>
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
             <EventBox>
               <EventTitle>{evnt.title}</EventTitle>
@@ -95,30 +85,19 @@ export default class AllPosts extends React.Component {
           </LinearGradient>
         </EventBackground>
       </TouchableOpacity>
-      // </EventBox>
     )
   }
 
   render () {
-    console.log('inside all posts render')
-    console.log(this.props.navigation)
     const { search } = this.state;
     if (this.state.form === 'all') {
       return (
       <ScrollView refreshControl={
-        <RefreshControl
-          refreshing={this.state.refreshing}
-          onRefresh={this._onRefresh}
-        />
+        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh}/>
       }>
         <View>
-          <SearchBar
-            placeholder="Search"
-            onChangeText={this.updateSearch}
-            value={search}
-          />
+          <SearchBar placeholder="Search" onChangeText={this.updateSearch} value={search}/>
         </View>
-
         {this.state.data.map((evnt, i) => this.singleEvent(evnt,i))}
       </ScrollView>
       )
@@ -131,29 +110,19 @@ export default class AllPosts extends React.Component {
     }
     return (
       <ScrollView refreshControl={
-        <RefreshControl
-          refreshing={this.state.refreshing}
-          onRefresh={this._onRefresh}
-        />
+        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh}/>
       }>
         <View>
           <Button onPress={ () => this.props.navigation.navigate('Individual')}></Button>
-          <SearchBar
-            placeholder="Search"
-            onChangeText={this.updateSearch}
-            value={search}
-          />
+          <SearchBar placeholder="Search" onChangeText={this.updateSearch} value={search}/>
         </View>
-
-        {this.state.form === 'all'?
+        {this.state.form === 'all' ?
           this.state.data.map((evnt, i) => this.singleEvent(evnt,i)) :
           this.singleEventDetailed(this.state.singleEventData) }
       </ScrollView>
     )
   }
 }
-
-
 
 const EventTitle = styled.Text`
 font-size: 32px;

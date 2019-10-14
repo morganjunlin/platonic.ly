@@ -46,23 +46,10 @@ for (let i = 0; i < 5; i++) {
     post_state: faker.address.state(),
     post_zip: 90036, //faker.address.zipCode(),
     post_desc: faker.lorem.sentences(),
-    // images: [images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)], images[getRandomInt(0, images.length-1)]],
     category_id: newCategories.id,
     max_attendees: getRandomInt(2, 6),
     schedule: new Date('June 24, 2019 21:15')
   };
-
-  // //generate attendees
-  // let newAttendees = {
-  //   id: i,
-  //   users_id: newUser.id
-  // };
-
-  // //generate posts_attendees
-  // let newPosts_attendees = {
-  //   posts_id: newPost.id,
-  //   attendees_id: newAttendees.id
-  // };
 
   //generate attendees (new)
   let newAttendees = {
@@ -98,8 +85,6 @@ for (let i = 0; i < 5; i++) {
                   .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO attendees VALUES($1, $2, $3)', [newAttendees.id, newAttendees.posts_id, newAttendees.users_id])
                   .catch (err => console.log(err)))
-    // .then(() => db.query('INSERT INTO posts_attendees VALUES($1, $2)', [newPosts_attendees.posts_id, newPosts_attendees.attendees_id])
-    //               .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO users_posts VALUES($1, $2)', [newUsers_posts.users_id, newUsers_posts.posts_id])
                   .catch (err => console.log(err)))
     .then(() => db.query('INSERT INTO reviews VALUES($1, $2, $3, $4)', [newReviews.id, newReviews.author, newReviews.rating, newReviews.review])

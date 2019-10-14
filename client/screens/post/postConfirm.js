@@ -1,7 +1,7 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Button, View, TextInput, Text, Modal, TouchableHighlight, Alert} from 'react-native';
+import { ScrollView, StyleSheet, Button, View, TextInput, Text, Modal, TouchableHighlight, Alert } from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import {NavigationActions} from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import { DrawerActions } from 'react-navigation';
 import { Dropdown } from 'react-native-material-dropdown';
 
@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
 })
 
 const PostConfirmScreen = (props) => {
-console.log(props)
   let {title, description, address, catagory} = props.navigation.state.params;
   return (
     <View style={{fontSize: 25,

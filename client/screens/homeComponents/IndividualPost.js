@@ -50,7 +50,7 @@ export default class IndividualPost extends React.Component {
       .get(`${url}/api/post/${id}`)
       .then(({data}) => {
         this.setState({ data });
-      }, () => console.log(data, '!!!!!!'))
+      })
       .catch(err => console.error(err));
   }
 
