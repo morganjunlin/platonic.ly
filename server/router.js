@@ -41,7 +41,7 @@ router
 //ATTENDEES: confirm/deny (boolean)
 router
   .route('/attendees/:id')
-    .patch(controller.confirmAttendee) // allows user (host) to accept or reject a potential attendee of a single post
+    .patch(controller.triggerAttendee) // allows user (host) to accept or reject a potential attendee of a single post
 
 router
   .route('/reviews')

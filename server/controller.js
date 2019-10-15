@@ -307,12 +307,14 @@ module.exports = {
       .catch(e => res.status(404).send(e.stack))
   },
 
-  confirmAttendee: (req, res) => { // allows user (host) to accept a potential attendee of a single post
+  triggerAttendee: (req, res) => { // allows user (host) to accept a potential attendee of a single post
     const { id } = req.params;
-    db.query(`UPDATE attendees SET is_accepted = true WHERE id = ${id};`)
-      .then(data =>  res.status(200).send(`Attendee # ${id} has been accepted to join your event`))
+    const { is_accepted } = req.body;
+    db.query(`UPDATE attendees SET is_accepted = ${is_accepted} WHERE id = ${id};`)
+      .then(data =>  res.status(200).send(`Attendee # ${id} has been updated for your event`))
       .catch(e => res.status(404).send(e.stack))
   },
+
   /*
   ========================================================
   ATTENDEE ROUTE ENDS HERE

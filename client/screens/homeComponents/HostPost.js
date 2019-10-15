@@ -38,7 +38,7 @@ export default class IndividualPost extends React.Component {
     }
     this.fetchOnePost = this.fetchOnePost.bind(this);
     this.attendeeProfile = this.attendeeProfile.bind(this);
-    this.triggerAcceptance = this.triggerAcceptance.bind(this);
+    this.triggerAttendee = this.triggerAttendee.bind(this);
   }
 
 
@@ -59,13 +59,16 @@ export default class IndividualPost extends React.Component {
       <View key={profile.userID} style={{margin: 5}}>
         <Image style={{width: 100, height: 100, borderRadius: '50%'}} source={img} />
         <EventForm style={{textAlign: 'center'}}>{profile.firstName}</EventForm>
-        {profile.accepted ? <AcceptedButton><Text style={{textAlign: 'center', color: 'white'}}>Accepted!</Text></AcceptedButton> : <PendingButton onPress={() => this.triggerAcceptance(profile.attendeeID)}><Text style={{textAlign: 'center', color: 'white'}}>Pending</Text></PendingButton>}
+        {profile.accepted ? <AcceptedButton><Text style={{textAlign: 'center', color: 'white'}} onPress={() => this.triggerAttendee(profile.attendeeID, 'false')}>Accepted!</Text></AcceptedButton> : <PendingButton><Text style={{textAlign: 'center', color: 'white'}} onPress={() => this.triggerAttendee(profile.attendeeID, 'true')}>Pending</Text></PendingButton>}
       </View>
     )
   }
-  triggerAcceptance(attendeeID) {
+
+  triggerAttendee(attendeeID, boolean) {
+    console.log(attendeeID, boolean, 'triggered')
     axios
-      .patch(`${url}/api/attendees/${attendeeID}`)
+      .patch(`${url}/api/attendees/${attendeeID}`, { is_accepted: boolean })
+      .then(() => this.fetchOnePost(this.state.eventID))
       .catch(err => console.error('Attendee acceptance error: ', err));
   }
 
