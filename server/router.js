@@ -43,6 +43,11 @@ router
   .route('/attendees/:id')
     .patch(controller.triggerAttendee) // allows user (host) to accept or reject a potential attendee of a single post
 
+//ATTENDEES: get all posts that a user is attending
+router
+  .route('/attending/:id')
+    .get(controller.getAttendingPosts)
+
 router
   .route('/reviews')
     .get(controller.viewUserReviews)  // allows user to view all reviews of a particular user
