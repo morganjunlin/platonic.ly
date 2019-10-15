@@ -1,0 +1,80 @@
+{
+  "name": "platonic.ly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "db:generate": "yarn run db:create && yarn run db:seed",
+    "db:regenerate": "yarn run db:drop && yarn run db:generate",
+    "db:create": "createdb platonicly && psql -d platonicly -f ./data/schema.sql",
+    "db:seed": "node ./data/seed.js",
+    "db:drop": "dropdb platonicly",
+    "server:start": "nodemon ./server/index.js",
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "test": "jest --watchAll"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrla29-just-friends-mvp/friends-mvp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hrla29-just-friends-mvp/friends-mvp/issues"
+  },
+  "homepage": "https://github.com/hrla29-just-friends-mvp/friends-mvp#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "babel-preset-expo": "^5.1.0",
+    "jest-expo": "^33.0.0",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-combine-loaders": "^2.0.4"
+  },
+  "dependencies": {
+    "@expo/samples": "~3.0.0",
+    "@expo/vector-icons": "^10.0.1",
+    "axios": "^0.19.0",
+    "css-loader": "^3.0.0",
+    "expo": "^33.0.0",
+    "expo-asset": "^5.0.0",
+    "expo-cli": "^2.20.10",
+    "expo-constants": "^5.0.0",
+    "expo-font": "^5.0.0",
+    "expo-linear-gradient": "~5.0.1",
+    "expo-web-browser": "^5.0.0",
+    "express": "^4.17.1",
+    "faker": "^4.1.0",
+    "file-loader": "^4.0.0",
+    "moment": "^2.24.0",
+    "morgan": "^1.9.1",
+    "node": "^12.4.0",
+    "nodemon": "^1.19.1",
+    "path": "^0.12.7",
+    "pg": "^7.11.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "react-native-element": "^1.2.1",
+    "react-native-elements": "^1.1.0",
+    "react-native-fbsdk": "^0.10.1",
+    "react-native-material-dropdown": "^0.11.1",
+    "react-native-ratings": "^6.3.1",
+    "react-native-web": "^0.11.4",
+    "react-navigation": "^3.11.0",
+    "style-loader": "^0.23.1",
+    "styled-components": "^4.3.2"
+  }
+}

@@ -1,0 +1,52 @@
+[
+    {
+        "attendeesID": 200,
+        "eventID": 100,
+        "user": {
+            "id": 0,
+            "firstName": "Rafael",
+            "profilePic": "http://lorempixel.com/640/480/fashion"
+        },
+        "accepted": true
+    },
+    {
+        "attendeesID": 201,
+        "eventID": 100,
+        "user": {
+            "id": 1,
+            "firstName": "Randall",
+            "profilePic": "http://lorempixel.com/640/480/fashion"
+        },
+        "accepted": false
+    },
+    {
+        "attendeesID": 202,
+        "eventID": 100,
+        "user": {
+            "id": 4,
+            "firstName": "Ernestina",
+            "profilePic": "http://lorempixel.com/640/480/fashion"
+        },
+        "accepted": true
+    },
+    {
+        "attendeesID": 203,
+        "eventID": 100,
+        "user": {
+            "id": 2,
+            "firstName": "Rae",
+            "profilePic": "http://lorempixel.com/640/480/fashion"
+        },
+        "accepted": false
+    },
+    {
+        "attendeesID": 204,
+        "eventID": 100,
+        "user": {
+            "id": 3,
+            "firstName": "Montana",
+            "profilePic": "http://lorempixel.com/640/480/fashion"
+        },
+        "accepted": false
+    }
+]
