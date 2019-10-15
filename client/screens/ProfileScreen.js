@@ -14,6 +14,7 @@ import { Avatar, Button, Card, Divider, ListItem, Rating, AirbnbRating } from 'r
 import UserDummyData from '../../data/dummyData/viewOneUser.json';
 import PostsDummyData from '../../data/dummyData/getAllPosts.json';
 import axios from 'axios';
+import moment from 'moment';
 import { url, userID } from '../../conf.js';
 
 // const userID = 101;
@@ -56,7 +57,7 @@ export default class ProfileScreen extends Component {
 
   handleUserParticipatingActivity() {
     axios
-      .get(`${url}/api/post`)
+      .get(`${url}/api/attending/${userID}`)
       .then(({data}) => {
         this.setState({ participating: data });
       })
@@ -98,7 +99,7 @@ export default class ProfileScreen extends Component {
                     <Text>City: {post.locationCity}</Text>
                     <Text>Attendees: {post.currentAttendees === null ? 
                                   0 : post.currentAttendees}/{post.maxAttendees}</Text>
-                    <Text>Created at {post.created_at}</Text>
+                    <Text>Starts {moment(post.schedule.toString()).calendar()}</Text>
                   </View>
                 </Card>
               )
