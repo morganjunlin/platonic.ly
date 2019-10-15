@@ -10,6 +10,7 @@ router
 router
   .route('/user/:id')
     .get(controller.viewOneUser)
+
 //POSTS: create post GET/edit post PATCH/see all posts GET/ see one post GET
 router
   .route('/post')
@@ -19,11 +20,11 @@ router
 router
   .route('/myposts/:id')
     .get(controller.getMyPosts)
-
 // gets a single post as a host
 router
   .route('/hostpost/:id')
     .get(controller.getOneHostPost)
+
 //POSTS: create post GET/edit post PATCH/see all posts GET/ see one post GET
 router
   .route('/post/:id')
@@ -46,4 +47,5 @@ router
   .route('/reviews')
     .get(controller.viewUserReviews)  // allows user to view all reviews of a particular user
     .post(controller.writeReview) // allows user to write a review about another user
+
 module.exports = router;
