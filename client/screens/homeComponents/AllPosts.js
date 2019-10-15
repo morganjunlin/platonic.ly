@@ -16,8 +16,8 @@ import {
 import { SearchBar, Header , Button } from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
-import url from '../../../conf.js';
 import IndividualPost from './IndividualPost';
+import { url } from '../../../conf.js';
 
 export default class AllPosts extends React.Component {
   constructor(props) {
@@ -55,7 +55,7 @@ export default class AllPosts extends React.Component {
   handleFetchUserPost = () => {
     axios
       .get(`${url}/api/post`)
-      .then(({data}) => {
+      .then(({ data }) => {
         this.setState({ data });
       })
       .catch(err => console.error(err));
@@ -69,15 +69,16 @@ export default class AllPosts extends React.Component {
   
   // this function fetches a single detailed event and saves it as singleEventData inside state.
   singleEvent (evnt, i) {
-    let bg = {uri : evnt.category.bg};
+    let bg = { uri : evnt.category.bg };
     let id = { id: evnt.id };
+
     return (
-      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('Individual', id )}>
+      <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('Individual', id )}>
         <EventBackground source={bg}>
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
             <EventBox>
               <EventTitle>{evnt.title}</EventTitle>
-              <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+              <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(evnt.schedule.toString()).calendar()}</EventForm>
               <EventForm>{evnt.currentAttendees < 2 ? `One person is going! ` : evnt.currentAttendees + ` people are going! `}
               {evnt.maxAttendees - evnt.currentAttendees} spots left. </EventForm>
               <EventForm> </EventForm>
@@ -90,6 +91,7 @@ export default class AllPosts extends React.Component {
 
   render () {
     const { search } = this.state;
+
     if (this.state.form === 'all') {
       return (
       <ScrollView refreshControl={
@@ -108,19 +110,6 @@ export default class AllPosts extends React.Component {
         </ScrollView>
       )
     }
-    return (
-      <ScrollView refreshControl={
-        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh}/>
-      }>
-        <View>
-          <Button onPress={ () => this.props.navigation.navigate('Individual')}></Button>
-          <SearchBar placeholder="Search" onChangeText={this.updateSearch} value={search}/>
-        </View>
-        {this.state.form === 'all' ?
-          this.state.data.map((evnt, i) => this.singleEvent(evnt,i)) :
-          this.singleEventDetailed(this.state.singleEventData) }
-      </ScrollView>
-    )
   }
 }
 

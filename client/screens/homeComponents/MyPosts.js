@@ -15,9 +15,9 @@ import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header } from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
-import url from '../../../conf.js';
+import { url, userID } from '../../../conf.js';
 
-const userID = 12;
+// const userID = 12;
 
 export default class MyPosts extends React.Component {
   constructor() {
@@ -52,15 +52,14 @@ export default class MyPosts extends React.Component {
   singleEvent (evnt, i) {
     let bg = {uri : evnt.category.bg};
     let id = { id: evnt.id };
+    
     return (
-      <TouchableOpacity key = {i} onPress={() => this.props.navigation.navigate('HostPost', id )}>
-        <EventBackground
-          source={bg}
-        >
+      <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('HostPost', id )}>
+        <EventBackground source={bg}>
           <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)']}>
             <EventBox>
               <EventTitle>{evnt.title}</EventTitle>
-              <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(new Date(evnt.schedule).toString()).calendar()}</EventForm>
+              <EventForm>Posted {moment(evnt.created_at).fromNow()}. Starts {moment(evnt.schedule.toString()).calendar()}</EventForm>
               <EventForm>{evnt.currentAttendees < 2 ? `One person is going! ` : evnt.currentAttendees + ` people are going! `}
               {evnt.maxAttendees - evnt.currentAttendees} spots left. </EventForm>
               <EventForm> </EventForm>

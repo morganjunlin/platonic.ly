@@ -16,9 +16,9 @@ import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header } from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
-import url from '../../../conf.js';
+import { url, userID } from '../../../conf.js';
 
-const userID = 12;
+// const userID = 12;
 
 export default class IndividualPost extends React.Component {
   constructor(props) {
@@ -96,7 +96,7 @@ export default class IndividualPost extends React.Component {
         </SingleEventBackground>
         <SingleEventDetails>
           <EventForm>Posted {moment(data.created_at).fromNow()}.</EventForm>
-          <EventForm>This event starts {moment(new Date(data.schedule).toString()).calendar()}</EventForm>
+          <EventForm>This event starts {moment(data.schedule.toString()).calendar()}</EventForm>
           <EventForm>Address: {data.location.address} {data.location.city}, {data.location.state}, {data.location.zip}</EventForm>
           <EventForm> </EventForm>
           <EventForm>Details: {data.description}</EventForm>
