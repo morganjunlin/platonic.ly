@@ -65,7 +65,6 @@ export default class IndividualPost extends React.Component {
   }
 
   triggerAttendee(attendeeID, boolean) {
-    console.log(attendeeID, boolean, 'triggered')
     axios
       .patch(`${url}/api/attendees/${attendeeID}`, { is_accepted: boolean })
       .then(() => this.fetchOnePost(this.state.eventID))
