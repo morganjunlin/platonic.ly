@@ -9,13 +9,34 @@ const getRandomInt = (min, max) => {
 
 //data pool 
 let gender = ['male', 'female'];
-let categoriesPool = ['sport', 'art', 'food', 'tours', 'book', 'education', 'workout', 'games', 'language'];
-let categoriesImagePool = ['https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg', 'https://c8.alamy.com/comp/P9K822/young-asian-adult-players-playing-basketball-on-outdoor-court-P9K822.jpg', 'https://ak7.picdn.net/shutterstock/videos/5851637/thumb/6.jpg'];
+let categories = {
+  'Food': { value: 1, bg: 'https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg' },
+  'Sports': { value: 2, bg: 'https://c8.alamy.com/comp/P9K822/young-asian-adult-players-playing-basketball-on-outdoor-court-P9K822.jpg' },
+  'Nature': { value: 3, bg: 'https://image.shutterstock.com/image-photo/beautiful-autumn-forest-mountain-path-260nw-111970076.jpg' },
+  'Education': { value: 4, bg: 'https://cdn.explara.com/thailand20180713154259.jpg' },
+  'Studying': { value: 5, bg: 'https://as1.ftcdn.net/jpg/01/87/90/48/500_F_187904831_iGE4JXj48vKUsLVP5MVo81x9SIAyyQfW.jpg' },
+  'Picnic': { value: 6, bg: 'https://as2.ftcdn.net/jpg/02/12/98/15/500_F_212981555_5OK5TnV7AKOx1NCTpld4pXDJ2L5CUvjQ.jpg' },
+  'Beach': { value: 7, bg: 'https://as1.ftcdn.net/jpg/02/29/50/74/500_F_229507428_bDMkZ13pBOA3hjQfNTEuDgjQVBgKoqKF.jpg' },
+  'Drinks': { value: 8, bg: 'https://t3.ftcdn.net/jpg/01/11/55/60/500_F_111556056_E1B9cLEy7JX2rMyv48TKfgKEU6DukFxo.jpg' },
+  'Barbeque': { value: 9, bg: 'https://en.pimg.jp/029/849/737/1/29849737.jpg' },
+  'Camping': { value: 10, bg: 'https://en.pimg.jp/032/573/255/1/32573255.jpg' }
+};
+let categoriesPool = [
+        { value: 'Food' },
+        { value: 'Sports' },
+        { value: 'Nature' },
+        { value: 'Education' },
+        { value: 'Studying' },
+        { value: 'Picnic' },
+        { value: 'Beach' },
+        { value: 'Drinks' },
+        { value: 'Barbeque' },
+        { value: 'Camping' } ];
 let images = [faker.image.fashion(), faker.image.food(), faker.image.nightlife(), faker.image.nature(), faker.image.sports(), faker.image.city(), faker.image.business()];
 let images2 = [faker.image.fashion(), faker.image.food(), faker.image.nightlife(), faker.image.nature(), faker.image.sports(), faker.image.city(), faker.image.business()];
 let images3 = [faker.image.fashion(), faker.image.food(), faker.image.nightlife(), faker.image.nature(), faker.image.sports(), faker.image.city(), faker.image.business()];
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 9; i++) {
   //generate Users
   let newUser = {
     id: i + 100,
@@ -32,9 +53,9 @@ for (let i = 0; i < 5; i++) {
 
   //generate categories
   let newCategories = {
-    id: i,
-    cat_name: categoriesPool[getRandomInt(0, categoriesPool.length-1)],
-    cat_image: categoriesImagePool[getRandomInt(0, categoriesImagePool.length-1)]
+    id: i+1,
+    cat_name: categoriesPool[i].value,
+    cat_image: categories[categoriesPool[i].value].bg
   }; 
 
   //generate posts
@@ -94,4 +115,4 @@ for (let i = 0; i < 5; i++) {
     .catch (err => console.log(err));
 }
 
-console.log(`... let's give about 10 seconds to finish seeding.`);
+console.log(`... let's give about 15 seconds to finish seeding.`);
