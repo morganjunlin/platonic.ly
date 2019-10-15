@@ -5,22 +5,17 @@ import { NavigationActions } from 'react-navigation';
 import { DrawerActions } from 'react-navigation';
 import { Dropdown } from 'react-native-material-dropdown';
 
-
-const styles = StyleSheet.create({
-
-})
-
 const PostConfirmScreen = (props) => {
-  let {title, description, address, catagory} = props.navigation.state.params;
+  let {title, description, address, category} = props.navigation.state.params;
   return (
-    <View style={{fontSize: 25,
+    <View style={{ fontSize: 25,
                   paddingVertical: 40,
                   paddingHorizontal: 10,
-                  flex: 1,}}>
+                  flex: 1 }}>
       <Text>Title: {title}</Text>
       <Text>Description: {description}</Text>
       <Text>Address: {address}</Text>
-      <Text>Catagory: {catagory}</Text>
+      <Text>Category: {category}</Text>
       <Button 
         title="Confirm"
         onPress={() => props.navigation.navigate('Home')}
