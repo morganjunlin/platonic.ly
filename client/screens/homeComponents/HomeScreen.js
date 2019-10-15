@@ -66,7 +66,7 @@ export default class HomeScreen extends React.Component {
 }
 
 HomeScreen.navigationOptions = {
-  title: 'Meet Friends',
+  title: 'Platonic.ly',
 };
 
 const styles = StyleSheet.create({
