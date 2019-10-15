@@ -3,9 +3,9 @@ import { TouchableOpacity, Button, StyleSheet, Text, View, Image, AsyncStorage, 
 import { AuthSession } from 'expo';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import axios from 'axios';
-import url from '../../conf.js';
+import { url } from '../../conf.js';
 
-const FB_APP_ID = '769268703474829';
+const FB_APP_ID = '537903636972442';
 
 export default class SignInScreen extends React.Component {
 
@@ -25,7 +25,7 @@ _storeData = async () => {
     try {
       await AsyncStorage.setItem('responseJSON', this.state.responseJSON);
     } catch (error) {
-      console.log("ERROR SAVING DATA:", error);
+      console.log("ERROR SAVING DATA: ", error);
     }
 };
 
@@ -33,11 +33,11 @@ _storeID = async (id) => {
   try {
     await AsyncStorage.setItem('id', JSON.stringify(id))
   } catch (err) {
-    console.log("ERROR SAVING DATA:", err);
+    console.log("ERROR SAVING DATA: ", err);
   }
 }
 
-callGraph = async token => {
+callGraph = async (token) => {
   const response = await fetch(
     `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
   );
@@ -82,7 +82,7 @@ callGraph = async token => {
           padding: 24,
           backgroundColor: '#3B5998',
         }}>
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>
+        <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
           {str}
         </Text>
       </View>
@@ -95,7 +95,7 @@ callGraph = async token => {
           <ImageBackground source={require('../assets/images/bg3.jpg')} style={{width: '100%', height: '100%'}} >
           <View style={styles.container}>
           <Text style={styles.paragraph}>Platonic.ly</Text>
-          {this.renderButton('Login with FB')}
+          {this.renderButton('Sign In With Facebook')}
           </View>
           </ImageBackground>
         )
@@ -107,7 +107,7 @@ callGraph = async token => {
           user: this.state.responseJSON,
         });
         return (
-          <View><Text>success</Text></View>
+          <View><Text>Success</Text></View>
           )
     }
   }
