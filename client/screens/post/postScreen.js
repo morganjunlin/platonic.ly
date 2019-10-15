@@ -3,17 +3,15 @@ import styled from 'styled-components';
 import { ScrollView, StyleSheet, View, TextInput, Text, Modal, TouchableHighlight, Alert, ImageBackground } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Button, Overlay} from 'react-native-elements';
-import url from '../../../conf.js';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
-
-const userIDHard = 12;
+import { url, userID } from '../../../conf.js';
 
 const categories = {
   'Food': { value: 1, bg: 'https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg' },
   'Sports': { value: 2, bg: 'https://c8.alamy.com/comp/P9K822/young-asian-adult-players-playing-basketball-on-outdoor-court-P9K822.jpg' },
-  'Nature': { value: 3, bg: 'https://ak7.picdn.net/shutterstock/vvalueeos/5851637/thumb/6.jpg' },
+  'Nature': { value: 3, bg: 'https://image.shutterstock.com/image-photo/beautiful-autumn-forest-mountain-path-260nw-111970076.jpg' },
   'Education': { value: 4, bg: 'https://cdn.explara.com/thailand20180713154259.jpg' },
   'Studying': { value: 5, bg: 'https://as1.ftcdn.net/jpg/01/87/90/48/500_F_187904831_iGE4JXj48vKUsLVP5MVo81x9SIAyyQfW.jpg' },
   'Picnic': { value: 6, bg: 'https://as2.ftcdn.net/jpg/02/12/98/15/500_F_212981555_5OK5TnV7AKOx1NCTpld4pXDJ2L5CUvjQ.jpg' },
@@ -55,7 +53,7 @@ export default class PostScreen extends React.Component {
       Day: '',
       Hour: '', 
       Min: '',
-      catgoriesPool: [
+      categoriesPool: [
         { value: 'Food' },
         { value: 'Sports' },
         { value: 'Nature' },
@@ -100,9 +98,9 @@ export default class PostScreen extends React.Component {
   }
 
   handleSubmitInfo() {
-    let { userID, title, address, city, state, zip, description, category, maxAttendees, schedule } = this.state;
+    let { title, address, city, state, zip, description, category, maxAttendees, schedule } = this.state;
     axios
-      .post(`${url}/api/post`, { userID: userIDHard, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category, maxAttendees, schedule })
+      .post(`${url}/api/post`, { userID, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category, maxAttendees, schedule })
       .then(() => console.log('data saved'))
       .catch(err => console.error(err));
   }
@@ -116,7 +114,6 @@ export default class PostScreen extends React.Component {
     
   handleInputAlert() {
     Alert.alert(
-      'You know better!!!',
       'Please fill in all fields', 
       [{text: 'ok', 
         onPress: () => console.log('informed'),
@@ -159,7 +156,7 @@ export default class PostScreen extends React.Component {
           <View style={styles.pickerSelectStyles}>
             <Dropdown
               label = 'Select the best fitting category for your event'
-              data = {this.state.catgoriesPool}
+              data = {this.state.categoriesPool}
               onChangeText = {(target) => this.setState({
                 category: categories[target].value,
                 bg: categories[target].bg
@@ -224,8 +221,7 @@ export default class PostScreen extends React.Component {
         
                 <Button title='Submit your event!'
                         type="outline"
-                        accessibilityLabe='submit button'
-                        // onPress={() => this.props.navigation.navigate('postConfirm', {title, description, address, category})}
+                        accessibilityLabel='Submit Button'
                         onPress={this.checkInputFields() ? () => this.setState({isVisible: !this.state.isVisible}) : 
                                 () => this.handleInputAlert()}
                 /></View>
@@ -252,7 +248,6 @@ export default class PostScreen extends React.Component {
                             style={styles.confirmButton}
                             type="solid"
                             title="Confirm"
-                            // onPress={() => {this.props.navigation.navigate('Home'), this.setState({isVisible: !this.state.isVisible})}}
                             onPress={() => {this.handleSubmitAndGoHome()}}
                         />
                         
@@ -291,8 +286,6 @@ justifyContent: flex-end;
 const styles = StyleSheet.create({
     container: {
         fontSize: 16,
-        // paddingVertical: 10,
-        // paddingHorizontal: 10,
         flex: 1,
     },
     formContainer : {
@@ -322,9 +315,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
     }, 
     schedulePickerContainer: {
-        // paddingVertical: 40,
-        width: 50, 
-        // paddingHorizontal: 2
+        width: 50,
     }, 
     confirmButton: {
         marginBottom: 30
