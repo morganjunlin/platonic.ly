@@ -2,17 +2,15 @@
 
 ### About
 
-Our iOS application allows clients to sort through user-submitted events happening in their area. Events are time boxed between an hour and a few days. Users can request to join an event and the host can decide whether to accept them or not based on the user’s profile and potential for a quality friendly connection. Our app is for everyone to use, with some of our primary target audience being new transplants, since they may find it challenging to meet friends in a new city.
+Our mobile application allows clients to sort through user-submitted events happening in their area. Events are time boxed between an hour and a few days. Users can request to join an event and the host can decide whether to accept them or not based on the user’s profile and potential for a quality friendly connection. Our app is for everyone to use, with some of our primary target audience being new transplants, since they may find it challenging to meet friends in a new city.
 
-Database and server are both running on AWS!
+This is a fork of the original Platonic.ly prototype.
 
 ### Usage
 
 ```
-git clone https://github.com/hrla29-just-friends-mvp/friends-mvp.git
-cd friends-mvp
-
-git checkout -b your_github_handle
+git clone https://github.com/morganl92/platonic.ly.git
+cd platonic.ly
 yarn install
 yarn run db:generate
 ```
@@ -27,24 +25,12 @@ yarn start
 yarn run db:regenerate
 ```
 
-#### If you want to run xcode simulator
+#### If you want to run Xcode simulator
 
 yarn add expo-cli
 expo client:install:ios
 
-after simulator is opened, click on the top right plus and get the url from Metro Bundler
-
-#### Before pull request && to update to current develop commit on your local:
-Before your start, make sure your current branch is up-to-date. Then run the following commands:
-
-```
-git checkout develop
-git pull origin develop
-git checkout your_github_handle
-git rebase develop
-git pull origin your_github_handle
-```
-The last line of code will update/fix the HEAD of your_github_handle
+After simulator is opened, click on the top right plus and get the url from Metro Bundler
 
 ### Contributors:
 
