@@ -55,10 +55,10 @@ export default class EditProfile extends Component {
     let last_name = name.split(' ')[1];
 
     axios
-      .patch(`${url}/api/user${userID}`, { first_name, last_name, description })
+      .patch(`${url}/api/user/${userID}`, { description })
       .then(() => this.handleLoadData())
       .then(() => this.props.navigation.goBack(null))
-      .catch(err => console.error('Profile edit error: ', err))    
+      .catch(err => console.log('Profile edit error: ', err))    
   }
 
   render() {
