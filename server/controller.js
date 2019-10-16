@@ -363,7 +363,7 @@ module.exports = {
   editProfile: (req, res) => {
     const { id } = req.params;
     const { first_name, last_name, description } = req.body;
-    db.query(`UPDATE users SET first_name = '`first_name`', last_name = '`last_name`', description = '`description`' WHERE id = ${id};`)
+    db.query("UPDATE users SET first_name = '" + first_name + "', last_name = '" + last_name + "', description = '" + description + `' WHERE id = ${id};`)
       .then(data =>  res.status(200).send(`User # ${id} has been updated`))
       .catch(e => res.status(404).send(e.stack))
 
