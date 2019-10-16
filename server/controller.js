@@ -367,7 +367,7 @@ module.exports = {
       .then(data =>  res.status(200).send(`User # ${id} has been updated`))
       .catch(e => res.status(404).send(e.stack))
 
-  }
+  },
   /*
   ========================================================
   PROFILE ROUTE ENDS HERE
