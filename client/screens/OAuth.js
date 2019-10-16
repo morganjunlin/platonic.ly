@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Button, StyleSheet, Text, View, Image, AsyncStorage, ImageBackground } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { AuthSession } from 'expo';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import axios from 'axios';
@@ -95,7 +96,14 @@ callGraph = async (token) => {
           <ImageBackground source={require('../assets/images/bg3.jpg')} style={{width: '100%', height: '100%'}} >
           <View style={styles.container}>
           <Text style={styles.paragraph}>Platonic.ly</Text>
-          {this.renderButton('Sign In With Facebook')}
+          {/* {this.renderButton('Sign In With Facebook')} */}
+          <Icon.Button
+            name="facebook"
+            backgroundColor="#3b5998"
+            onPress={this._handlePressAsync}
+          >
+            Login with Facebook
+          </Icon.Button>
           </View>
           </ImageBackground>
         )

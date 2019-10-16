@@ -13,6 +13,7 @@ import PostConfirmScreen from '../screens/post/postConfirm';
 import PostScreen from '../screens/post/postScreen';
 
 import ProfileScreen from '../screens/ProfileScreen';
+import EditProfile from '../screens/EditProfile'
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -53,6 +54,7 @@ postStack.navigationOptions = {
 
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
+  Edit: EditProfile
 });
 
 ProfileStack.navigationOptions = {

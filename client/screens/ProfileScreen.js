@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import { Avatar, Button, Card, Divider, ListItem, Rating, AirbnbRating } from 'react-native-elements';
+import { Avatar, Button, Card, Divider, Icon, ListItem, Rating, AirbnbRating } from 'react-native-elements';
 import UserDummyData from '../../data/dummyData/viewOneUser.json';
 import PostsDummyData from '../../data/dummyData/getAllPosts.json';
 import axios from 'axios';
@@ -64,6 +64,10 @@ export default class ProfileScreen extends Component {
       .catch(err => console.error(err));
   }
 
+  editProfileAsync = async () => {
+    this.props.navigation.navigate('Edit');
+  }
+
   logoutAsync = async () => {
     this.props.navigation.navigate('Auth');
   }
@@ -72,40 +76,46 @@ export default class ProfileScreen extends Component {
     return (
       <ScrollView style={styles.container}>
         
-        <Card title={this.state.user.name}>
+        <Card containerStyle={styles.cardNoBorder} title={this.state.user.name}>
           <View style={styles.avatarContainer}>
-            <Avatar size="xlarge" rounded source={{ uri: this.state.user.profilePic, }}/>
+            <Avatar size="xlarge" rounded source={{ uri: this.state.user.profilePic }}/>
+          </View>
+
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionText}>{this.state.user.description}</Text>
           </View>
 
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
 
           <View style={styles.buttonContainer}>
+            <Button onPress={this.editProfileAsync} title='Edit Description' style={styles.editButton} />
             <Button onPress={this.logoutAsync} title='Logout' style={styles.logoutButton} />
           </View>
 
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
-
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionText}>{this.state.user.description}</Text>
-          </View>
         </Card>
 
-        <Card title='List of Participating Activities'>
+        <Card containerStyle={styles.cardNoBorder} title='List of Participating Activities'>
           {
             this.state.participating.map((post, i) => {
+              let bg = {uri: post.category.bg}
+              let id = {id: post.id}
               return (
-                <Card key={i} title={post.title}>
-                  <View style={{ marginHorizontal: 5, marginBottom: 5 }}>
-                    <Text>City: {post.locationCity}</Text>
-                    <Text>Attendees: {post.currentAttendees === null ? 
-                                  0 : post.currentAttendees}/{post.maxAttendees}</Text>
-                    <Text>Starts {moment(post.schedule.toString()).calendar()}</Text>
-                  </View>
+                <Card key={i} title={post.title} image={bg}>
+                  <Text>City: {post.locationCity}</Text>
+                  <Text>Attendees: {post.currentAttendees === null ? 
+                                0 : post.currentAttendees}/{post.maxAttendees}</Text>
+                  <Text style={{marginBottom: 10}}>Starts {moment(post.schedule.toString()).calendar()}</Text>
+                  <Button
+                    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                    title='View Event'
+                    onPress={() => this.props.navigation.navigate('Individual', id)} />
                 </Card>
               )
             })
           }
         </Card>
+
       </ScrollView>
     )
   }
@@ -118,16 +128,21 @@ ProfileScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
     backgroundColor: '#fff',
-  },
-  contentContainer: {
-    paddingTop: 30,
   },
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  cardNoBorder: {
+    borderWidth: 0,
+    borderColor: 'transparent',
+    elevation: 0,
+    shadowColor: 'rgba(0,0,0, .2)',
+    shadowOffset: { height: 0, width: 0 },
+    shadowOpacity: 0, //default is 1
+    shadowRadius: 0//default is 1
   },
   editButton: {
     marginHorizontal: 10,
@@ -135,15 +150,10 @@ const styles = StyleSheet.create({
   logoutButton: {
     marginHorizontal: 10,
   },
-  nameText: {
-    fontSize: 18,
-    textAlign: 'center',
-  },
   descriptionText: {
     marginTop: 10,
     marginBottom: 10,
-    // color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 19,
     textAlign: 'center',
   },
@@ -155,5 +165,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 10,
-  },
+  }
 });

@@ -10,6 +10,7 @@ router
 router
   .route('/user/:id')
     .get(controller.viewOneUser)
+    .patch(controller.editProfile) // edit user information from profile
 
 //POSTS: create post GET/edit post PATCH/see all posts GET/ see one post GET
 router
@@ -43,7 +44,7 @@ router
   .route('/attendees/:id')
     .patch(controller.triggerAttendee) // allows user (host) to accept or reject a potential attendee of a single post
 
-//ATTENDEES: get all posts that a user is attending
+//PROFILE: get all posts that a user is attending
 router
   .route('/attending/:id')
     .get(controller.getAttendingPosts)
