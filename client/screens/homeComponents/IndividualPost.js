@@ -13,12 +13,10 @@ import {
   Image
 } from 'react-native';
 import dummyData from '../../../data/dummyData/getAllPosts.json';
-import { SearchBar, Header } from 'react-native-elements';
+import { Avatar, SearchBar, Header } from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
 import { url, userID } from '../../../conf.js';
-
-// const userID = 12;
 
 export default class IndividualPost extends React.Component {
   constructor(props) {
@@ -59,8 +57,10 @@ export default class IndividualPost extends React.Component {
     let img = {uri: profile.profilePic};
     return (
       <View key={profile.userID} style={{margin: 5}}>
-        <Image style={{width: 100, height: 100, borderRadius: '50%'}} source={img} />
-        <EventForm style={{textAlign: 'center'}}>{profile.firstName}</EventForm>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('UserProfile', { userID: profile.userID })}>
+          <Avatar size="large" rounded source={img} />
+          <EventForm style={{textAlign: 'center'}}>{profile.firstName}</EventForm>
+        </TouchableOpacity>
       </View>
     )
   }

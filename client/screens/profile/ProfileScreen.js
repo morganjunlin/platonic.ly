@@ -1,23 +1,16 @@
 import React, { Component } from 'react';
 import {
-  AsyncStorage,
   Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import { Avatar, Button, Card, Divider, Icon, ListItem, Rating, AirbnbRating } from 'react-native-elements';
-import UserDummyData from '../../data/dummyData/viewOneUser.json';
-import PostsDummyData from '../../data/dummyData/getAllPosts.json';
+import { Avatar, Button, Card, Divider, Icon } from 'react-native-elements';
 import axios from 'axios';
 import moment from 'moment';
-import { url, userID } from '../../conf.js';
-
-// const userID = 101;
+import { url, userID } from '../../../conf.js';
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -30,17 +23,20 @@ export default class ProfileScreen extends Component {
     }
 
     this.handleLoadData = this.handleLoadData.bind(this);
-    this.ratingCompleted = this.ratingCompleted.bind(this);
     this.handleUserParticipatingActivity = this.handleUserParticipatingActivity.bind(this);
   }
 
   componentDidMount() {
-    this.handleLoadData();
+    const { navigation } = this.props;
+
+    this.focusListener = navigation.addListener('didFocus', () => this.handleLoadData());
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   handleLoadData = () => {
-    let { profilePic, description, rating } = UserDummyData;
-
     axios
       .get(`${url}/api/user/${userID}`)
       .then(({ data }) => this.setState({
@@ -51,10 +47,6 @@ export default class ProfileScreen extends Component {
     this.handleUserParticipatingActivity();
   }
 
-  ratingCompleted(rating) {
-    console.log("Rating is: " + rating);
-  };
-
   handleUserParticipatingActivity() {
     axios
       .get(`${url}/api/attending/${userID}`)
@@ -64,17 +56,13 @@ export default class ProfileScreen extends Component {
       .catch(err => console.error(err));
   }
 
-  editProfileAsync = async () => {
-    this.props.navigation.navigate('Edit');
-  }
-
   logoutAsync = async () => {
     this.props.navigation.navigate('Auth');
   }
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView>
         
         <Card containerStyle={styles.cardNoBorder} title={this.state.user.name}>
           <View style={styles.avatarContainer}>
@@ -88,7 +76,7 @@ export default class ProfileScreen extends Component {
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
 
           <View style={styles.buttonContainer}>
-            <Button onPress={this.editProfileAsync} title='Edit Description' style={styles.editButton} />
+            <Button onPress={() => this.props.navigation.navigate('Edit')} title='Edit Description' style={styles.editButton} />
             <Button onPress={this.logoutAsync} title='Logout' style={styles.logoutButton} />
           </View>
 
@@ -101,16 +89,14 @@ export default class ProfileScreen extends Component {
               let bg = {uri: post.category.bg}
               let id = {id: post.id}
               return (
-                <Card key={i} title={post.title} image={bg}>
-                  <Text>City: {post.locationCity}</Text>
-                  <Text>Attendees: {post.currentAttendees === null ? 
-                                0 : post.currentAttendees}/{post.maxAttendees}</Text>
-                  <Text style={{marginBottom: 10}}>Starts {moment(post.schedule.toString()).calendar()}</Text>
-                  <Button
-                    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                    title='View Event'
-                    onPress={() => this.props.navigation.navigate('Individual', id)} />
-                </Card>
+                <TouchableOpacity key={i} activeOpacity={0.5} onPress={() => this.props.navigation.navigate('Individual', id)}>
+                  <Card title={post.title} image={bg}>
+                    <Text>City: {post.locationCity}</Text>
+                    <Text>Attendees: {post.currentAttendees === null ? 
+                                  0 : post.currentAttendees}/{post.maxAttendees}</Text>
+                    <Text style={{marginBottom: 10}}>Starts {moment(post.schedule.toString()).calendar()}</Text>
+                  </Card>
+                </TouchableOpacity>
               )
             })
           }
@@ -126,10 +112,6 @@ ProfileScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',

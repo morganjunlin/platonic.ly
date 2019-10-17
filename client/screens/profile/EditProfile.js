@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
 import {
-  AsyncStorage,
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import { Avatar, Button, Card, Divider, ListItem, Rating, AirbnbRating } from 'react-native-elements';
-import UserDummyData from '../../data/dummyData/viewOneUser.json';
-import PostsDummyData from '../../data/dummyData/getAllPosts.json';
+import { Avatar, Button } from 'react-native-elements';
 import axios from 'axios';
-import moment from 'moment';
-import { url, userID } from '../../conf.js';
-
-// const userID = 101;
+import { url, userID } from '../../../conf.js';
 
 export default class EditProfile extends Component {
   constructor(props) {
@@ -55,15 +45,14 @@ export default class EditProfile extends Component {
     let last_name = name.split(' ')[1];
 
     axios
-      .patch(`${url}/api/user/${userID}`, { description })
-      .then(() => this.handleLoadData())
-      .then(() => this.props.navigation.goBack(null))
+      .patch(`${url}/api/user/${userID}`, { first_name, last_name, description })
+      .then(() => this.props.navigation.navigate('Profile', { name, description }))
       .catch(err => console.log('Profile edit error: ', err))    
   }
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView>
           <View style={styles.avatarContainer}>
             <Avatar size="xlarge" rounded source={this.state.profilePic ? {uri: this.state.profilePic} : null}/>
           </View>
@@ -100,10 +89,6 @@ EditProfile.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   contentContainer: {
     paddingTop: 30,
   },
