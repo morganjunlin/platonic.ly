@@ -8,18 +8,20 @@ import AllPost from '../screens/homeComponents/AllPosts';
 import HomeScreen from '../screens/homeComponents/HomeScreen';
 import HostPost from '../screens/homeComponents/HostPost';
 import IndividualPost from '../screens/homeComponents/IndividualPost';
+import ViewProfile from '../screens/homeComponents/ViewProfile';
 
 import PostConfirmScreen from '../screens/post/postConfirm';
 import PostScreen from '../screens/post/postScreen';
 
-import ProfileScreen from '../screens/ProfileScreen';
-import EditProfile from '../screens/EditProfile'
+import ProfileScreen from '../screens/profile/ProfileScreen';
+import EditProfile from '../screens/profile/EditProfile';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Individual: IndividualPost,
   HostPost: HostPost,
-  AllPosts: AllPost
+  AllPosts: AllPost,
+  UserProfile: ViewProfile
 });
 
 HomeStack.navigationOptions = {
