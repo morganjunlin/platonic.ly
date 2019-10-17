@@ -10,7 +10,6 @@ import {
   View,
   ImageBackground,
   RefreshControl,
-  ListView,
   Image
 } from 'react-native';
 import { SearchBar, Header , Button } from 'react-native-elements';

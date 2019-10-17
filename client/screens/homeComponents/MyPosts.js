@@ -17,8 +17,6 @@ import moment from 'moment';
 import axios from 'axios';
 import { url, userID } from '../../../conf.js';
 
-// const userID = 12;
-
 export default class MyPosts extends React.Component {
   constructor() {
     super()
