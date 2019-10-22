@@ -25,13 +25,6 @@ yarn start
 yarn run db:regenerate
 ```
 
-#### If you want to run Xcode simulator
-
-yarn add expo-cli
-expo client:install:ios
-
-After simulator is opened, click on the top right plus and get the url from Metro Bundler
-
 ### Contributors:
 
 - Angela Choi https://github.com/losangela

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,7 +9,7 @@ import {
 } from 'react-native';
 import { Avatar, Button } from 'react-native-elements';
 import axios from 'axios';
-import { url, userID } from '../../../conf.js';
+import { url } from '../../../conf.js';
 
 export default class EditProfile extends Component {
   constructor(props) {
@@ -20,17 +21,26 @@ export default class EditProfile extends Component {
       description: ''
     }
 
+    this.getUserID = this.getUserID.bind(this);
     this.handleLoadData = this.handleLoadData.bind(this);
     this.submitProfileChanges = this.submitProfileChanges.bind(this);
   }
 
   componentDidMount() {
-    this.handleLoadData();
+    this.getUserID();
+  }
+
+  getUserID = async () => {
+    try {
+      this.setState({ userID: await AsyncStorage.getItem('userID')}, () => this.handleLoadData())
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   handleLoadData = () => {
     axios
-      .get(`${url}/api/user/${userID}`)
+      .get(`${url}/api/user/${this.state.userID}`)
       .then(({ data }) => this.setState({
         profilePic: data.profilePic,
         name: data.name,
@@ -45,7 +55,7 @@ export default class EditProfile extends Component {
     let last_name = name.split(' ')[1];
 
     axios
-      .patch(`${url}/api/user/${userID}`, { first_name, last_name, description })
+      .patch(`${url}/api/user/${this.state.userID}`, { first_name, last_name, description })
       .then(() => this.props.navigation.navigate('Profile', { name, description }))
       .catch(err => console.log('Profile edit error: ', err))    
   }
