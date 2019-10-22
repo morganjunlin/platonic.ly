@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ScrollView, StyleSheet, View, TextInput, Text, Modal, TouchableHighlight, Alert, ImageBackground } from 'react-native';
+import { AsyncStorage, ScrollView, StyleSheet, View, TextInput, Text, Modal, TouchableHighlight, Alert, ImageBackground } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Button, Overlay} from 'react-native-elements';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
-import { url, userID } from '../../../conf.js';
+import { url } from '../../../conf.js';
 
 const categories = {
   'Food': { value: 1, bg: 'https://st.focusedcollection.com/3839757/i/650/focused_178420246-stock-photo-asian-friends-having-dinner-together.jpg' },
@@ -42,6 +42,7 @@ export default class PostScreen extends React.Component {
     super(props);
     this.state = {
       bg: 'https://ak7.picdn.net/shutterstock/videos/5851637/thumb/6.jpg',
+      userID: null,
       title: '',
       description: '',
       address: '', 
@@ -80,13 +81,26 @@ export default class PostScreen extends React.Component {
                 {value: 23 }], 
       MinPool: [{value: '00'}, {value: '15'}, {value: '30'}, {value: '45'}],
     };
-          
+    
+    this.getUserID = this.getUserID.bind(this);
     this.checkInputFields = this.checkInputFields.bind(this);
     this.handleInputAlert = this.handleInputAlert.bind(this);
     this.handleGetSchedule = this.handleGetSchedule.bind(this);
     this.handleSubmitInfo = this.handleSubmitInfo.bind(this);
     this.handleSubmitAndGoHome = this.handleSubmitAndGoHome.bind(this)
     this.categoryBackgroundRender = this.categoryBackgroundRender.bind(this)
+  }
+
+  componentDidMount() {
+    this.getUserID();
+  }
+
+  getUserID = async () => {
+    try {
+      this.setState({ userID: await AsyncStorage.getItem('userID')})
+    } catch (error) {
+      console.log(error.message);
+    }
   }
     
   checkInputFields() {
@@ -98,10 +112,10 @@ export default class PostScreen extends React.Component {
   }
 
   handleSubmitInfo() {
-    let { title, address, city, state, zip, description, category, maxAttendees, schedule } = this.state;
+    let { userID, title, address, city, state, zip, description, category, maxAttendees, schedule } = this.state;
+
     axios
       .post(`${url}/api/post`, { userID, title, address, city: 'Los Angeles', state: 'CA', zip: 90005, description, category, maxAttendees, schedule })
-      .then(() => console.log('data saved'))
       .catch(err => console.error(err));
   }
 
@@ -109,7 +123,19 @@ export default class PostScreen extends React.Component {
       this.handleGetSchedule();
       this.handleSubmitInfo();
       this.props.navigation.navigate('Home');
-      this.setState({isVisible: !this.state.isVisible});
+      this.setState({
+        isVisible: !this.state.isVisible,
+        title: '',
+        description: '',
+        address: '', 
+        category: 0, 
+        maxAttendees: 0,
+        isVisible: false,
+        Month: '',
+        Day: '',
+        Hour: '', 
+        Min: '',
+      });
   }
     
   handleInputAlert() {
@@ -169,6 +195,7 @@ export default class PostScreen extends React.Component {
               editable = {true}
               placeholder = 'Enter title here'
               onChangeText = {(text) => this.setState({title: text})}
+              value={this.state.title}
             />
             <Text>What should people know about your event? Should people bring something? Any additional information that people should know about?</Text>
             <TextInput 
@@ -176,6 +203,7 @@ export default class PostScreen extends React.Component {
               editable = {true}
               placeholder = 'Description'
               onChangeText = {(text) => this.setState({description: text})}
+              value={this.state.description}
             />
             <Text>Where will your event take place? Currently our app only supports events taking place in Los Angeles.</Text>
             <TextInput 
@@ -183,6 +211,7 @@ export default class PostScreen extends React.Component {
               editable = {true}
               placeholder = 'Enter street address'
               onChangeText = {(text) => this.setState({address: text})}
+              value={this.state.address}
             />
                 
                     <Dropdown

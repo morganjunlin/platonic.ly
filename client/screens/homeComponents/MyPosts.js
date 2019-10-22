@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
+  AsyncStorage,
   Image,
   Platform,
   ScrollView,
@@ -15,7 +16,7 @@ import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { SearchBar, Header } from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
-import { url, userID } from '../../../conf.js';
+import { url } from '../../../conf.js';
 
 export default class MyPosts extends React.Component {
   constructor() {
@@ -24,23 +25,40 @@ export default class MyPosts extends React.Component {
       data: [],
       search: ''
     }
+
+    this.getUserID = this.getUserID.bind(this);
     this.updateSearch = this.updateSearch.bind(this);
     this.singleEvent = this.singleEvent.bind(this);
     this.handleFetchUserPost = this.handleFetchUserPost.bind(this);
   }
 
   componentDidMount() {
-    this.handleFetchUserPost();
+    // const { navigation } = this.props;
+
+    // this.focusListener = navigation.addListener('didFocus', () => this.getUserID());
+
+    this.getUserID();
   }
 
-  handleFetchUserPost = () => {
+  // componentWillUnmount() {
+  //   this.focusListener.remove();
+  // }
+
+  getUserID = async () => {
+    try {
+      this.setState({ userID: await AsyncStorage.getItem('userID')}, () => this.handleFetchUserPost())
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  handleFetchUserPost() {
     axios
-    .get(`${url}/api/myposts/${userID}`)
+    .get(`${url}/api/myposts/${this.state.userID}`)
     .then(({ data }) => {
       this.setState({ data });
     })
     .catch(err => console.error(err))
-
   }
 
   updateSearch = search => {
@@ -48,7 +66,7 @@ export default class MyPosts extends React.Component {
   };
 
   singleEvent (evnt, i) {
-    let bg = {uri : evnt.category.bg};
+    let bg = { uri : evnt.category.bg };
     let id = { id: evnt.id };
     
     return (

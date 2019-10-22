@@ -40,14 +40,14 @@ export default class ProfileScreen extends Component {
   }
 
   getUserID = async () => {
-  try {
-    this.setState({ userID: await AsyncStorage.getItem('userID') || '4'}, () => this.handleLoadData())
-  } catch (error) {
-    console.log(error.message);
+    try {
+      this.setState({ userID: await AsyncStorage.getItem('userID')}, () => this.handleLoadData())
+    } catch (error) {
+      console.log(error.message);
+    }
   }
-}
 
-  handleLoadData = () => {
+  handleLoadData() {
     axios
       .get(`${url}/api/user/${this.state.userID}`)
       .then(({ data }) => this.setState({

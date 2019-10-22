@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
+  AsyncStorage,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,12 +17,13 @@ import dummyData from '../../../data/dummyData/getAllPosts.json';
 import { Avatar, SearchBar, Header } from 'react-native-elements';
 import moment from 'moment';
 import axios from 'axios';
-import { url, userID } from '../../../conf.js';
+import { url } from '../../../conf.js';
 
 export default class IndividualPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userID: null,
       eventID: this.props.navigation.state.params.id,
       data: {
         hasRequested: false,
@@ -41,6 +43,13 @@ export default class IndividualPost extends React.Component {
     this.requestToJoin = this.requestToJoin.bind(this);
   }
 
+  _getUserID = async () => {
+    try {
+      this.setState({ userID: await AsyncStorage.getItem('userID') }) 
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 
   // this function fetches a single detailed event and saves it as singleEventData inside state.
   fetchOnePost(id) {
@@ -67,9 +76,12 @@ export default class IndividualPost extends React.Component {
 
   componentDidMount() {
     this.fetchOnePost(this.state.eventID);
+    this._getUserID();
   }
 
   requestToJoin(postID) {
+    let { userID } = this.state;
+
     axios
     .post(`${url}/api/attendees`, { userID, postID })
     .then(() => {
