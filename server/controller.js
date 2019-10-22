@@ -350,7 +350,7 @@ module.exports = {
         categories
       WHERE
         categories.id = posts.category_id AND
-        posts.id IN (select posts_id from attendees where users_id = ${id})
+        posts.id IN (select posts_id from attendees where users_id = ${id} AND is_accepted = true)
 
       ORDER BY 
         schedule asc
