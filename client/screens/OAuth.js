@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Button, StyleSheet, Text, View, Image, AsyncStorage, ImageBackground } from 'react-native';
-import { Icon } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { AuthSession } from 'expo';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import axios from 'axios';
@@ -19,28 +19,37 @@ export default class SignInScreen extends React.Component {
       id: null,
       name: null,
       profile: null,
+      userID: null,
     };
   }
 
-_storeData = async () => {
-    try {
-      await AsyncStorage.setItem('responseJSON', this.state.responseJSON);
-    } catch (error) {
-      console.log("ERROR SAVING DATA: ", error);
-    }
-};
-
-_storeID = async (id) => {
-  try {
-    await AsyncStorage.setItem('id', JSON.stringify(id))
-  } catch (err) {
-    console.log("ERROR SAVING DATA: ", err);
+  componentDidMount() {
+    this._getID()
   }
-}
 
-callGraph = async (token) => {
+  _getID = async() => {
+    try {
+      this.setState({ 
+        userID: await AsyncStorage.getItem('userID') || null 
+      }, () => console.log('this is userID', this.state.userID))
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  _storeID = async (id) => {
+    let userID = ''
+    try {
+      userID = await AsyncStorage.setItem('userID', JSON.stringify(id))
+    } catch (err) {
+      console.log("ERROR SAVING DATA: ", err);
+    }
+    return userID;
+  }
+
+  callGraph = async (token) => {
   const response = await fetch(
-    `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
+    `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`
   );
   const responseJSON = JSON.stringify(await response.json());
 
@@ -60,13 +69,11 @@ callGraph = async (token) => {
               let profilePic = `http://graph.facebook.com/${id}/picture?type=large`
 
               axios
-                .post(`${url}/api/user`, { email, password: 'password', firstName, lastName, gender: (firstName === 'Angela') ? 'female' : 'male', age: 99, profilePic, description: 'hello i am cool pls be friend me' })
-                .then(({data}) => console.log('=== POST SUCCESSFUL OF USER ===', data))
-                .catch(err => console.log('=== SOMETHING WENT WRONG CREATING USER ===',  err))
+                .post(`${url}/api/user`, { email, password: 'password', firstName, lastName, gender: null, age: null, profilePic, description: `Hi! My name is ${firstName}. Let's be friends!` })
+                .then(({data}) => console.log('OAuth: Successful account creation from Facebook: ', data))
+                .catch(err => console.log('OAuth: Something wrong with account creation from Facebook: ',  err))
             } else {
-              console.log('USER IS IN DATABASE. COOL:', data)
-              // this should work but it doesn't
-              this._storeID(data[id])
+              this.setState({ userID: this._storeID(data.id) })
             }
           })
       });
@@ -80,7 +87,8 @@ callGraph = async (token) => {
           width: '50%',
           alignSelf: 'center',
           borderRadius: 4,
-          padding: 24,
+          paddingVertical: 24,
+          paddingHorizontal: 4,
           backgroundColor: '#3B5998',
         }}>
         <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
@@ -90,41 +98,11 @@ callGraph = async (token) => {
     </TouchableOpacity>
   );
 
-  render() {
-    if (this.state.responseJSON === null) {
-      return (
-          <ImageBackground source={require('../assets/images/bg3.jpg')} style={{width: '100%', height: '100%'}} >
-          <View style={styles.container}>
-          <Text style={styles.paragraph}>Platonic.ly</Text>
-          {/* {this.renderButton('Sign In With Facebook')} */}
-          <Icon.Button
-            name="facebook"
-            backgroundColor="#3b5998"
-            onPress={this._handlePressAsync}
-          >
-            Login with Facebook
-          </Icon.Button>
-          </View>
-          </ImageBackground>
-        )
-    } else {
-        console.log("TOKEN:", this.state.token)
-        console.log("JSON RESPONSE:", this.state.responseJSON)
-        this._storeData();
-        this.props.navigation.navigate('Main', {
-          user: this.state.responseJSON,
-        });
-        return (
-          <View><Text>Success</Text></View>
-          )
-    }
-  }
-
   _handlePressAsync = async () => {
     let redirectUrl = AuthSession.getRedirectUrl();
     let result = await AuthSession.startAsync({
       authUrl:
-        `https://www.facebook.com/v2.8/dialog/oauth?response_type=token` +
+        `https://www.facebook.com/v4.0/dialog/oauth?response_type=token` +
         `&client_id=${FB_APP_ID}` +
         `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
     });
@@ -140,6 +118,35 @@ callGraph = async (token) => {
       }
     })
   }
+
+  render() {
+    if (this.state.userID === null) {
+      return (
+          <ImageBackground source={require('../assets/images/bg3.jpg')} style={{width: '100%', height: '100%'}}>
+            <View style={styles.container}>
+              <Text style={styles.paragraph}>Platonic.ly</Text>
+              
+              <View style={{ padding: 50 }}>
+                <Icon.Button
+                  name="facebook"
+                  backgroundColor="#3b5998"
+                  onPress={() => this._handlePressAsync()}
+                  size={30}
+                >
+                  Login with Facebook
+                </Icon.Button>
+              </View>
+            </View>
+          </ImageBackground>
+        )
+    } else {
+        // console.log("JSON RESPONSE:", this.state.responseJSON)
+        console.log('USERID IS NOW: ', this.state.userID)
+        return (
+          this.props.navigation.navigate('Main')
+        )
+    }
+  }
 }
 
 const styles = StyleSheet.create({
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
     margin: 24,
-    fontSize: 34,
+    fontSize: 48,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fffff0',

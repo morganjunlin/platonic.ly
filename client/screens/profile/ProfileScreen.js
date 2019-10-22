@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   Image,
   ScrollView,
   StyleSheet,
@@ -10,7 +11,7 @@ import {
 import { Avatar, Button, Card, Divider, Icon } from 'react-native-elements';
 import axios from 'axios';
 import moment from 'moment';
-import { url, userID } from '../../../conf.js';
+import { url } from '../../../conf.js';
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -22,23 +23,33 @@ export default class ProfileScreen extends Component {
       description: ''
     }
 
+    this.getUserID = this.getUserID.bind(this);
     this.handleLoadData = this.handleLoadData.bind(this);
     this.handleUserParticipatingActivity = this.handleUserParticipatingActivity.bind(this);
+    this.logoutAsync = this.logoutAsync.bind(this);
   }
 
   componentDidMount() {
     const { navigation } = this.props;
 
-    this.focusListener = navigation.addListener('didFocus', () => this.handleLoadData());
+    this.focusListener = navigation.addListener('didFocus', () => this.getUserID());
   }
 
   componentWillUnmount() {
     this.focusListener.remove();
   }
 
+  getUserID = async () => {
+  try {
+    this.setState({ userID: await AsyncStorage.getItem('userID') || '4'}, () => this.handleLoadData())
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
   handleLoadData = () => {
     axios
-      .get(`${url}/api/user/${userID}`)
+      .get(`${url}/api/user/${this.state.userID}`)
       .then(({ data }) => this.setState({
         user: data
       }))
@@ -49,7 +60,7 @@ export default class ProfileScreen extends Component {
 
   handleUserParticipatingActivity() {
     axios
-      .get(`${url}/api/attending/${userID}`)
+      .get(`${url}/api/attending/${this.state.userID}`)
       .then(({data}) => {
         this.setState({ participating: data });
       })
@@ -57,7 +68,13 @@ export default class ProfileScreen extends Component {
   }
 
   logoutAsync = async () => {
-    this.props.navigation.navigate('Auth');
+    try {
+      await AsyncStorage.removeItem('userID');
+      this.props.navigation.navigate('Auth');
+    } catch (error) {
+      // Error retrieving data
+      console.log(error.message);
+    }
   }
 
   render() {
@@ -77,7 +94,7 @@ export default class ProfileScreen extends Component {
 
           <View style={styles.buttonContainer}>
             <Button onPress={() => this.props.navigation.navigate('Edit')} title='Edit Description' style={styles.editButton} />
-            <Button onPress={this.logoutAsync} title='Logout' style={styles.logoutButton} />
+            <Button onPress={() => this.logoutAsync()} title='Logout' style={styles.logoutButton} />
           </View>
 
           <Divider style={{ marginTop: 5, marginBottom: 5 }}/>
