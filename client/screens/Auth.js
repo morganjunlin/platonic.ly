@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Button, StyleSheet, Text, View, Image, AsyncStorage, ImageBackground } from 'react-native';
+import { TouchableOpacity, Button, StyleSheet, Text, TextInput, View, Image, AsyncStorage, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AuthSession } from 'expo';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
@@ -20,7 +20,10 @@ export default class SignInScreen extends React.Component {
       name: null,
       profile: null,
       userID: null,
+      email: null
     };
+
+    this._handleEmailLogin = this._handleEmailLogin.bind(this);
   }
 
   componentDidMount() {
@@ -70,6 +73,7 @@ export default class SignInScreen extends React.Component {
             this._storeID(data.id)
           }
         })
+      .catch((err) => console.log('Auth: Something wrong with getting user from DB: ', err))
     }
   };
 
@@ -89,26 +93,97 @@ export default class SignInScreen extends React.Component {
     }
   }
 
+  _handleEmailLogin() {
+    let { email, password } = this.state;
+    
+    axios
+      .get(`${url}/api/user/`, { params: { email, password } })
+      .then(({data}) => this._storeID(data.id))
+      .catch((err) => console.log('Auth: Something wrong with getting email from DB: ', err))
+  }
+
   render() {
     if (this.state.userID === null) {
-      return (
+      if (this.state.emailAuth) {
+        return (
+            <ImageBackground source={require('../assets/images/bg3.jpg')} style={{width: '100%', height: '100%'}}>
+              <View style={styles.container}>
+                <Text style={styles.paragraph}>Platonic.ly</Text>
+                
+                <View style={{ padding: 40, marginBottom: 65 }}>
+                  
+                  <TextInput style={styles.inputField}
+                    editable = {true}
+                    placeholder = 'Email'
+                    onChangeText = {(text) => this.setState({ email: text })}
+                  />
+
+                  <TextInput style={styles.inputField}
+                    editable = {true}
+                    placeholder = 'Password'
+                    secureTextEntry= {true} 
+                    onChangeText = {(text) => this.setState({ password: text })}
+                  />
+
+                  <View style= {{ margin: 10 }}>
+                    <Icon.Button
+                      name="envelope"
+                      backgroundColor="#cd001d"
+                      onPress={() => this._handleEmailLogin()}
+                      size={30}
+                    >
+                      Sign in with email
+                    </Icon.Button>
+                  </View>
+
+                  <View style= {{ margin: 10 }}>
+                  <Icon.Button
+                    name="facebook"
+                    backgroundColor="#3b5998"
+                    onPress={() => this._handlePressAsync()}
+                    size={30}
+                  >
+                    Sign in with Facebook instead
+                  </Icon.Button>
+                </View>
+                </View>
+              </View>
+            </ImageBackground>
+       )
+      } else {
+        return (
           <ImageBackground source={require('../assets/images/bg3.jpg')} style={{width: '100%', height: '100%'}}>
             <View style={styles.container}>
               <Text style={styles.paragraph}>Platonic.ly</Text>
               
-              <View style={{ padding: 50 }}>
-                <Icon.Button
-                  name="facebook"
-                  backgroundColor="#3b5998"
-                  onPress={() => this._handlePressAsync()}
-                  size={30}
-                >
-                  Login with Facebook
-                </Icon.Button>
+              <View style={{ padding: 40 }}>
+                <View style= {{ margin: 10 }}>
+                  <Icon.Button
+                    name="facebook"
+                    backgroundColor="#3b5998"
+                    onPress={() => this._handlePressAsync()}
+                    size={30}
+                  >
+                    Sign in with Facebook
+                  </Icon.Button>
+                </View>
+
+                <View style= {{ margin: 10 }}>
+                  <Icon.Button
+                    name="envelope"
+                    backgroundColor="#cd001d"
+                    onPress={() => this.setState({ emailAuth: true })}
+                    size={30}
+                  >
+                    Sign in with email
+                  </Icon.Button>
+                </View>
               </View>
             </View>
           </ImageBackground>
         )
+      }
+
     } else {
         return (
           this.props.navigation.navigate('Main')
@@ -132,4 +207,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fffff0',
   },
+  inputField: {
+    margin: 10,
+    height: 40,
+    backgroundColor: '#ffffff',
+    borderColor: '#d3d3d3',
+    borderWidth: 1,
+    color: '#000000',
+    padding: 5 
+  }
 });
