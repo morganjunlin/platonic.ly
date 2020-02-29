@@ -6,6 +6,8 @@ Our mobile application allows clients to sort through user-submitted events happ
 
 This is a fork of the original Platonic.ly prototype.
 
+Demo can be found here (not compatible with iOS): https://expo.io/@morganjunlin/platonicly
+
 ### Usage
 
 ```
